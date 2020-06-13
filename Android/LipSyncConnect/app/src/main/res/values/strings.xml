@@ -1,0 +1,316 @@
+<resources>
+    <string name="progress_min_time">2500</string>
+    <string name="app_name">LipSync Connect</string>
+    <string name="main_activity_title">LipSync Connect</string>
+    <string name="lipsync_gaming_activity_title">LipSync Gaming</string>
+
+    <!-- Fragment titles -->
+    <string name="main_fragment_title">LipSync Connect</string>
+
+    <string name="mouse_fragment_title">LipSync Mouse</string>
+    <string name="gaming_fragment_title">LipSync Gaming</string>
+    <string name="wireless_fragment_title">LipSync Wireless</string>
+    <string name="micro_fragment_title">LipSync Micro</string>
+
+    <string name="version_fragment_title">Version Number</string>
+    <string name="debug_fragment_title">Debug</string>
+    <string name="calibration_fragment_title">Calibration</string>
+    <string name="initialization_fragment_title">Initialization</string>
+    <string name="pressure_threshold_fragment_title">Pressure Threshold</string>
+
+    <string name="gaming_button_mode_fragment_title">Button Mode</string>
+
+    <string name="mouse_sensitivity_fragment_title">Sensitivity</string>
+    <string name="gaming_sensitivity_fragment_title">Sensitivity</string>
+    <string name="wireless_sensitivity_fragment_title">Sensitivity</string>
+    <string name="micro_sensitivity_fragment_title">Sensitivity</string>
+
+    <string name="mouse_mapping_fragment_title">Button Mapping</string>
+    <string name="gaming_mapping_fragment_title">Button Mapping</string>
+    <string name="wireless_mapping_fragment_title">Button Mapping</string>
+    <string name="micro_mapping_fragment_title">Button Mapping</string>
+
+    <string name="mouse_deadzone_fragment_title">Deadzone</string>
+    <string name="gaming_deadzone_fragment_title">Deadzone</string>
+    <string name="wireless_deadzone_fragment_title">Deadzone</string>
+    <string name="micro_deadzone_fragment_title">Deadzone</string>
+
+    <string name="factory_reset_fragment_title">Factory Reset</string>
+
+
+    <string name="lipsync_help_fragment_title">Help</string>
+    <string name="gaming_help_fragment_title">Help</string>
+    <string name="wireless_help_fragment_title">Help</string>
+    <string name="micro_help_fragment_title">Help</string>
+
+    <string name="default_status_text">Please plug an Arduino via OTG.</string>
+    <string name="perm_denied_status_text">Permission denied...</string>
+    <string name="attached_status_text">Lipsync/Arduino attached!</string>
+    <string name="detached_status_text">Lipsync/Arduino detached</string>
+
+    <string name="main_fragment_default_change_text">Waiting...</string>
+    <string name="main_fragment_mouse_button_text">LipSync Mouse</string>
+    <string name="main_fragment_gaming_button_text">LipSync Gaming</string>
+    <string name="main_fragment_wireless_button_text">LipSync Wireless</string>
+    <string name="main_fragment_micro_button_text">LipSync Micro</string>
+
+    <string name="mouse_fragment_default_change_text">Waiting...</string>
+
+    <string name="gaming_fragment_default_change_text">Waiting...</string>
+
+    <string name="wireless_fragment_default_change_text">Waiting...</string>
+
+    <string name="micro_fragment_default_change_text">Waiting...</string>
+
+    <string name="mouse_sensitivity_fragment_default_change_text">Waiting...</string>
+    <string name="mouse_sensitivity_fragment_inc_button_text">Increase</string>
+    <string name="mouse_sensitivity_fragment_dec_button_text">Decrease</string>
+
+
+    <string name="initialization_fragment_default_change_text">Waiting...</string>
+    <string name="initialization_fragment_button_text">Initialization</string>
+
+    <string name="calibration_fragment_default_change_text">Waiting...</string>
+    <string name="calibration_fragment_button_text">Calibration</string>
+
+    <string name="pressure_threshold_fragment_default_change_text">Waiting...</string>
+    <string name="pressure_threshold_fragment_default_value_text">0%</string>
+    <string name="pressure_threshold_fragment_set_button_text">Set Threshold</string>
+    <string name="pressure_threshold_fragment_dec_button_text">-</string>
+    <string name="pressure_threshold_fragment_inc_button_text">+</string>
+    <string name="pressure_threshold_puff_label_text">Puff(V)</string>
+    <string name="pressure_threshold_sip_label_text">Sip(V)</string>
+    <string name="pressure_threshold_nominal_label_text">Nominal(V)</string>
+    <string name="pressure_threshold_puff_value_text">2.5</string>
+    <string name="pressure_threshold_nominal_value_text">2.5</string>
+    <string name="pressure_threshold_sip_value_text">2.5</string>
+
+    <string name="gaming_sensitivity_fragment_default_change_text">Waiting...</string>
+    <string name="gaming_sensitivity_fragment_inc_button_text">Increase</string>
+    <string name="gaming_sensitivity_fragment_dec_button_text">Decrease</string>
+
+    <string name="gaming_button_mode_fragment_default_change_text">Waiting...</string>
+    <string name="gaming_button_mode_fragment_one_button_text">Mode 1</string>
+    <string name="gaming_button_mode_fragment_two_button_text">Mode 2</string>
+
+    <string name="gaming_deadzone_fragment_default_change_text">Waiting...</string>
+    <string name="gaming_deadzone_fragment_dec_button_text">-</string>
+    <string name="gaming_deadzone_fragment_inc_button_text">+</string>
+    <string name="gaming_deadzone_fragment_default_value_text">0</string>
+    <string name="gaming_deadzone_fragment_set_button_text">Set Deadzone</string>
+
+    <string name="debug_fragment_default_change_text">Waiting...</string>
+    <string name="debug_fragment_on_button_text">Start</string>
+    <string name="debug_fragment_off_button_text">Stop</string>
+    <string name="debug_fragment_share_button_text">Share</string>
+    <string name="debug_fragment_default_data_text"></string>
+
+    <string name="version_fragment_default_change_text">Waiting...</string>
+
+    <string name="factory_reset_fragment_default_change_text">Waiting...</string>
+    <string name="factory_reset_fragment_button_text">Factory Reset</string>
+    <!-- Fragment tags -->
+    <string name="main_activity_tag">main_activity</string>
+
+    <string name="main_fragment_tag">main_fragment</string>
+    <string name="mouse_fragment_tag">mouse_fragment</string>
+    <string name="gaming_fragment_tag">gaming_fragment</string>
+    <string name="wireless_fragment_tag">wireless_fragment</string>
+    <string name="micro_fragment_tag">micro_fragment</string>
+
+
+    <string name="version_fragment_tag">version_fragment</string>
+
+    <string name="debug_fragment_tag">debug_fragment</string>
+    <string name="calibration_fragment_tag">calibration_fragment</string>
+    <string name="initialization_fragment_tag">initialization_fragment</string>
+    <string name="pressure_threshold_fragment_tag">pressure_threshold_fragment</string>
+    <string name="ble_mode_fragment_tag">ble_mode_fragment</string>
+
+    <string name="mouse_sensitivity_fragment_tag">mouse_sensitivity_fragment</string>
+    <string name="gaming_sensitivity_fragment_tag">gaming_sensitivity_fragment</string>
+    <string name="wireless_sensitivity_fragment_tag">wireless_sensitivity_fragment</string>
+    <string name="micro_sensitivity_fragment_tag">micro_sensitivity_fragment</string>
+
+    <string name="mouse_mapping_fragment_tag">mouse_mapping_fragment</string>
+    <string name="gaming_mapping_fragment_tag">gaming_mapping_fragment</string>
+    <string name="wireless_mapping_fragment_tag">wireless_mapping_fragment</string>
+    <string name="micro_mapping_fragment_tag">micro_mapping_fragment</string>
+
+    <string name="mouse_deadzone_fragment_tag">mouse_deadzone_fragment</string>
+    <string name="gaming_deadzone_fragment_tag">gaming_deadzone_fragment</string>
+    <string name="wireless_deadzone_fragment_tag">wireless_deadzone_fragment</string>
+    <string name="micro_deadzone_fragment_tag">micro_deadzone_fragment</string>
+
+    <string name="gaming_button_mode_fragment_tag">gaming_button_mode_fragment</string>
+
+    <string name="mouse_reset_fragment_tag">mouse_reset_fragment</string>
+    <string name="gaming_reset_fragment_tag">gaming_reset_fragment</string>
+    <string name="wireless_reset_fragment_tag">wireless_reset_fragment</string>
+    <string name="micro_reset_fragment_tag">micro_reset_fragment</string>
+
+    <string name="mouse_help_fragment_tag">mouse_help_fragment</string>
+    <string name="gaming_help_fragment_tag">gaming_help_fragment</string>
+    <string name="wireless_help_fragment_tag">wireless_help_fragment</string>
+    <string name="micro_help_fragment_tag">micro_help_fragment</string>
+
+
+    <!-- Commands -->
+
+    <!-- Settings Mode -->
+    <string name="settings_send_command">SETTINGS</string>
+    <string name="settings_res_command">SUCCESS</string>
+    <string name="settings_res_success_command">SUCCESS:SETTINGS</string>
+    <string name="settings_res_fail_command">FAIL:SETTINGS</string>
+    <string name="manual_res_command">SUCCESS:MANUAL</string>
+
+    <string name="exit_send_command">EXIT</string>
+    <string name="exit_res_command">EXIT</string>
+    <string name="exit_res_success_command">SUCCESS:EXIT</string>
+
+    <!-- Get model number if sent "MN,0:0" -->
+    <string name="model_send_command">MN,0:0</string>
+    <string name="model_res_command">MN,0</string>
+    <string name="model_mouse_res_command">1</string>
+    <string name="model_gaming_res_command">2</string>
+    <string name="model_wireless_res_command">3</string>
+    <string name="model_micro_res_command">4</string>
+
+    <string name="model_mouse_res_text">Lipsync Mouse</string>
+    <string name="model_gaming_res_text">Lipsync Gaming</string>
+    <string name="model_wireless_res_text">Lipsync Wireless</string>
+    <string name="model_micro_res_text">Lipsync Micro</string>
+
+
+    <!-- Get version number if sent "VN,0:0" -->
+    <string name="version_send_command">VN,0:0</string>
+    <string name="version_res_command">VN,0</string>
+
+    <!-- Get sensitivity value if sent "JS,0:0" -->
+    <string name="sensitivity_send_command">JS,0:0</string>
+    <string name="sensitivity_res_command">JS,0</string>
+    <string name="sensitivity_set_res_command">JS,1</string>
+
+    <!-- Decrease sensitivity if received "JS,1:1" -->
+    <string name="sensitivity_dec_set_send_command">JS,1:1</string>
+    <string name="sensitivity_dec_set_res_command">1</string>
+
+    <!-- Increase sensitivity if received "JS,1:2" -->
+    <string name="sensitivity_inc_set_send_command">JS,1:2</string>
+    <string name="sensitivity_inc_set_res_command">2</string>
+
+    <!-- Get pressure threshold value if sent "PT,0:0" -->
+    <string name="pressure_threshold_send_command">PT,0:0</string>
+    <string name="pressure_threshold_res_command">PT,0</string>
+
+    <!-- Set pressure threshold value if received "PT,1:{threshold 1% to 50%} -->
+    <string name="pressure_threshold_set_send_command">PT,1</string>
+    <string name="pressure_threshold_set_res_command">PT,1</string>
+
+
+    <!-- Get debug value if sent "DM,0:0" -->
+    <string name="debug_send_command">DM,0:0</string>
+    <string name="debug_res_command">DM,0</string>
+    <string name="debug_off_res_command">0</string>
+    <string name="debug_on_res_command">1</string>
+    <string name="debug_set_res_command">DM,1</string>
+
+    <!-- Set debug value to stop if received "DM,1:0" -->
+    <string name="debug_off_set_send_command">DM,1:0</string>
+    <string name="debug_off_set_res_command">DM,1:0</string>
+
+    <!-- Set debug value to on if received "DM,1:1" -->
+    <string name="debug_on_set_send_command">DM,1:1</string>
+    <string name="debug_on_set_res_command">DM,1:1</string>
+    <string name="log_res_command">LOG</string>
+
+    <string name="debug_off_set_res_text">Off</string>
+    <string name="debug_on_set_res_text">On</string>
+
+    <!-- Get deadzone value if sent "DZ,0:0" -->
+    <string name="deadzone_send_command">DZ,0:0</string>
+    <string name="deadzone_res_command">DZ,0</string>
+
+    <!-- Set deadzone value if received "DZ,1:{threshold 1 to 99} -->
+    <string name="deadzone_set_send_command">DZ,1</string>
+    <string name="deadzone_set_res_command">DZ,1</string>
+
+    <!-- Get initialization value if sent "JI,0:0" -->
+    <string name="initialization_send_command">JI,0:0</string>
+    <string name="initialization_res_command">JI,0</string>
+
+    <!-- Set initialization value if received "JI,1:1" -->
+    <string name="initialization_set_send_command">JI,1:1</string>
+    <string name="initialization_set_res_command">JI,1</string>
+
+    <!-- Get calibration value if sent "JC,0:0" -->
+    <string name="calibration_send_command">JC,0:0</string>
+    <string name="calibration_res_command">JC,0</string>
+
+    <!-- Set calibration value if received "JC,1:1" -->
+    <string name="calibration_set_send_command">JC,1:1</string>
+    <string name="calibration_set_res_command">JC,1</string>
+    <string name="calibration_zero_set_res_command">0</string>
+    <string name="calibration_one_set_res_command">1</string>
+    <string name="calibration_two_set_res_command">2</string>
+    <string name="calibration_three_set_res_command">3</string>
+    <string name="calibration_four_set_res_command">4</string>
+    <string name="calibration_five_set_res_command">5</string>
+
+    <string name="calibration_zero_set_res_text">Starting Calibration</string>
+    <string name="calibration_one_set_res_text">Move mouthpiece to 12 oclock position</string>
+    <string name="calibration_two_set_res_text">Move mouthpiece to 3 oclock position</string>
+    <string name="calibration_three_set_res_text">Move mouthpiece to 6 o clock position</string>
+    <string name="calibration_four_set_res_text">Move mouthpiece to 9 oclock position</string>
+    <string name="calibration_five_set_res_text">Calibration Finished</string>
+
+    <!-- Get button mode value if sent "BM,0:0" -->
+    <string name="button_mode_send_command">BM,0:0</string>
+    <string name="button_mode_res_command">BM,0</string>
+    <string name="button_mode_set_res_command">BM,1</string>
+
+    <string name="button_mode_one_res_command">1</string>
+    <string name="button_mode_two_res_command">2</string>
+
+    <!-- Set button mode value to one if received "BM,1:1" -->
+    <string name="button_mode_one_set_send_command">BM,1:1</string>
+    <string name="button_mode_one_set_res_command">BM,1:1</string>
+
+    <!-- Set button mode value to two if received "BM,1:2" -->
+    <string name="button_mode_two_set_send_command">BM,1:2</string>
+    <string name="button_mode_two_set_res_command">BM,1:2</string>
+
+
+    <!-- Get mapping value if sent "MP,0:0" -->
+    <string name="mapping_send_command">MP,0:0</string>
+    <string name="mapping_res_command">MP,0</string>
+
+    <!-- Set mapping value if received "BP,1:123456" -->
+    <string name="mapping_set_send_command">MP,1</string>
+    <string name="mapping_set_res_command">MP,1</string>
+
+
+    <!-- Factory Reset if received "FR,0:0" -->
+    <string name="factory_reset_set_send_command">FR,0:0</string>
+    <string name="factory_reset_set_res_command">FR,0</string>
+    <string name="factory_reset_success_res_command">0</string>
+    <string name="factory_reset_success_res_text">Successfully Reset</string>
+
+    <!-- Get bluetooth mode value if sent "BT,0:0" -->
+    <string name="ble_mode_send_command">BT,0:0</string>
+    <string name="ble_mode_res_command">BT,0</string>
+
+    <!-- Set bluetooth mode value if received "BT,1" -->
+    <string name="ble_mode_set_send_command">BT,1</string>
+    <string name="ble_mode_zero_set_send_command">0</string>
+    <string name="ble_mode_one_set_send_command">1</string>
+    <string name="ble_mode_two_set_send_command">2</string>
+    <string name="ble_mode_three_set_send_command">3</string>
+
+    <string name="ble_mode_set_res_command">MP,1</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>

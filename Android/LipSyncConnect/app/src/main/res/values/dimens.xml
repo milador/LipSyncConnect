@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_horizontal_margin">8dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="recycler_view_top_padding">16dp</dimen>
+    <dimen name="recycler_view_bottom_padding">50dp</dimen>
+    <dimen name="fragment_left_padding">8dp</dimen>
+    <dimen name="fragment_right_padding">8dp</dimen>
+</resources>

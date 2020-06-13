@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainFragmentLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context=".Fragments.MainFragment">
+    <LinearLayout
+        android:id="@+id/mainFragmentTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        tools:ignore="MissingConstraints">
+        <TextView
+            android:id="@+id/mainChangeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            android:gravity="center"
+            android:padding="16dip"
+            android:text="@string/main_fragment_default_change_text"
+            android:background="@color/colorPrimaryLight" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/mainFragmentMiddle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mainFragmentTop"
+        android:orientation="vertical"
+        android:gravity="center"
+        tools:ignore="MissingConstraints">
+        <Button
+            android:id="@+id/mainMouseButton"
+            android:layout_width="180dip"
+            android:layout_height="60dip"
+            android:layout_marginTop="20dip"
+            android:enabled="true"
+            android:layout_centerInParent="true"
+            android:text="@string/main_fragment_mouse_button_text" />
+
+        <Button
+            android:id="@+id/mainGamingButton"
+            android:layout_width="180dip"
+            android:layout_height="60dip"
+            android:layout_marginTop="20dip"
+            android:enabled="true"
+            android:layout_centerInParent="true"
+            android:layout_above="@id/mainMouseButton"
+            android:text="@string/main_fragment_gaming_button_text" />
+
+        <Button
+            android:id="@+id/mainWirelessButton"
+            android:layout_width="180dip"
+            android:layout_height="60dip"
+            android:layout_marginTop="20dip"
+            android:enabled="false"
+            android:layout_centerInParent="true"
+            android:layout_above="@id/mainGamingButton"
+            android:text="@string/main_fragment_wireless_button_text" />
+
+        <Button
+            android:id="@+id/mainMicroButton"
+            android:layout_width="180dip"
+            android:layout_height="60dip"
+            android:layout_marginTop="20dip"
+            android:layout_marginBottom="20dip"
+            android:enabled="false"
+            android:layout_centerInParent="true"
+            android:layout_above="@id/mainWirelessButton"
+            android:text="@string/main_fragment_micro_button_text" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/mainFragmentBottom"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimaryLight"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+        <TextView
+            android:id="@+id/mainStatusTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dip"
+            android:gravity="center"
+            android:text="@string/default_status_text"
+            android:layout_alignParentBottom="true" />
+    </LinearLayout>
+
+</RelativeLayout>

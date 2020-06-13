@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "349931530716",
+    "firebase_url": "https://lipsync-connect.firebaseio.com",
+    "project_id": "lipsync-connect",
+    "storage_bucket": "lipsync-connect.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:349931530716:android:85613aec7e417097f60719",
+        "android_client_info": {
+          "package_name": "com.mmc.lipsyncconnect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "349931530716-83r4srjkteipgi159i6p1p1tacj4nn39.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKrIq7SSPHbeEqKONnnz8nlTadj1m0-OY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "349931530716-83r4srjkteipgi159i6p1p1tacj4nn39.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,59 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/versionFragmentLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context=".Fragments.VersionFragment">
+    <LinearLayout
+        android:id="@+id/versionFragmentTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        tools:ignore="MissingConstraints">
+        <TextView
+            android:id="@+id/versionChangeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            android:gravity="center"
+            android:padding="16dip"
+            android:text="@string/version_fragment_default_change_text"
+            android:background="@color/colorPrimaryLight" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/versionFragmentMiddle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/versionFragmentTop"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/fragment_left_padding"
+        android:paddingRight="@dimen/fragment_right_padding">
+        <ImageView
+            android:id="@+id/versionImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/version_default" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/versionFragmentBottom"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimaryLight"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+        <TextView
+            android:id="@+id/versionStatusTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dip"
+            android:gravity="center"
+            android:text="@string/default_status_text"
+            android:layout_alignParentBottom="true" />
+    </LinearLayout>
+</RelativeLayout>
