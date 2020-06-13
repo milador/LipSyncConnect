@@ -41,6 +41,7 @@ public class GamingFragment extends Fragment {
     // Log
     private final static String GAMING_FRAGMENT_TAG = GamingFragment.class.getSimpleName();
     private final static String GAMING_SENSITIVITY_FRAGMENT_TAG = GamingSensitivityFragment.class.getSimpleName();
+    private final static String GAMING_MAPPING_FRAGMENT_TAG = GamingMappingFragment.class.getSimpleName();
     private final static String GAMING_BUTTON_MODE_FRAGMENT_TAG = GamingButtonModeFragment.class.getSimpleName();
     private final static String GAMING_INITIALIZATION_FRAGMENT_TAG =InitializationFragment.class.getSimpleName();
     private final static String GAMING_CALIBRATION_FRAGMENT_TAG =CalibrationFragment.class.getSimpleName();
@@ -52,14 +53,15 @@ public class GamingFragment extends Fragment {
 
     private static final int kModule_Sensitivity = 0;
     private static final int kModule_ButtonMode = 1;
-    private static final int kModule_Initialization = 2;
-    private static final int kModule_Calibration = 3;
-    private static final int kModule_PressureThreshold = 4;
-    private static final int kModule_Deadzone = 5;
-    private static final int kModule_Debug = 6;
-    private static final int kModule_FactoryReset = 7;
-    private static final int kModule_Version = 8;
-    private static final int kNumModules = 9;
+    private static final int kModule_Mapping = 2;
+    private static final int kModule_Initialization = 3;
+    private static final int kModule_Calibration = 4;
+    private static final int kModule_PressureThreshold = 5;
+    private static final int kModule_Deadzone = 6;
+    private static final int kModule_Debug = 7;
+    private static final int kModule_FactoryReset = 8;
+    private static final int kModule_Version = 9;
+    private static final int kNumModules = 10;
 
     private TextView gamingChangeTextView;
     private TextView gamingStatusTextView;
@@ -69,6 +71,7 @@ public class GamingFragment extends Fragment {
 
 
     private WeakReference<GamingSensitivityFragment> mWeakGamingSensitivityFragment = null;
+    private WeakReference<GamingMappingFragment> mWeakGamingMappingFragment = null;
     private WeakReference<GamingButtonModeFragment> mWeakGamingButtonModeFragment = null;
     private WeakReference<InitializationFragment> mWeakInitializationFragment = null;
     private WeakReference<CalibrationFragment> mWeakCalibrationFragment = null;
@@ -153,11 +156,16 @@ public class GamingFragment extends Fragment {
                                     fragmentTag = getString(R.string.gaming_sensitivity_fragment_tag);
                                     mWeakGamingSensitivityFragment = new WeakReference<>(gamingSensitivityFragment);
                                     break;
+                                case kModule_Mapping:
+                                    GamingMappingFragment gamingMappingFragment = GamingMappingFragment.newInstance();
+                                    fragment = gamingMappingFragment;
+                                    fragmentTag = GAMING_MAPPING_FRAGMENT_TAG;
+                                    mWeakGamingMappingFragment= new WeakReference<>(gamingMappingFragment);
+                                    break;
                                 case kModule_ButtonMode:
                                     GamingButtonModeFragment gamingButtonModeFragment = GamingButtonModeFragment.newInstance();
                                     fragment = gamingButtonModeFragment;
                                     fragmentTag = GAMING_BUTTON_MODE_FRAGMENT_TAG;
-                                    //fragmentTag = getString(R.string.gaming_button_mode_fragment_tag);
                                     mWeakGamingButtonModeFragment= new WeakReference<>(gamingButtonModeFragment);
                                     break;
                                 case kModule_Initialization:
@@ -383,6 +391,7 @@ public class GamingFragment extends Fragment {
         // Config
         private static final int[] kModuleTitleKeys = {
                 R.string.gaming_sensitivity_fragment_title,
+                R.string.gaming_mapping_fragment_title,
                 R.string.gaming_button_mode_fragment_title,
                 R.string.initialization_fragment_title,
                 R.string.calibration_fragment_title,
@@ -393,7 +402,7 @@ public class GamingFragment extends Fragment {
                 R.string.version_fragment_title};
 
         // Constants
-        private static final int kCellType_ModuleCell = 9;
+        private static final int kCellType_ModuleCell = 10;
 
         private static final int kModuleCellsStartPosition = 0;
 

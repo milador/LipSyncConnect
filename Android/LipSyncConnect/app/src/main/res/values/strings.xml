@@ -93,6 +93,12 @@
     <string name="gaming_button_mode_fragment_one_button_text">Mode 1</string>
     <string name="gaming_button_mode_fragment_two_button_text">Mode 2</string>
 
+    <string name="gaming_mapping_fragment_default_change_text">Waiting...</string>
+    <string name="gaming_mapping_fragment_set_button_text">Set Mapping</string>
+
+    <string name="mouse_mapping_fragment_default_change_text">Waiting...</string>
+    <string name="mouse_mapping_fragment_set_button_text">Set Mapping</string>
+
     <string name="gaming_deadzone_fragment_default_change_text">Waiting...</string>
     <string name="gaming_deadzone_fragment_dec_button_text">-</string>
     <string name="gaming_deadzone_fragment_inc_button_text">+</string>

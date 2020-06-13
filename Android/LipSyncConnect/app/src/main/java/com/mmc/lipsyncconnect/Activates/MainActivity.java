@@ -29,6 +29,7 @@ import com.mmc.lipsyncconnect.Fragments.CalibrationFragment;
 import com.mmc.lipsyncconnect.Fragments.DebugFragment;
 import com.mmc.lipsyncconnect.Fragments.FactoryResetFragment;
 import com.mmc.lipsyncconnect.Fragments.GamingDeadzoneFragment;
+import com.mmc.lipsyncconnect.Fragments.GamingMappingFragment;
 import com.mmc.lipsyncconnect.Fragments.PressureThresholdFragment;
 import com.mmc.lipsyncconnect.Fragments.VersionFragment;
 import com.mmc.lipsyncconnect.R;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity
         FactoryResetFragment.OnFactoryResetFragmentListener,
         MouseSensitivityFragment.OnMouseSensitivityFragmentListener,
         GamingSensitivityFragment.OnGamingSensitivityFragmentListener,
+        GamingMappingFragment.OnGamingMappingFragmentListener,
         GamingButtonModeFragment.OnGamingButtonModeFragmentListener,
         GamingDeadzoneFragment.OnGamingDeadzoneFragmentListener{
 
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity
     private GamingFragment gamingFragment;
     private MouseSensitivityFragment mouseSensitivityFragment;
     private GamingSensitivityFragment gamingSensitivityFragment;
+    private GamingMappingFragment gamingMappingFragment;
     private GamingButtonModeFragment gamingButtonModeFragment;
     private GamingDeadzoneFragment gamingDeadzoneFragment;
     private InitializationFragment initializationFragment;
@@ -283,6 +286,15 @@ public class MainActivity extends AppCompatActivity
             }
             else if (commandList[0].equals("SUCCESS") && commandList[1].equals(getString(R.string.deadzone_set_res_command))) {
                 onUpdateChangeText("Deadzone:"+commandList[2]);
+                sendCommand="";
+            }
+            //Button Mapping
+            else if (commandList[0].equals("SUCCESS") && commandList[1].equals(getString(R.string.mapping_res_command))) {
+                onUpdateChangeText("Button Mapping:"+commandList[2]);
+                sendCommand="";
+            }
+            else if (commandList[0].equals("SUCCESS") && commandList[1].equals(getString(R.string.mapping_set_res_command))) {
+                onUpdateChangeText("Button Mapping:"+commandList[2]);
                 sendCommand="";
             }
             //Button Mode
@@ -504,6 +516,10 @@ public class MainActivity extends AppCompatActivity
                     gamingSensitivityFragment =  (GamingSensitivityFragment) getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
                     gamingSensitivityFragment.setGamingSensitivityChangeText(changeText);
                     Log.v("Fragment", "GamingSensitivityFragment");
+                } else if (currentFragment instanceof GamingMappingFragment) {
+                    gamingMappingFragment =  (GamingMappingFragment) getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
+                    gamingMappingFragment.setGamingMappingChangeText(changeText);
+                    Log.v("Fragment", "GamingMappingFragment");
                 } else if (currentFragment instanceof GamingButtonModeFragment) {
                     gamingButtonModeFragment =  (GamingButtonModeFragment) getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
                     gamingButtonModeFragment.setGamingButtonModeChangeText(changeText);
@@ -611,6 +627,10 @@ public class MainActivity extends AppCompatActivity
                     gamingSensitivityFragment =  (GamingSensitivityFragment) getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
                     gamingSensitivityFragment.setGamingSensitivityStatusText(statusText);
                     Log.v("Fragment", "GamingSensitivityFragment");
+                } else if (currentFragment instanceof GamingMappingFragment) {
+                    gamingMappingFragment =  (GamingMappingFragment) getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
+                    gamingMappingFragment.setGamingMappingStatusText(statusText);
+                    Log.v("Fragment", "GamingMappingFragment");
                 } else if (currentFragment instanceof GamingButtonModeFragment) {
                     gamingButtonModeFragment =  (GamingButtonModeFragment) getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
                     gamingButtonModeFragment.setGamingButtonModeStatusText(statusText);
@@ -660,6 +680,16 @@ public class MainActivity extends AppCompatActivity
                 return true;
         }
         return false;
+    }
+
+    @Override
+    public void setGamingMappingChangeText(String text) {
+
+    }
+
+    @Override
+    public void setGamingMappingStatusText(String text) {
+
     }
 
     @Override
