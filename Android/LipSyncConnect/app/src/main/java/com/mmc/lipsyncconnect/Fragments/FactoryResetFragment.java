@@ -107,7 +107,7 @@ public class FactoryResetFragment extends Fragment {
 
     private void onFactoryResetDialog (String command) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Factory Reset Alert")
+        builder.setTitle("Factory Reset?")
                 .setMessage("Are you sure, you want to Factory reset Lipsync?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {

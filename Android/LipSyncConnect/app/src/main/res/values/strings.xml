@@ -99,6 +99,45 @@
     <string name="mouse_mapping_fragment_default_change_text">Waiting...</string>
     <string name="mouse_mapping_fragment_set_button_text">Set Mapping</string>
 
+    <string name="mapping_fragment_short_puff_action_text">Short Puff:</string>
+    <string name="mapping_fragment_short_sip_action_text">Short Sip:</string>
+    <string name="mapping_fragment_long_puff_action_text">Long Puff:</string>
+    <string name="mapping_fragment_long_sip_action_text">Long Sip:</string>
+    <string name="mapping_fragment_very_long_puff_action_text">Very Long Puff:</string>
+    <string name="mapping_fragment_very_long_sip_action_text">Very Long Sip:</string>
+
+    <string-array name="gaming_mapping_fragment_button_main_titles">
+        <item>Button 1</item>
+        <item>Button 2</item>
+        <item>Button 3</item>
+        <item>Button 4</item>
+        <item>Button 5</item>
+        <item>Button 6</item>
+        <item>Button 7</item>
+        <item>Button 8</item>
+    </string-array>
+    <string-array name="gaming_mapping_fragment_button_secondary_titles">
+        <item>Left: X1. Right: View</item>
+        <item>Left: X2. Right: Menu</item>
+        <item>Left: LS. Right: RS</item>
+        <item>Left: LB. Right: RB</item>
+        <item>Left: A. Right: X</item>
+        <item>Left: B. Right: Y</item>
+        <item>Left: View. Right: X1</item>
+        <item>Left: Menu. Right: X2</item>
+    </string-array>
+
+    <string-array name="gaming_mapping_fragment_button_images">
+        <item>@drawable/mapping_button_x1</item>
+        <item>@drawable/mapping_button_x2</item>
+        <item>@drawable/mapping_button_ls</item>
+        <item>@drawable/mapping_button_lb</item>
+        <item>@drawable/mapping_button_a</item>
+        <item>@drawable/mapping_button_b</item>
+        <item>@drawable/mapping_button_view</item>
+        <item>@drawable/mapping_button_menu</item>
+    </string-array>
+
     <string name="gaming_deadzone_fragment_default_change_text">Waiting...</string>
     <string name="gaming_deadzone_fragment_dec_button_text">-</string>
     <string name="gaming_deadzone_fragment_inc_button_text">+</string>

@@ -19,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dip"
             android:gravity="center"
+            android:textStyle="bold"
             android:padding="16dip"
             android:text="@string/calibration_fragment_default_change_text"
             android:background="@color/colorPrimaryLight" />
@@ -74,6 +75,7 @@
             android:layout_height="match_parent"
             android:padding="16dip"
             android:gravity="center"
+            android:textStyle="bold"
             android:text="@string/default_status_text"
             android:layout_alignParentBottom="true" />
     </LinearLayout>

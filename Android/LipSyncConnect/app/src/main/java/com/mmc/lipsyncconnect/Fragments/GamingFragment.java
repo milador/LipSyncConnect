@@ -52,8 +52,8 @@ public class GamingFragment extends Fragment {
     private final static String GAMING_VERSION_FRAGMENT_TAG =VersionFragment.class.getSimpleName();
 
     private static final int kModule_Sensitivity = 0;
-    private static final int kModule_ButtonMode = 1;
-    private static final int kModule_Mapping = 2;
+    private static final int kModule_Mapping = 1;
+    private static final int kModule_ButtonMode = 2;
     private static final int kModule_Initialization = 3;
     private static final int kModule_Calibration = 4;
     private static final int kModule_PressureThreshold = 5;

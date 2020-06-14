@@ -221,6 +221,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onArduinoMessage(byte[] bytes) {
         String commandString = new String(bytes);
+        String successString = getString(R.string.settings_res_command);
         commandString = commandString.replaceAll("\\s","");
         //statusTextView.setText(receivedString);
         int commandParts = stringCharCounter(commandString, ':',0);
@@ -245,7 +246,7 @@ public class MainActivity extends AppCompatActivity
         } else if (commandParts ==2) {
             String[] commandList = commandString.split(":");
             String[] actionList = commandList[2].split(",");
-            if (commandList[0].equals("SUCCESS") && commandList[1].equals(getString(R.string.model_res_command))) {
+            if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.model_res_command))) {
                 if (commandList[2].contains(getString(R.string.model_mouse_res_command))) {
                     lipsyncModel=1;
                     onUpdateChangeText(getString(R.string.model_mouse_res_text));
@@ -265,49 +266,50 @@ public class MainActivity extends AppCompatActivity
                 }
             }
             //Version
-            else if (commandList[0].equals("SUCCESS") && commandList[1].equals(getString(R.string.version_res_command))) {
+            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.version_res_command))) {
                 onUpdateChangeText("Version:"+commandList[2]);
                 sendCommand="";
             }
             //Sensitivity
-            else if (commandList[0].equals("SUCCESS") && commandList[1].equals(getString(R.string.sensitivity_res_command))) {
+            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.sensitivity_res_command))) {
                 onUpdateChangeText("Sensitivity:"+commandList[2]);
                 sendCommand="";
             }
-            else if (commandList[0].equals("SUCCESS") && commandList[1].equals(getString(R.string.sensitivity_set_res_command))) {
+            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.sensitivity_set_res_command))) {
                 onUpdateChangeText("Sensitivity:"+commandList[2]);
                 sendCommand="";
             }
             //Deadzone
-            else if (commandList[0].equals("SUCCESS") && commandList[1].equals(getString(R.string.deadzone_res_command))) {
+            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.deadzone_res_command))) {
                 onUpdateChangeText("Deadzone:"+commandList[2]);
                 onUpdateSeekBar(Integer.parseInt(commandList[2]));
                 sendCommand="";
             }
-            else if (commandList[0].equals("SUCCESS") && commandList[1].equals(getString(R.string.deadzone_set_res_command))) {
+            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.deadzone_set_res_command))) {
                 onUpdateChangeText("Deadzone:"+commandList[2]);
                 sendCommand="";
             }
             //Button Mapping
-            else if (commandList[0].equals("SUCCESS") && commandList[1].equals(getString(R.string.mapping_res_command))) {
+            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.mapping_res_command))) {
                 onUpdateChangeText("Button Mapping:"+commandList[2]);
+                onUpdateSpinner(commandList[2]);
                 sendCommand="";
             }
-            else if (commandList[0].equals("SUCCESS") && commandList[1].equals(getString(R.string.mapping_set_res_command))) {
+            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.mapping_set_res_command))) {
                 onUpdateChangeText("Button Mapping:"+commandList[2]);
                 sendCommand="";
             }
             //Button Mode
-            else if (commandList[0].equals("SUCCESS") && commandList[1].equals(getString(R.string.button_mode_res_command))) {
+            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.button_mode_res_command))) {
                 onUpdateChangeText("Button Mode:"+commandList[2]);
                 sendCommand="";
             }
-            else if (commandList[0].equals("SUCCESS") && commandList[1].equals(getString(R.string.button_mode_set_res_command))) {
+            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.button_mode_set_res_command))) {
                 onUpdateChangeText("Button Mode:"+commandList[2]);
                 sendCommand="";
             }
             //Debug
-            else if (commandList[0].equals("SUCCESS") && commandList[1].equals(getString(R.string.debug_res_command))) {
+            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.debug_res_command))) {
                 if (commandList[2].contains(getString(R.string.debug_off_res_command))) {
                     onUpdateChangeText("Debug mode:"+getString(R.string.debug_off_set_res_text));
                 } else if (commandList[2].contains(getString(R.string.debug_on_res_command))) {
@@ -315,7 +317,7 @@ public class MainActivity extends AppCompatActivity
                 }
                 sendCommand="";
             }
-            else if (commandList[0].equals("SUCCESS") && commandList[1].equals(getString(R.string.debug_set_res_command))) {
+            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.debug_set_res_command))) {
                 if (commandList[2].contains(getString(R.string.debug_off_res_command))) {
                     onUpdateChangeText("Debug mode:"+getString(R.string.debug_off_set_res_text));
                 } else if (commandList[2].contains(getString(R.string.debug_on_res_command))) {
@@ -324,7 +326,7 @@ public class MainActivity extends AppCompatActivity
                 sendCommand="";
             }
             //Factory Reset
-            else if (commandList[0].equals("SUCCESS") && commandList[1].equals(getString(R.string.factory_reset_set_res_command))) {
+            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.factory_reset_set_res_command))) {
                 if (commandList[2].contains(getString(R.string.factory_reset_success_res_command))) {
                     onUpdateChangeText(getString(R.string.factory_reset_success_res_text));
                 } else{
@@ -332,21 +334,21 @@ public class MainActivity extends AppCompatActivity
                 sendCommand="";
             }
             //Initialization
-            else if (commandList[0].equals("SUCCESS") && commandList[1].equals(getString(R.string.initialization_res_command))) {
+            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.initialization_res_command))) {
                 onUpdateChangeText("xH:"+actionList[0]+",xL:"+actionList[1]+",yH:"+actionList[2]+",yL:"+actionList[3]);
                 sendCommand="";
             }
-            else if (commandList[0].equals("SUCCESS") && commandList[1].equals(getString(R.string.initialization_set_res_command))) {
-                onUpdateChangeText("xH:"+actionList[0]+",xL:"+actionList[1]+",yH:"+actionList[2]+",yL:"+actionList[3]);
-                sendCommand="";
-            }
-            //Calibration
-            else if (commandList[0].equals("SUCCESS") && commandList[1].equals(getString(R.string.calibration_res_command))) {
+            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.initialization_set_res_command))) {
                 onUpdateChangeText("xH:"+actionList[0]+",xL:"+actionList[1]+",yH:"+actionList[2]+",yL:"+actionList[3]);
                 sendCommand="";
             }
             //Calibration
-            else if (commandList[0].equals("SUCCESS") && commandList[1].equals(getString(R.string.calibration_set_res_command))) {
+            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.calibration_res_command))) {
+                onUpdateChangeText("xH:"+actionList[0]+",xL:"+actionList[1]+",yH:"+actionList[2]+",yL:"+actionList[3]);
+                sendCommand="";
+            }
+            //Calibration
+            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.calibration_set_res_command))) {
                 if (commandList[2].contains(getString(R.string.calibration_zero_set_res_command))) {
                     onUpdateChangeText(getString(R.string.calibration_zero_set_res_text));
                     onUpdateChangeImage(getString(R.string.calibration_zero_set_res_command));
@@ -374,7 +376,7 @@ public class MainActivity extends AppCompatActivity
             String[] commandList = commandString.split(":");
             String[] actionList = commandList[3].split(",");
             //Calibration
-            if (commandList[0].equals("SUCCESS") && commandList[1].equals(getString(R.string.calibration_set_res_command))) {
+            if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.calibration_set_res_command))) {
                 if (commandList[2].contains(getString(R.string.calibration_five_set_res_command))) {
                     onUpdateChangeText("xH:"+actionList[0]+",xL:"+actionList[1]+",yH:"+actionList[2]+",yL:"+actionList[3]);
                     onUpdateChangeImage(getString(R.string.calibration_five_set_res_command));
@@ -382,13 +384,13 @@ public class MainActivity extends AppCompatActivity
                 }
             }
             //Pressure Threshold
-            else if (commandList[0].equals("SUCCESS") && commandList[1].equals(getString(R.string.pressure_threshold_res_command))) {
+            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.pressure_threshold_res_command))) {
                 onUpdateChangeText("Threshold:"+commandList[2]+"% "+ "Nominal:"+commandList[3]+"V");
                 onUpdateSeekBar(Integer.parseInt(commandList[2]));
                 onUpdatePressureThresholdValueText(Integer.parseInt(commandList[2]), Double.parseDouble(commandList[3]));
                 sendCommand="";
             }
-            else if (commandList[0].equals("SUCCESS") && commandList[1].equals(getString(R.string.pressure_threshold_set_res_command))) {
+            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.pressure_threshold_set_res_command))) {
                 onUpdateChangeText("Threshold:"+commandList[2]+"% "+ "Nominal:"+commandList[3]+"V");
                 onUpdatePressureThresholdValueText(Integer.parseInt(commandList[2]), Double.parseDouble(commandList[3]));
                 sendCommand="";
@@ -584,6 +586,20 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    private void onUpdateSpinner(String mapping) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                currentFragment = getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
+                if (currentFragment instanceof GamingMappingFragment) {
+                    gamingMappingFragment =  (GamingMappingFragment) getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
+                    gamingMappingFragment.setGamingMappingSpinnerSelections(mapping);
+                    Log.v("Fragment", "GamingMappingFragment");
+                }
+            }
+        });
+    }
+
     private void onUpdateSeekBar(int value) {
         runOnUiThread(new Runnable() {
             @Override
@@ -680,6 +696,11 @@ public class MainActivity extends AppCompatActivity
                 return true;
         }
         return false;
+    }
+
+    @Override
+    public void setGamingMappingSpinnerSelections(String text) {
+
     }
 
     @Override

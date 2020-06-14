@@ -20,6 +20,7 @@
             android:layout_height="50dip"
             android:gravity="center"
             android:padding="16dip"
+            android:textStyle="bold"
             android:text="@string/gaming_mapping_fragment_default_change_text"
             android:background="@color/colorPrimaryLight" />
     </LinearLayout>
@@ -29,37 +30,236 @@
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_below="@id/gamingMappingFragmentTop"
-        android:paddingLeft="@dimen/fragment_left_padding"
-        android:paddingRight="@dimen/fragment_right_padding"
         android:layout_marginBottom="0dp"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/gamingMappingSetButton"
-            android:layout_width="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/gamingMappingFragmentShortPuff"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:text="@string/gaming_mapping_fragment_set_button_text"
-            android:tag="@string/mapping_set_send_command"
-            />
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+                <TextView
+                    android:id="@+id/gamingMappingFragmentShortPuffAction"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="18dip"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:text="Short Puff:"
+                    android:layout_alignParentBottom="true" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <Spinner
+                    android:id="@+id/gamingMappingFragmentShortPuffSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/spinnerStyle" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/gamingMappingFragmentShortSip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/gamingMappingFragmentShortPuff"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+                <TextView
+                    android:id="@+id/gamingMappingFragmentShortSipAction"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="18dip"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:text="Short Sip:"
+                    android:layout_alignParentBottom="true" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <Spinner
+                    android:id="@+id/gamingMappingFragmentShortSipSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/spinnerStyle"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/gamingMappingFragmentLongPuff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/gamingMappingFragmentShortSip"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+                <TextView
+                    android:id="@+id/gamingMappingFragmentLongPuffAction"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="18dip"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:text="Long Puff:"
+                    android:layout_alignParentBottom="true" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <Spinner
+                android:id="@+id/gamingMappingFragmentLongPuffSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/spinnerStyle"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/gamingMappingFragmentLongSip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/gamingMappingFragmentLongPuff"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+                <TextView
+                    android:id="@+id/gamingMappingFragmentLongSipAction"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="18dip"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:text="Long Sip:"
+                    android:layout_alignParentBottom="true" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <Spinner
+                android:id="@+id/gamingMappingFragmentLongSipSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/spinnerStyle"
+                android:layout_weight="3" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/gamingMappingFragmentVeryLongPuff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/gamingMappingFragmentLongSip"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+                <TextView
+                    android:id="@+id/gamingMappingFragmentVeryLongPuffAction"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="18dip"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:text="Very Long Puff:"
+                    android:layout_alignParentBottom="true" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <Spinner
+                android:id="@+id/gamingMappingFragmentVeryLongPuffSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/spinnerStyle"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/gamingMappingFragmentVeryLongSip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/gamingMappingFragmentVeryLongPuff"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+                <TextView
+                    android:id="@+id/gamingMappingFragmentVeryLongSipAction"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="18dip"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:text="Very Long Sip:"
+                    android:layout_alignParentBottom="true" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <Spinner
+                android:id="@+id/gamingMappingFragmentVeryLongSipSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/spinnerStyle"/>
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/gamingMappingFragmentBottom"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimaryLight"
         android:gravity="bottom"
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
-        <TextView
-            android:id="@+id/gamingMappingStatusTextView"
+        <LinearLayout
+            android:id="@+id/gamingMappingFragmentBottom1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="16dip"
-            android:gravity="center"
-            android:text="@string/default_status_text"
-            android:layout_alignParentBottom="true" />
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/fragment_left_padding"
+            android:paddingRight="@dimen/fragment_right_padding">
+            <Button
+                android:id="@+id/gamingMappingSetButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:text="@string/gaming_mapping_fragment_set_button_text"
+                android:tag="@string/mapping_set_send_command"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/gamingMappingFragmentBottom2"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:paddingLeft="@dimen/fragment_left_padding"
+            android:paddingRight="@dimen/fragment_right_padding"
+            android:background="@color/colorPrimaryLight">
+            <TextView
+                android:id="@+id/gamingMappingStatusTextView"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:padding="16dip"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:text="@string/default_status_text"
+                android:layout_alignParentBottom="true" />
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

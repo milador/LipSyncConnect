@@ -19,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dip"
             android:gravity="center"
+            android:textStyle="bold"
             android:padding="16dip"
             android:text="@string/pressure_threshold_fragment_default_change_text"
             android:background="@color/colorPrimaryLight" />
@@ -56,7 +57,7 @@
             android:id="@+id/pressureThresholdFragmentMiddle2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/pressureThresholdFragmentMiddle2"
+            android:layout_below="@id/pressureThresholdFragmentMiddle1"
             android:orientation="horizontal">
             <Button
                 android:id="@+id/pressureThresholdDecButton"

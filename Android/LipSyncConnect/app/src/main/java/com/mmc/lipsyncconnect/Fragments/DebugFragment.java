@@ -39,6 +39,7 @@ public class DebugFragment extends Fragment {
     private TextView debugDataTextView;
     private TextView debugStatusTextView;
     private ViewGroup debugFragmentLayout;
+
     private final static String DEBUG_TAG = DebugFragment.class.getSimpleName();
 
     private DebugFragment.OnDebugFragmentListener mListener;
@@ -50,7 +51,7 @@ public class DebugFragment extends Fragment {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 view.setPressed(false);
                 if (id==R.id.debugShareButton) {
-                    onShare();
+                    new AsyncShare();
                 } else {
                     new AsyncSendCheck().execute(command);
                 }
@@ -122,6 +123,7 @@ public class DebugFragment extends Fragment {
         }
     }
 
+    /*
     private void onShare() {
         String debugData = debugDataTextView.getText().toString();
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
@@ -129,6 +131,65 @@ public class DebugFragment extends Fragment {
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "LipSync Logs");
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, debugData);
         startActivity(Intent.createChooser(sharingIntent, "Share log data via"));
+    }*/
+
+    private class AsyncShare extends AsyncTask<Void, Void, String>
+    {
+        boolean enableSending = true;
+        private ProgressDialog progressDialog;
+        private int minProgressTime = Integer.parseInt(getString(R.string.progress_min_time));
+        long startTime;
+        long endTime;
+        @Override
+        protected void onPreExecute(){
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setMessage("Loading...");
+            progressDialog.show();
+            startTime = System.currentTimeMillis();
+        }
+        @Override
+        protected String doInBackground(Void... voids) {
+            String result="";
+            try{
+                while (enableSending){
+                    if(mListener.onIsArduinoSending()){
+                        enableSending=true;
+                    } else {
+                        mListener.onSendCommand(getString(R.string.calibration_send_command));
+                        enableSending=false;
+                        result = "success";
+                    }
+                }
+            }
+            catch(Exception e){
+                result = "error";
+            }
+            return result;
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            endTime = System.currentTimeMillis();
+            long timeDifference = endTime - startTime;
+            if (timeDifference >= minProgressTime && result.equals("success")){
+                progressDialog.dismiss();
+            } else {
+                Handler h = new Handler();
+                h.postDelayed(new Runnable() {
+                    public void run() {
+                        progressDialog.dismiss();
+                        String debugData = debugDataTextView.getText().toString();
+                        debugData = debugChangeTextView.getText() + "\n" + debugData;
+                        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                        sharingIntent.setType("text/plain");
+                        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "LipSync Logs");
+                        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, debugData);
+                        startActivity(Intent.createChooser(sharingIntent, "Share log data via"));
+                    }
+                }, minProgressTime - timeDifference);
+            }
+        }
     }
 
     private class AsyncSendCheck extends AsyncTask<String, Void, String>
