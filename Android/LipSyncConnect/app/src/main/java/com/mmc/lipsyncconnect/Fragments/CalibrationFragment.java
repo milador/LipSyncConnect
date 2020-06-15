@@ -22,11 +22,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.mmc.lipsyncconnect.Dialogs.CalibrationDialog;
 import com.mmc.lipsyncconnect.R;
 
 public class CalibrationFragment extends Fragment {
+
+    private MainFragment mMainFragment;
+
     private Button calibrationButton;
     private TextView calibrationChangeTextView;
     private TextView calibrationStatusTextView;
@@ -34,9 +39,7 @@ public class CalibrationFragment extends Fragment {
     private ImageView calibrationImageView;
     private CalibrationDialog calibrationDialog;
     private final static String CALIBRATION_FRAGMENT_TAG = CalibrationFragment.class.getSimpleName();
-
-    TextView calibrationProgressDialogTitle;
-    ImageView calibrationProgressDialogImage;
+    private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
 
 
     private CalibrationFragment.OnCalibrationFragmentListener mListener;
@@ -255,6 +258,12 @@ public class CalibrationFragment extends Fragment {
             calibrationStatusTextView.setText(getString(R.string.attached_status_text));
         } else {
             calibrationStatusTextView.setText(getString(R.string.default_status_text));
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            mMainFragment = new MainFragment();
+            fragmentTransaction.replace(R.id.contentFragmentLayout, mMainFragment,MAIN_FRAGMENT_TAG);
+            fragmentTransaction.addToBackStack(MAIN_FRAGMENT_TAG);
+            fragmentTransaction.commit();
         }
         if (mListener.onIsArduinoOpened()) {
             new AsyncSendCheck().execute(getString(R.string.calibration_send_command));

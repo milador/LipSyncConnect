@@ -12,6 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Handler;
 import android.util.Log;
@@ -28,12 +30,17 @@ import com.mmc.lipsyncconnect.R;
 
 
 public class GamingButtonModeFragment extends Fragment {
+
+    private MainFragment mMainFragment;
+
     private Button gamingButtonModeOneButton;
     private Button gamingButtonModeTwoButton;
     private TextView gamingButtonModeChangeTextView;
     private TextView gamingButtonModeStatusTextView;
     private ViewGroup gamingButtonModeFragmentLayout;
     private final static String BUTTON_MODE_TAG = GamingButtonModeFragment.class.getSimpleName();
+    private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
+
 
     private GamingButtonModeFragment.OnGamingButtonModeFragmentListener mListener;
     View.OnTouchListener mButtonTouchListener = new View.OnTouchListener() {
@@ -199,6 +206,12 @@ public class GamingButtonModeFragment extends Fragment {
             gamingButtonModeStatusTextView.setText(getString(R.string.attached_status_text));
         } else {
             gamingButtonModeStatusTextView.setText(getString(R.string.default_status_text));
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            mMainFragment = new MainFragment();
+            fragmentTransaction.replace(R.id.contentFragmentLayout, mMainFragment,MAIN_FRAGMENT_TAG);
+            fragmentTransaction.addToBackStack(MAIN_FRAGMENT_TAG);
+            fragmentTransaction.commit();
         }
         if (mListener.onIsArduinoOpened()) {
             new AsyncSendCheck().execute(getString(R.string.button_mode_send_command));

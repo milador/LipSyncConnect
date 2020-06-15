@@ -25,12 +25,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.mmc.lipsyncconnect.R;
 
 import static java.lang.Math.max;
 
 public class DebugFragment extends Fragment {
+
+    private MainFragment mMainFragment;
+
     private Button debugOnButton;
     private Button debugOffButton;
     private Button debugShareButton;
@@ -41,6 +46,7 @@ public class DebugFragment extends Fragment {
     private ViewGroup debugFragmentLayout;
 
     private final static String DEBUG_TAG = DebugFragment.class.getSimpleName();
+    private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
 
     private DebugFragment.OnDebugFragmentListener mListener;
     View.OnTouchListener mButtonTouchListener = new View.OnTouchListener() {
@@ -232,6 +238,12 @@ public class DebugFragment extends Fragment {
             debugStatusTextView.setText(getString(R.string.attached_status_text));
         } else {
             debugStatusTextView.setText(getString(R.string.default_status_text));
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            mMainFragment = new MainFragment();
+            fragmentTransaction.replace(R.id.contentFragmentLayout, mMainFragment,MAIN_FRAGMENT_TAG);
+            fragmentTransaction.addToBackStack(MAIN_FRAGMENT_TAG);
+            fragmentTransaction.commit();
         }
         if (mListener.onIsArduinoOpened()) {
             new AsyncSendCheck().execute(getString(R.string.debug_send_command));
@@ -241,6 +253,8 @@ public class DebugFragment extends Fragment {
 
     public void setDebugDataText(String text) {
         if (debugDataTextView.getText().toString().equals("")) {
+            debugDataTextView.setText(debugDataTextView.getLineCount()+":"+text+"\n");
+        } else if (debugDataTextView.getLineCount()>2000) {
             debugDataTextView.setText(debugDataTextView.getLineCount()+":"+text+"\n");
         } else {
             debugDataTextView.append(debugDataTextView.getLineCount()+":"+text+"\n");

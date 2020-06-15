@@ -21,18 +21,23 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.mmc.lipsyncconnect.R;
 
 
 public class MouseSensitivityFragment extends Fragment {
+
+    private MainFragment mMainFragment;
+
     private Button mouseSensitivityIncButton;
     private Button mouseSensitivityDecButton;
     private TextView mouseSensitivityChangeTextView;
     private TextView mouseSensitivityStatusTextView;
     private ViewGroup mouseSensitivityFragmentLayout;
     private final static String MOUSE_SENSITIVITY_FRAGMENT_TAG = MouseSensitivityFragment.class.getSimpleName();
-
+    private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
 
     private MouseSensitivityFragment.OnMouseSensitivityFragmentListener mListener;
     View.OnTouchListener mButtonTouchListener = new View.OnTouchListener() {
@@ -214,6 +219,12 @@ public class MouseSensitivityFragment extends Fragment {
             mouseSensitivityStatusTextView.setText(getString(R.string.attached_status_text));
         } else {
             mouseSensitivityStatusTextView.setText(getString(R.string.default_status_text));
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            mMainFragment = new MainFragment();
+            fragmentTransaction.replace(R.id.contentFragmentLayout, mMainFragment,MAIN_FRAGMENT_TAG);
+            fragmentTransaction.addToBackStack(MAIN_FRAGMENT_TAG);
+            fragmentTransaction.commit();
         }
         if (mListener.onIsArduinoOpened()) {
             new AsyncSendCheck().execute(getString(R.string.sensitivity_send_command));

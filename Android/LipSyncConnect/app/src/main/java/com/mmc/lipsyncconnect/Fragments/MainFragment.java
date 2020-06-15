@@ -239,10 +239,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         }
 
         if (mListener.onIsArduinoOpened()) {
-            //setEnabledAllMainButtons(true);
             new AsyncSendCheck().execute(getString(R.string.model_send_command));
         } else {
-            //setEnabledAllMainButtons(false);
         }
     }
 

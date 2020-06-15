@@ -22,10 +22,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.mmc.lipsyncconnect.R;
 
 public class GamingDeadzoneFragment extends Fragment {
+
+    private MainFragment mMainFragment;
+
     private Button gamingDeadzoneSetButton;
     private Button gamingDeadzoneIncButton;
     private Button gamingDeadzoneDecButton;
@@ -35,6 +40,9 @@ public class GamingDeadzoneFragment extends Fragment {
     private SeekBar gamingDeadzoneSeekBar;
     private ViewGroup gamingDeadzoneFragmentLayout;
     private final static String GAMING_DEADZONE_FRAGMENT_TAG = GamingDeadzoneFragment.class.getSimpleName();
+    private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
+
+
     private final static int DEADZONE_STEP = 1;
 
     private GamingDeadzoneFragment.OnGamingDeadzoneFragmentListener mListener;
@@ -239,6 +247,12 @@ public class GamingDeadzoneFragment extends Fragment {
             gamingDeadzoneStatusTextView.setText(getString(R.string.attached_status_text));
         } else {
             gamingDeadzoneStatusTextView.setText(getString(R.string.default_status_text));
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            mMainFragment = new MainFragment();
+            fragmentTransaction.replace(R.id.contentFragmentLayout, mMainFragment,MAIN_FRAGMENT_TAG);
+            fragmentTransaction.addToBackStack(MAIN_FRAGMENT_TAG);
+            fragmentTransaction.commit();
         }
 
         if (mListener.onIsArduinoOpened()) {

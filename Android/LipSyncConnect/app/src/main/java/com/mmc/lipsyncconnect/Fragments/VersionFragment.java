@@ -21,14 +21,21 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.mmc.lipsyncconnect.R;
 
 public class VersionFragment extends Fragment {
+
+    private MainFragment mMainFragment;
+
     private TextView versionChangeTextView;
     private TextView versionStatusTextView;
     private ViewGroup versionFragmentLayout;
+
     private final static String VERSION_FRAGMENT_TAG = VersionFragment.class.getSimpleName();
+    private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
 
 
     private VersionFragment.OnVersionFragmentListener mListener;
@@ -181,6 +188,12 @@ public class VersionFragment extends Fragment {
             versionStatusTextView.setText(getString(R.string.attached_status_text));
         } else {
             versionStatusTextView.setText(getString(R.string.default_status_text));
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            mMainFragment = new MainFragment();
+            fragmentTransaction.replace(R.id.contentFragmentLayout, mMainFragment,MAIN_FRAGMENT_TAG);
+            fragmentTransaction.addToBackStack(MAIN_FRAGMENT_TAG);
+            fragmentTransaction.commit();
         }
         if (mListener.onIsArduinoOpened()) {
             new AsyncSendCheck().execute(getString(R.string.version_send_command));

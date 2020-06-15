@@ -43,7 +43,7 @@
     <string name="wireless_help_fragment_title">Help</string>
     <string name="micro_help_fragment_title">Help</string>
 
-    <string name="default_status_text">Please plug an Arduino via OTG.</string>
+    <string name="default_status_text">Please plug Lipsync/Arduino via OTG.</string>
     <string name="perm_denied_status_text">Permission denied...</string>
     <string name="attached_status_text">Lipsync/Arduino attached!</string>
     <string name="detached_status_text">Lipsync/Arduino detached</string>

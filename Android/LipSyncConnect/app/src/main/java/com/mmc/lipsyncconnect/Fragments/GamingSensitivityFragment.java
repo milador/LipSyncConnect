@@ -12,6 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Handler;
 import android.util.Log;
@@ -29,13 +31,16 @@ import com.mmc.lipsyncconnect.Activates.MainActivity;
 
 
 public class GamingSensitivityFragment extends Fragment{
+
+    private MainFragment mMainFragment;
+
     private Button gamingSensitivityIncButton;
     private Button gamingSensitivityDecButton;
     private TextView gamingSensitivityChangeTextView;
     private TextView gamingSensitivityStatusTextView;
     private ViewGroup gamingSensitivityFragmentLayout;
     private final static String GAMING_SENSITIVITY_FRAGMENT_TAG = GamingSensitivityFragment.class.getSimpleName();
-
+    private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
 
     private OnGamingSensitivityFragmentListener mListener;
     View.OnTouchListener mButtonTouchListener = new View.OnTouchListener() {
@@ -202,6 +207,12 @@ public class GamingSensitivityFragment extends Fragment{
             gamingSensitivityStatusTextView.setText("Lipsync/Arduino attached!");
         } else {
             gamingSensitivityStatusTextView.setText("Arduino detached");
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            mMainFragment = new MainFragment();
+            fragmentTransaction.replace(R.id.contentFragmentLayout, mMainFragment,MAIN_FRAGMENT_TAG);
+            fragmentTransaction.addToBackStack(MAIN_FRAGMENT_TAG);
+            fragmentTransaction.commit();
         }
         if (mListener.onIsArduinoOpened()) {
             new AsyncSendCheck().execute(getString(R.string.sensitivity_send_command));

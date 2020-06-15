@@ -21,17 +21,22 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.mmc.lipsyncconnect.R;
 
 
 public class InitializationFragment extends Fragment {
+
+    private MainFragment mMainFragment;
+
     private Button initializationButton;
     private TextView initializationChangeTextView;
     private TextView initializationStatusTextView;
     private ViewGroup initializationFragmentLayout;
     private final static String INITIALIZATION_FRAGMENT_TAG = InitializationFragment.class.getSimpleName();
-
+    private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
 
     private InitializationFragment.OnInitializationFragmentListener mListener;
     View.OnTouchListener mButtonTouchListener = new View.OnTouchListener() {
@@ -198,6 +203,12 @@ public class InitializationFragment extends Fragment {
             initializationStatusTextView.setText(getString(R.string.attached_status_text));
         } else {
             initializationStatusTextView.setText(getString(R.string.default_status_text));
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            mMainFragment = new MainFragment();
+            fragmentTransaction.replace(R.id.contentFragmentLayout, mMainFragment,MAIN_FRAGMENT_TAG);
+            fragmentTransaction.addToBackStack(MAIN_FRAGMENT_TAG);
+            fragmentTransaction.commit();
         }
         if (mListener.onIsArduinoOpened()) {
             new AsyncSendCheck().execute(getString(R.string.initialization_send_command));

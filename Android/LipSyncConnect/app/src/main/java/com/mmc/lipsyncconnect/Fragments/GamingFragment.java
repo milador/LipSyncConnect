@@ -38,6 +38,9 @@ import com.mmc.lipsyncconnect.R;
 import java.lang.ref.WeakReference;
 
 public class GamingFragment extends Fragment {
+
+    private MainFragment mMainFragment;
+
     // Log
     private final static String GAMING_FRAGMENT_TAG = GamingFragment.class.getSimpleName();
     private final static String GAMING_SENSITIVITY_FRAGMENT_TAG = GamingSensitivityFragment.class.getSimpleName();
@@ -50,6 +53,8 @@ public class GamingFragment extends Fragment {
     private final static String GAMING_DEBUG_FRAGMENT_TAG =DebugFragment.class.getSimpleName();
     private final static String GAMING_FACTORY_RESET_FRAGMENT_TAG =FactoryResetFragment.class.getSimpleName();
     private final static String GAMING_VERSION_FRAGMENT_TAG =VersionFragment.class.getSimpleName();
+
+    private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
 
     private static final int kModule_Sensitivity = 0;
     private static final int kModule_Mapping = 1;
@@ -350,11 +355,16 @@ public class GamingFragment extends Fragment {
             gamingStatusTextView.setText(getString(R.string.attached_status_text));
         } else {
             gamingStatusTextView.setText(getString(R.string.default_status_text));
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            mMainFragment = new MainFragment();
+            fragmentTransaction.replace(R.id.contentFragmentLayout, mMainFragment,MAIN_FRAGMENT_TAG);
+            fragmentTransaction.addToBackStack(MAIN_FRAGMENT_TAG);
+            fragmentTransaction.commit();
         }
         if (mListener.onIsArduinoOpened()) {
             new AsyncSendCheck().execute(getString(R.string.model_send_command));
         } else {
-
         }
     }
 

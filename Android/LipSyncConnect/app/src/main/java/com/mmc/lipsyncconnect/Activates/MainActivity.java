@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity
                 h.postDelayed(new Runnable() {
                     public void run() {
                         progressDialog.dismiss();
-                        //setEnabledMainButton(true,lipsyncModel);
+                        setEnabledMainButton(true,lipsyncModel);
                     }
                 }, minProgressTime - timeDifference);
             }

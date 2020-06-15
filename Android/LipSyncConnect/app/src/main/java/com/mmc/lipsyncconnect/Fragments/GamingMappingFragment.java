@@ -29,6 +29,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.mmc.lipsyncconnect.Adapters.MappingAdapter;
 import com.mmc.lipsyncconnect.R;
@@ -36,6 +38,9 @@ import com.mmc.lipsyncconnect.R;
 import java.lang.reflect.Array;
 
 public class GamingMappingFragment extends Fragment {
+
+    private MainFragment mMainFragment;
+
     private Spinner mappingShortPuffSpinner;
     private Spinner mappingShortSipSpinner;
     private Spinner mappingLongPuffSpinner;
@@ -50,6 +55,8 @@ public class GamingMappingFragment extends Fragment {
     private TextView mappingStatusTextView;
     private ViewGroup mappingFragmentLayout;
     private final static String MAPPING_TAG = GamingMappingFragment.class.getSimpleName();
+    private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
+
 
     //private String[] mappingSpinnerMainTitles = new String[]{"Button 1", "Button 2", "Button 3", "Button 4", "Button 5", "Button 6", "Button 7", "Button 8"};
     private String[] mappingSpinnerMainTitles;
@@ -373,6 +380,12 @@ public class GamingMappingFragment extends Fragment {
             mappingStatusTextView.setText(getString(R.string.attached_status_text));
         } else {
             mappingStatusTextView.setText(getString(R.string.default_status_text));
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            mMainFragment = new MainFragment();
+            fragmentTransaction.replace(R.id.contentFragmentLayout, mMainFragment,MAIN_FRAGMENT_TAG);
+            fragmentTransaction.addToBackStack(MAIN_FRAGMENT_TAG);
+            fragmentTransaction.commit();
         }
         if (mListener.onIsArduinoOpened()) {
             new AsyncSendCheck().execute(getString(R.string.mapping_send_command));

@@ -40,10 +40,13 @@ import java.lang.ref.WeakReference;
 
 
 public class MouseFragment extends Fragment {
+
+    private MainFragment mMainFragment;
     // Log
     private final static String MOUSE_FRAGMENT_TAG = MouseFragment.class.getSimpleName();
     private final static String MOUSE_SENSITIVITY_FRAGMENT_TAG = MouseSensitivityFragment.class.getSimpleName();
     private final static String MOUSE_INITIALIZATION_FRAGMENT_TAG = InitializationFragment.class.getSimpleName();
+    private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
 
     private static final int kModule_Sensitivity = 0;
     private static final int kModule_Initialization = 1;
@@ -301,11 +304,16 @@ public class MouseFragment extends Fragment {
             mouseStatusTextView.setText(getString(R.string.attached_status_text));
         } else {
             mouseStatusTextView.setText(getString(R.string.default_status_text));
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            mMainFragment = new MainFragment();
+            fragmentTransaction.replace(R.id.contentFragmentLayout, mMainFragment,MAIN_FRAGMENT_TAG);
+            fragmentTransaction.addToBackStack(MAIN_FRAGMENT_TAG);
+            fragmentTransaction.commit();
         }
         if (mListener.onIsArduinoOpened()) {
             new AsyncSendCheck().execute(getString(R.string.model_send_command));
         } else {
-
         }
     }
 
