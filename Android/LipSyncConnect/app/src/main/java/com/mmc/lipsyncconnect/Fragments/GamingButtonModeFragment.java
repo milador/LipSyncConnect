@@ -117,7 +117,9 @@ public class GamingButtonModeFragment extends Fragment {
         @Override
         protected void onPreExecute(){
             super.onPreExecute();
-            progressDialog = new ProgressDialog(getActivity());
+            progressDialog = new ProgressDialog(getActivity(),R.style.progressDialogStyle);
+            progressDialog.setCancelable(false);
+            progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.setMessage("Loading...");
             progressDialog.show();
             startTime = System.currentTimeMillis();

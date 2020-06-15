@@ -23,6 +23,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.mmc.lipsyncconnect.Dialogs.CalibrationDialog;
 import com.mmc.lipsyncconnect.R;
 
 public class CalibrationFragment extends Fragment {
@@ -31,7 +32,11 @@ public class CalibrationFragment extends Fragment {
     private TextView calibrationStatusTextView;
     private ViewGroup calibrationFragmentLayout;
     private ImageView calibrationImageView;
+    private CalibrationDialog calibrationDialog;
     private final static String CALIBRATION_FRAGMENT_TAG = CalibrationFragment.class.getSimpleName();
+
+    TextView calibrationProgressDialogTitle;
+    ImageView calibrationProgressDialogImage;
 
 
     private CalibrationFragment.OnCalibrationFragmentListener mListener;
@@ -41,7 +46,7 @@ public class CalibrationFragment extends Fragment {
             final String command = (String) view.getTag();
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 view.setPressed(false);
-                new CalibrationFragment.AsyncSendCheck().execute(command);
+                new CalibrationFragment.AsyncCalibration().execute(command);
                 view.performClick();
                 return true;
             }
@@ -81,6 +86,15 @@ public class CalibrationFragment extends Fragment {
         calibrationImageView = (ImageView) view.findViewById(R.id.calibrationImageView);
         calibrationButton = (Button) view.findViewById(R.id.calibrationButton);
         calibrationButton.setOnTouchListener(mButtonTouchListener);
+
+        calibrationDialog = new CalibrationDialog(getActivity());
+        //calibrationProgressDialog.setContentView(R.layout.calibration_dialog);
+        //calibrationProgressDialog.setCancelable(false);
+        //calibrationProgressDialog.setCanceledOnTouchOutside(false);
+
+        //calibrationProgressDialogTitle = (TextView) calibrationProgressDialog.findViewById(R.id.calibrationDialogTitle);
+        //calibrationProgressDialogImage = (ImageView) calibrationProgressDialog.findViewById(R.id.calibrationDialogImage);
+
         setActionBarTitle(R.string.calibration_fragment_title);
     }
 
@@ -115,7 +129,9 @@ public class CalibrationFragment extends Fragment {
         @Override
         protected void onPreExecute(){
             super.onPreExecute();
-            progressDialog = new ProgressDialog(getActivity());
+            progressDialog = new ProgressDialog(getActivity(),R.style.progressDialogStyle);
+            progressDialog.setCancelable(false);
+            progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.setMessage("Loading...");
             progressDialog.show();
             startTime = System.currentTimeMillis();
@@ -154,6 +170,40 @@ public class CalibrationFragment extends Fragment {
                     }
                 }, minProgressTime - timeDifference);
             }
+        }
+    }
+
+    private class AsyncCalibration extends AsyncTask<String, Void, String>
+    {
+
+        boolean enableSending = true;
+        @Override
+        protected void onPreExecute(){
+            super.onPreExecute();
+            calibrationDialog.show();
+        }
+        @Override
+        protected String doInBackground(String... command) {
+            String result="";
+            try{
+                while (enableSending){
+                    if(mListener.onIsArduinoSending()){
+                        enableSending=true;
+                    } else {
+                        mListener.onSendCommand(command[0]);
+                        enableSending=false;
+                        result = "success";
+                    }
+                }
+            }
+            catch(Exception e){
+                result = "error";
+            }
+            return result;
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
         }
     }
 
@@ -219,6 +269,7 @@ public class CalibrationFragment extends Fragment {
 
     public void setCalibrationImage(String stepNumberString) {
         int stepNumber = 0;
+
         try {
             stepNumber = Integer.parseInt(stepNumberString);
         } catch(NumberFormatException nfe) {
@@ -227,24 +278,57 @@ public class CalibrationFragment extends Fragment {
         switch(stepNumber) {
             case 0:
                 calibrationImageView.setImageResource(R.drawable.calibration_step0);
+                //calibrationDialogTitle.setText("Step 0");
+                //calibrationDialogImage.setImageResource(R.drawable.calibration_step0);
+                calibrationDialog.setTitle(R.string.calibration_zero_set_res_title);
+                calibrationDialog.setMessage(R.string.calibration_zero_set_res_message);
+                calibrationDialog.setImage(R.drawable.calibration_step0);
                 break;
             case 1:
-                calibrationImageView.setImageResource(R.drawable.calibration_step1);
+                //calibrationImageView.setImageResource(R.drawable.calibration_step1);
+                //calibrationDialogTitle.setText("Step 1");
+                //calibrationDialogImage.setImageResource(R.drawable.calibration_step1);
+                calibrationDialog.setTitle(R.string.calibration_one_set_res_title);
+                calibrationDialog.setMessage(R.string.calibration_one_set_res_message);
+                calibrationDialog.setImage(R.drawable.calibration_step1);
                 break;
             case 2:
                 calibrationImageView.setImageResource(R.drawable.calibration_step2);
+                //calibrationDialogTitle.setText("Step 2");
+                //calibrationDialogImage.setImageResource(R.drawable.calibration_step2);
+                calibrationDialog.setTitle(R.string.calibration_two_set_res_title);
+                calibrationDialog.setMessage(R.string.calibration_two_set_res_message);
+                calibrationDialog.setImage(R.drawable.calibration_step2);
                 break;
             case 3:
                 calibrationImageView.setImageResource(R.drawable.calibration_step3);
+                //calibrationDialogTitle.setText("Step 3");
+                //calibrationDialogImage.setImageResource(R.drawable.calibration_step3);
+                calibrationDialog.setTitle(R.string.calibration_three_set_res_title);
+                calibrationDialog.setMessage(R.string.calibration_three_set_res_message);
+                calibrationDialog.setImage(R.drawable.calibration_step3);
                 break;
             case 4:
                 calibrationImageView.setImageResource(R.drawable.calibration_step4);
+                //calibrationDialogTitle.setText("Step 4");
+                //calibrationDialogImage.setImageResource(R.drawable.calibration_step4);
+                calibrationDialog.setTitle(R.string.calibration_four_set_res_title);
+                calibrationDialog.setMessage(R.string.calibration_four_set_res_message);
+                calibrationDialog.setImage(R.drawable.calibration_step4);
                 break;
             case 5:
-                calibrationImageView.setImageResource(R.drawable.calibration_step5);
+                calibrationImageView.setImageResource(R.drawable.calibration_default);
+                calibrationDialog.setTitle(R.string.calibration_default_title);
+                calibrationDialog.setMessage(R.string.calibration_default_message);
+                calibrationDialog.setImage(R.drawable.calibration_default);
+                calibrationDialog.dismiss();
                 break;
             default:
-                calibrationImageView.setImageResource(R.drawable.calibration_step0);
+                calibrationImageView.setImageResource(R.drawable.calibration_default);
+                calibrationDialog.setTitle(R.string.calibration_default_title);
+                calibrationDialog.setMessage(R.string.calibration_default_message);
+                calibrationDialog.setImage(R.drawable.calibration_default);
+                calibrationDialog.dismiss();
                 break;
         }
     }

@@ -350,23 +350,23 @@ public class MainActivity extends AppCompatActivity
             //Calibration
             else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.calibration_set_res_command))) {
                 if (commandList[2].contains(getString(R.string.calibration_zero_set_res_command))) {
-                    onUpdateChangeText(getString(R.string.calibration_zero_set_res_text));
+                    onUpdateChangeText(getString(R.string.calibration_zero_set_res_message));
                     onUpdateChangeImage(getString(R.string.calibration_zero_set_res_command));
                     sendCommand="";
                 } else if (commandList[2].contains(getString(R.string.calibration_one_set_res_command))) {
-                    onUpdateChangeText(getString(R.string.calibration_one_set_res_text));
+                    onUpdateChangeText(getString(R.string.calibration_one_set_res_message));
                     onUpdateChangeImage(getString(R.string.calibration_one_set_res_command));
                     sendCommand="";
                 } else if (commandList[2].contains(getString(R.string.calibration_two_set_res_command))) {
-                    onUpdateChangeText(getString(R.string.calibration_two_set_res_text));
+                    onUpdateChangeText(getString(R.string.calibration_two_set_res_message));
                     onUpdateChangeImage(getString(R.string.calibration_two_set_res_command));
                     sendCommand="";
                 } else if (commandList[2].contains(getString(R.string.calibration_three_set_res_command))) {
-                    onUpdateChangeText(getString(R.string.calibration_three_set_res_text));
+                    onUpdateChangeText(getString(R.string.calibration_three_set_res_message));
                     onUpdateChangeImage(getString(R.string.calibration_three_set_res_command));
                     sendCommand="";
                 } else if (commandList[2].contains(getString(R.string.calibration_four_set_res_command))) {
-                    onUpdateChangeText(getString(R.string.calibration_four_set_res_text));
+                    onUpdateChangeText(getString(R.string.calibration_four_set_res_message));
                     onUpdateChangeImage(getString(R.string.calibration_four_set_res_command));
                     sendCommand="";
                 }

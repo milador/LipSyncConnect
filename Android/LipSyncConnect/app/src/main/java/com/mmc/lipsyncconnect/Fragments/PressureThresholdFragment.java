@@ -162,7 +162,9 @@ public class PressureThresholdFragment extends Fragment {
         @Override
         public void onPreExecute(){
             super.onPreExecute();
-            progressDialog = new ProgressDialog(getActivity());
+            progressDialog = new ProgressDialog(getActivity(),R.style.progressDialogStyle);
+            progressDialog.setCancelable(false);
+            progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.setMessage("Loading...");
             progressDialog.show();
             startTime = System.currentTimeMillis();

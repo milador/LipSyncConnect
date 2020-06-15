@@ -302,12 +302,21 @@
     <string name="calibration_four_set_res_command">4</string>
     <string name="calibration_five_set_res_command">5</string>
 
-    <string name="calibration_zero_set_res_text">Starting Calibration</string>
-    <string name="calibration_one_set_res_text">Move mouthpiece to 12 oclock position</string>
-    <string name="calibration_two_set_res_text">Move mouthpiece to 3 oclock position</string>
-    <string name="calibration_three_set_res_text">Move mouthpiece to 6 o clock position</string>
-    <string name="calibration_four_set_res_text">Move mouthpiece to 9 oclock position</string>
-    <string name="calibration_five_set_res_text">Calibration Finished</string>
+    <string name="calibration_default_title">Calibration</string>
+    <string name="calibration_zero_set_res_title">Step 0</string>
+    <string name="calibration_one_set_res_title">Step 1</string>
+    <string name="calibration_two_set_res_title">Step 2</string>
+    <string name="calibration_three_set_res_title">Step 3</string>
+    <string name="calibration_four_set_res_title">Step 4</string>
+    <string name="calibration_five_set_res_title">Step 5</string>
+
+    <string name="calibration_default_message"></string>
+    <string name="calibration_zero_set_res_message">Starting Calibration</string>
+    <string name="calibration_one_set_res_message">Move mouthpiece to 12 oclock position.</string>
+    <string name="calibration_two_set_res_message">Move mouthpiece to 3 oclock position.</string>
+    <string name="calibration_three_set_res_message">Move mouthpiece to 6 o clock position.</string>
+    <string name="calibration_four_set_res_message">Move mouthpiece to 9 oclock position.</string>
+    <string name="calibration_five_set_res_message">Calibration Finished</string>
 
     <!-- Get button mode value if sent "BM,0:0" -->
     <string name="button_mode_send_command">BM,0:0</string>

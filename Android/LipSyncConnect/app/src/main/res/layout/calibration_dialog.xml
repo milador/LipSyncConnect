@@ -1,0 +1,71 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    style="@style/calibrationDialogStyle"
+    android:orientation="vertical" >
+    <LinearLayout
+        android:id="@+id/calibrationDialogTop"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:weightSum="5"
+        style="@style/calibrationDialogTitleStyle"
+        android:orientation="horizontal" >
+        <ProgressBar
+            android:id="@+id/calibrationDialogProgress"
+            style="@style/calibrationDialogProgressbarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:indeterminate="true"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@color/colorWhite"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/calibrationDialogTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/colorWhite"
+            android:text="Calibration"
+            android:textSize="22sp" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/calibrationDialogMiddle"
+        android:layout_below="@+id/calibrationDialogTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        <TextView
+            android:id="@+id/calibrationDialogMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/calibrationDialogTitle"
+            android:focusable="true"
+            android:textColor="@color/colorPrimary"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:maxLines="10"
+            android:padding="10dip"
+            android:scrollbars="vertical"
+            android:text="@string/calibration_default_message"
+            android:textSize="18sp" >
+        </TextView>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/calibrationDialogBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/calibrationDialogMiddle">
+        <ImageView
+            android:id="@+id/calibrationDialogImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/calibration_default_dialog"></ImageView>
+    </LinearLayout>
+
+
+</LinearLayout>

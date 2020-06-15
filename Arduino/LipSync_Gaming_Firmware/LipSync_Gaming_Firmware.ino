@@ -148,7 +148,6 @@ unsigned int sipCount;
 int modelNumber;
 
 bool settingsEnabled = false;                           //Serial input settings command mode enabled or disabled 
-bool settingsRepeatFlag = false;
 
 //-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -773,13 +772,7 @@ bool serialSettings(bool enabled) {
        if (settingsFlag==false && inString=="SETTINGS") {
         Serial.println("SUCCESS:SETTINGS");
        settingsFlag=true;                         //Set the return flag to true so settings actions can be performed in the next call to the function
-       settingsRepeatFlag=false;
-       } 
-       else if (settingsFlag==false && inString=="SETTINGS2") {
-        Serial.println("SUCCESS:SETTINGS");
-       settingsFlag=true;                         //Set the return flag to true so settings actions can be performed in the next call to the function
-       settingsRepeatFlag=true;
-       } 
+       }
        else if (settingsFlag==true && inString=="EXIT") {
         Serial.println("SUCCESS:EXIT");
        settingsFlag=false;                         //Set the return flag to false so settings actions can be exited
@@ -788,14 +781,11 @@ bool serialSettings(bool enabled) {
         inString.replace(",","");                 //Remove commas 
         inString.replace(":","");                 //Remove :
         writeSettings(inString); 
-        //settingsFlag=false;   
-        (settingsRepeatFlag) ? settingsFlag=true : settingsFlag=false;
+        settingsFlag=false;   
        }
-       //else if (settingsFlag==true){
        else {
         Serial.println("FAIL:SETTINGS");
-        //settingsFlag=false;
-        (settingsRepeatFlag) ? settingsFlag=true : settingsFlag=false;         
+        settingsFlag=false;      
        }
        Serial.flush();  
      }  

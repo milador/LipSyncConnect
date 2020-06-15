@@ -6,17 +6,45 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:dialogTheme">@style/progressDialogStyle</item>
+        <item name="dialogTheme">@style/progressDialogStyle</item>
+        <item name="android:alertDialogTheme">@style/progressDialogStyle</item>
+        <item name="alertDialogTheme">@style/progressDialogStyle</item>
     </style>
     <style name="spinnerStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@drawable/custom_spinner</item>
+        <item name="android:background">@drawable/mapping_spinner</item>
         <item name="android:layout_margin">2dp</item>
         <item name="android:paddingLeft">8dp</item>
         <item name="android:paddingRight">20dp</item>
         <item name="android:paddingTop">2dp</item>
-
         <item name="android:popupBackground">@color/colorWhite</item>
     </style>
+    <style name="progressDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorPrimary</item>
 
+    </style>
+    <style name="calibrationDialogStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/calibration_dialog</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:popupBackground">@color/colorWhite</item>
+    </style>
+    <style name="calibrationDialogTitleStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/calibration_dialog_title</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:popupBackground">@color/colorWhite</item>
+    </style>
+    <style name="calibrationDialogProgressbarStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/colorWhite</item>
+    </style>
 </resources>
