@@ -237,16 +237,22 @@ public class MainActivity extends AppCompatActivity
             onUpdateChangeText("Exit Settings");
             sendCommand="";
             arduinoIsSending=false;
-        }  else if (commandString.contains(getString(R.string.log_res_command)) && (commandParts ==1)) {
-            String[] commandList = commandString.split(":");
-            String[] actionList = commandList[1].split(",");
-            onUpdateDataText("xH:"+actionList[0]+",xL:"+actionList[1]+",yH:"+actionList[2]+",yL:"+actionList[3]);
-            arduinoIsSending=false;
-            sendCommand="";
         } else if (commandParts ==2) {
             String[] commandList = commandString.split(":");
             String[] actionList = commandList[2].split(",");
-            if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.model_res_command))) {
+            if (commandList[0].equals(getString(R.string.log_res_command))) {
+                if(commandList[1].equals(getString(R.string.log_initialization_res_command))){
+                    onUpdateDataText("xHNeutral:"+actionList[0]+",xLNeutral:"+actionList[1]+",yHNeutral:"+actionList[2]+",yLNeutral:"+actionList[3]);
+                    sendCommand="";
+                } else if (commandList[1].equals(getString(R.string.log_calibration_res_command))){
+                    onUpdateDataText("xHMax:"+actionList[0]+",xLMax:"+actionList[1]+",yHMax:"+actionList[2]+",yLMax:"+actionList[3]);
+                    sendCommand="";
+                } else if (commandList[1].equals(getString(R.string.log_raw_res_command))){
+                    onUpdateDataText("xH:"+actionList[0]+",xL:"+actionList[1]+",yH:"+actionList[2]+",yL:"+actionList[3]);
+                    sendCommand="";
+                }
+            }
+            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.model_res_command))) {
                 if (commandList[2].contains(getString(R.string.model_mouse_res_command))) {
                     lipsyncModel=1;
                     onUpdateChangeText(getString(R.string.model_mouse_res_text));

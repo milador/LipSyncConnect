@@ -231,17 +231,17 @@
     <string name="version_send_command">VN,0:0</string>
     <string name="version_res_command">VN,0</string>
 
-    <!-- Get sensitivity value if sent "JS,0:0" -->
-    <string name="sensitivity_send_command">JS,0:0</string>
-    <string name="sensitivity_res_command">JS,0</string>
-    <string name="sensitivity_set_res_command">JS,1</string>
+    <!-- Get sensitivity value if sent "SS,0:0" -->
+    <string name="sensitivity_send_command">SS,0:0</string>
+    <string name="sensitivity_res_command">SS,0</string>
+    <string name="sensitivity_set_res_command">SS,1</string>
 
-    <!-- Decrease sensitivity if received "JS,1:1" -->
-    <string name="sensitivity_dec_set_send_command">JS,1:1</string>
+    <!-- Decrease sensitivity if received "SS,1:1" -->
+    <string name="sensitivity_dec_set_send_command">SS,1:1</string>
     <string name="sensitivity_dec_set_res_command">1</string>
 
-    <!-- Increase sensitivity if received "JS,1:2" -->
-    <string name="sensitivity_inc_set_send_command">JS,1:2</string>
+    <!-- Increase sensitivity if received "SS,1:2" -->
+    <string name="sensitivity_inc_set_send_command">SS,1:2</string>
     <string name="sensitivity_inc_set_res_command">2</string>
 
     <!-- Get pressure threshold value if sent "PT,0:0" -->
@@ -268,6 +268,9 @@
     <string name="debug_on_set_send_command">DM,1:1</string>
     <string name="debug_on_set_res_command">DM,1:1</string>
     <string name="log_res_command">LOG</string>
+    <string name="log_initialization_res_command">1</string>
+    <string name="log_calibration_res_command">2</string>
+    <string name="log_raw_res_command">3</string>
 
     <string name="debug_off_set_res_text">Off</string>
     <string name="debug_on_set_res_text">On</string>
@@ -280,21 +283,21 @@
     <string name="deadzone_set_send_command">DZ,1</string>
     <string name="deadzone_set_res_command">DZ,1</string>
 
-    <!-- Get initialization value if sent "JI,0:0" -->
-    <string name="initialization_send_command">JI,0:0</string>
-    <string name="initialization_res_command">JI,0</string>
+    <!-- Get initialization value if sent "IN,0:0" -->
+    <string name="initialization_send_command">IN,0:0</string>
+    <string name="initialization_res_command">IN,0</string>
 
-    <!-- Set initialization value if received "JI,1:1" -->
-    <string name="initialization_set_send_command">JI,1:1</string>
-    <string name="initialization_set_res_command">JI,1</string>
+    <!-- Set initialization value if received "IN,1:1" -->
+    <string name="initialization_set_send_command">IN,1:1</string>
+    <string name="initialization_set_res_command">IN,1</string>
 
-    <!-- Get calibration value if sent "JC,0:0" -->
-    <string name="calibration_send_command">JC,0:0</string>
-    <string name="calibration_res_command">JC,0</string>
+    <!-- Get calibration value if sent "CA,0:0" -->
+    <string name="calibration_send_command">CA,0:0</string>
+    <string name="calibration_res_command">CA,0</string>
 
-    <!-- Set calibration value if received "JC,1:1" -->
-    <string name="calibration_set_send_command">JC,1:1</string>
-    <string name="calibration_set_res_command">JC,1</string>
+    <!-- Set calibration value if received "CA,1:1" -->
+    <string name="calibration_set_send_command">CA,1:1</string>
+    <string name="calibration_set_res_command">CA,1</string>
     <string name="calibration_zero_set_res_command">0</string>
     <string name="calibration_one_set_res_command">1</string>
     <string name="calibration_two_set_res_command">2</string>
