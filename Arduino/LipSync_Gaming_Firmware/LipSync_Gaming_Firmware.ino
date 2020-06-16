@@ -57,13 +57,13 @@
 #define PRESSURE_THRESHOLD 10                   //Pressure sip and puff threshold 
 
 
-#define ACTION_BUTTON_1 0                       //A1.Short puff is mapped to button number 1 or button X1(Left USB)/View(Right USB) in XAC   
-#define ACTION_BUTTON_2 1                       //A2.Short sip is mapped to button number 2 or button X2(Left USB)/Menu(Right USB) in XAC    
-#define ACTION_BUTTON_3 2                       //A3.Long puff is mapped to button number 3 or button LS(Left USB)/RS(Right USB) in XAC
-#define ACTION_BUTTON_4 3                       //A4.Long sip ( Used for Shift action ) is mapped to button number 4 or button LB(Left USB)/RB(Right USB) in XAC 
-#define ACTION_BUTTON_5 4                       //A5.Very Long puff is mapped to button number 5 or button A(Left USB)/X(Right USB) in XAC
-#define ACTION_BUTTON_6 5                       //A6.Very Long sip is mapped to button number 6 or button B(Left USB)/Y(Right USB) in XAC
-                            
+#define ACTION_BUTTON_1 0                       //A1.Short Puff is mapped to button number 1 or button X1(Left USB)/View(Right USB) in XAC   
+#define ACTION_BUTTON_2 1                       //A2.Short Sip is mapped to button number 2 or button X2(Left USB)/Menu(Right USB) in XAC    
+#define ACTION_BUTTON_3 2                       //A3.Long Puff is mapped to button number 3 or button LS(Left USB)/RS(Right USB) in XAC
+#define ACTION_BUTTON_4 3                       //A4.Long Sip ( Used for Shift action ) is mapped to button number 4 or button LB(Left USB)/RB(Right USB) in XAC 
+#define ACTION_BUTTON_5 4                       //A5.Very Long Puff is mapped to button number 5 or button A(Left USB)/X(Right USB) in XAC
+#define ACTION_BUTTON_6 5                       //A6.Very Long Sip is mapped to button number 6 or button B(Left USB)/Y(Right USB) in XAC
+                         
 
 //***DON'T CHANGE THESE VARIABLES***//
 
@@ -75,17 +75,16 @@
 #define JS_OUT_DEAD_ZONE 1
 #define JS_OUT_MAX 127
 
+//***VARIABLE DECLARATION***//
+
 int buttonMode;                                   //The button mode variable 
-int lastButtonState[5];                           //Last state of the buttons
-bool debugModeEnabled;
 
 long switchTimer[3];
 bool switchPreviousState[2];
 
 //***Map Sip & Puff actions to joystick buttons for mode 1***//
 int actionButton[6] = {ACTION_BUTTON_1, ACTION_BUTTON_2, ACTION_BUTTON_3, ACTION_BUTTON_4, ACTION_BUTTON_5, ACTION_BUTTON_6};
-
-//***VARIABLE DECLARATION***//
+int lastButtonState[5];                           //Last state of the buttons
 
 Joystick_ Joystick(JOYSTICK_DEFAULT_REPORT_ID, 
   JOYSTICK_TYPE_JOYSTICK, 8, 0,
@@ -134,11 +133,13 @@ _equationCoef levelEquation11 = {-0.0001,-0.0051,0.3441,-6.1204,45.4111,0.0000};
 //All sensitivity levels
 _equationCoef levelEquations[11] = {levelEquation1, levelEquation2, levelEquation3, levelEquation4, levelEquation5, levelEquation6, levelEquation7, levelEquation8, levelEquation9, levelEquation10, levelEquation11};
 
+bool debugModeEnabled;
+
 int sensitivityCounter;                             //Declare variables for sensitivity adjustment  
 
 float sipThreshold;                                     //Declare sip and puff variables 
 float puffThreshold;
-float joystickPress;
+float joystickPressure;
 
 int joystickDeadzone;
 
@@ -237,7 +238,7 @@ void loop() {
   
   if(debugModeEnabled) {
     
-    Serial.print("LOG:");
+    Serial.print("LOG:3:");
     Serial.print(xHigh);
     Serial.print(",");
     Serial.print(xLow);
@@ -284,13 +285,22 @@ void loop() {
 void getModelNumber(bool responseEnabled) {
   EEPROM.get(0, modelNumber);
   if (modelNumber != 2) {
+    int defaultButtonMapping[6] = {ACTION_BUTTON_1, ACTION_BUTTON_2, ACTION_BUTTON_3, ACTION_BUTTON_4, ACTION_BUTTON_5, ACTION_BUTTON_6};
     modelNumber = 2;
     EEPROM.put(0, modelNumber);
+    delay(10);
+    setButtonMapping(defaultButtonMapping,false);
     delay(10);
   }  
   if(responseEnabled){
     Serial.println("SUCCESS:MN,0:2");
   }
+}
+
+//***GET VERSION FUNCTION***//
+
+void getVersionNumber(void) {
+  Serial.println("SUCCESS:VN,0:V1.16");
 }
 
 //***HID JOYSTICK SENSITIVITY FUNCTION***//
@@ -305,7 +315,7 @@ int getJoystickSensitivity(bool responseEnabled) {
     delay(5);
   }
   if(responseEnabled){
-    Serial.print("SUCCESS:JS,0:");
+    Serial.print("SUCCESS:SS,0:");
     Serial.println(sensitivity);      
   } 
   delay(5);
@@ -327,7 +337,7 @@ int increaseJoystickSensitivity(int sensitivity,bool responseEnabled) {
     delay(25);
   }
   (responseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:"); 
-  Serial.print("JS,1:");
+  Serial.print("SS,1:");
   Serial.println(sensitivity); 
   delay(5);
   return sensitivity;
@@ -352,7 +362,7 @@ int decreaseJoystickSensitivity(int sensitivity,bool responseEnabled) {
   }
   
   (responseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:"); 
-  Serial.print("JS,1:");
+  Serial.print("SS,1:");
   Serial.println(sensitivity);  
   delay(5);
   return sensitivity;
@@ -361,7 +371,7 @@ int decreaseJoystickSensitivity(int sensitivity,bool responseEnabled) {
 //***GET JOYSTICK INITIALIZATION FUNCTION***//
 
 void getJoystickInitialization() {
-  Serial.print("SUCCESS:JI,0:"); 
+  Serial.print("SUCCESS:IN,0:"); 
   Serial.print(xHighNeutral); 
   Serial.print(","); 
   Serial.print(xLowNeutral); 
@@ -417,7 +427,7 @@ void setJoystickInitialization(bool responseEnabled) {
   delay(10);
 
   (responseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:");
-  Serial.print("JI,1:"); 
+  Serial.print("IN,1:"); 
   Serial.print(xHighNeutral); 
   Serial.print(","); 
   Serial.print(xLowNeutral); 
@@ -432,7 +442,7 @@ void setJoystickInitialization(bool responseEnabled) {
 //*** GET JOYSTICK CALIBRATION FUNCTION***//
 
 void getJoystickCalibration() {
-  Serial.print("SUCCESS:JC,0:"); 
+  Serial.print("SUCCESS:CA,0:"); 
   Serial.print(xHighMax); 
   Serial.print(","); 
   Serial.print(xLowMax); 
@@ -448,32 +458,32 @@ void getJoystickCalibration() {
 void setJoystickCalibration(bool responseEnabled) {
 
   (responseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:");
-  Serial.println("JC,1:0");                                                   //Start the joystick calibration sequence 
+  Serial.println("CA,1:0");                                                   //Start the joystick calibration sequence 
   ledBlink(4, 300, 3);
 
   (responseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:");
-  Serial.println("JC,1:1"); 
+  Serial.println("CA,1:1"); 
   ledBlink(6, 500, 1);
   //yHighMax = analogRead(Y_DIR_HIGH_PIN);
   yHighMax = getAverage(Y_DIR_HIGH_PIN,10);
   ledBlink(1, 1000, 2);
 
   (responseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:");
-  Serial.println("JC,1:2"); 
+  Serial.println("CA,1:2"); 
   ledBlink(6, 500, 1);
   //xHighMax = analogRead(X_DIR_HIGH_PIN);
   xHighMax = getAverage(X_DIR_HIGH_PIN,10);
   ledBlink(1, 1000, 2);
 
   (responseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:");
-  Serial.println("JC,1:3"); 
+  Serial.println("CA,1:3"); 
   ledBlink(6, 500, 1);
   //yLowMax = analogRead(Y_DIR_LOW_PIN);
   yLowMax = getAverage(Y_DIR_LOW_PIN,10);
   ledBlink(1, 1000, 2);
 
   (responseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:");
-  Serial.println("JC,1:4"); 
+  Serial.println("CA,1:4"); 
   ledBlink(6, 500, 1);
   //xLowMax = analogRead(X_DIR_LOW_PIN);
   xLowMax = getAverage(X_DIR_LOW_PIN,10);
@@ -491,7 +501,7 @@ void setJoystickCalibration(bool responseEnabled) {
   ledBlink(5, 250, 3);
 
   (responseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:");
-  Serial.print("JC,1:5:"); 
+  Serial.print("CA,1:5:"); 
   Serial.print(xHighMax); 
   Serial.print(","); 
   Serial.print(xLowMax); 
@@ -505,7 +515,7 @@ void setJoystickCalibration(bool responseEnabled) {
 
 //***GET PRESSURE THRESHOLD FUNCTION***//
 void getPressureThreshold(bool responseEnabled) {
-  float nominalJoystickValue = (((float)analogRead(PRESSURE_PIN)) / 1024.0) * 5.0; // Initial neutral pressure transducer analog value [0.0V - 5.0V]
+  float pressureNominal = (((float)analogRead(PRESSURE_PIN)) / 1024.0) * 5.0; // Initial neutral pressure transducer analog value [0.0V - 5.0V]
   int pressureThreshold = PRESSURE_THRESHOLD;
   if(SERIAL_SETTINGS) {
     EEPROM.get(32, pressureThreshold);
@@ -518,13 +528,13 @@ void getPressureThreshold(bool responseEnabled) {
   } else {
     pressureThreshold = PRESSURE_THRESHOLD;
   }
-  sipThreshold = nominalJoystickValue + ((pressureThreshold * 5.0)/100.0);    //Create sip pressure threshold value ***Larger values tend to minimize frequency of inadvertent activation
-  puffThreshold = nominalJoystickValue - ((pressureThreshold * 5.0)/100.0);   //Create puff pressure threshold value ***Larger values tend to minimize frequency of inadvertent activation
+  sipThreshold = pressureNominal + ((pressureThreshold * 5.0)/100.0);    //Create sip pressure threshold value ***Larger values tend to minimize frequency of inadvertent activation
+  puffThreshold = pressureNominal - ((pressureThreshold * 5.0)/100.0);   //Create puff pressure threshold value ***Larger values tend to minimize frequency of inadvertent activation
   if(responseEnabled) {
     Serial.print("SUCCESS:PT,0:");
     Serial.print(pressureThreshold);
     Serial.print(":");
-    Serial.println(nominalJoystickValue);
+    Serial.println(pressureNominal);
     delay(5);
   }
 }
@@ -532,7 +542,7 @@ void getPressureThreshold(bool responseEnabled) {
 //***SET PRESSURE THRESHOLD FUNCTION***//
 
 void setPressureThreshold(int pressureThreshold, bool responseEnabled) {
-  float nominalJoystickValue = (((float)analogRead(PRESSURE_PIN)) / 1024.0) * 5.0; // Initial neutral pressure transducer analog value [0.0V - 5.0V]
+  float pressureNominal = (((float)analogRead(PRESSURE_PIN)) / 1024.0) * 5.0; // Initial neutral pressure transducer analog value [0.0V - 5.0V]
   if(SERIAL_SETTINGS && (pressureThreshold>0 && pressureThreshold<=50)) {
     EEPROM.put(32, pressureThreshold);
     delay(5); 
@@ -540,13 +550,13 @@ void setPressureThreshold(int pressureThreshold, bool responseEnabled) {
     pressureThreshold = PRESSURE_THRESHOLD;
     delay(5); 
   }
-  sipThreshold = nominalJoystickValue + ((pressureThreshold * 5.0)/100.0);    //Create sip pressure threshold value ***Larger values tend to minimize frequency of inadvertent activation
-  puffThreshold = nominalJoystickValue - ((pressureThreshold * 5.0)/100.0);   //Create puff pressure threshold value ***Larger values tend to minimize frequency of inadvertent activation
+  sipThreshold = pressureNominal + ((pressureThreshold * 5.0)/100.0);    //Create sip pressure threshold value ***Larger values tend to minimize frequency of inadvertent activation
+  puffThreshold = pressureNominal - ((pressureThreshold * 5.0)/100.0);   //Create puff pressure threshold value ***Larger values tend to minimize frequency of inadvertent activation
   if(responseEnabled) {
     Serial.print("SUCCESS:PT,1:");
     Serial.print(pressureThreshold);
     Serial.print(":");
-    Serial.println(nominalJoystickValue); 
+    Serial.println(pressureNominal); 
     delay(5);
   }
 }
@@ -572,6 +582,9 @@ bool getDebugMode(bool responseEnabled) {
     Serial.print("SUCCESS:DM,0:");
     Serial.println(debugState); 
     delay(5);
+    if(debugState){
+      sendDebugData();
+    }
    }
   return debugState;
 }
@@ -590,9 +603,37 @@ bool setDebugMode(bool debugState,bool responseEnabled) {
     Serial.print("SUCCESS:DM,1:");
     Serial.println(debugState); 
     delay(5);
+    if(debugState){
+      sendDebugData();
+    }
    }
   return debugState;
 }
+
+//***SEND DEBUG DATA FUNCTION***//
+
+void sendDebugData() {
+  delay(100);
+  Serial.print("LOG:1:"); 
+  Serial.print(xHighNeutral); 
+  Serial.print(","); 
+  Serial.print(xLowNeutral); 
+  Serial.print(",");
+  Serial.print(yHighNeutral); 
+  Serial.print(",");
+  Serial.println(yLowNeutral); 
+  delay(100);
+  Serial.print("LOG:2:"); 
+  Serial.print(xHighMax); 
+  Serial.print(","); 
+  Serial.print(xLowMax); 
+  Serial.print(",");
+  Serial.print(yHighMax); 
+  Serial.print(",");
+  Serial.println(xHighMax); 
+  delay(100);
+}
+
 
 //***GET DEADZONE VALUE FUNCTION***//
 
@@ -808,14 +849,14 @@ void writeSettings(String changeString) {
       getVersionNumber();
       delay(5);
     }   
-    //Get joystick sensitivity value if received "JS,0:0", decrease the sensitivity if received "JS,1:1" and increase the sensitivity if received "JS,1:2"
-    else if(changeChar[0]=='J' && changeChar[1]=='S' && changeChar[2]=='0' && changeChar[3]=='0' && changeString.length()==4) {
+    //Get joystick sensitivity value if received "SS,0:0", decrease the sensitivity if received "SS,1:1" and increase the sensitivity if received "SS,1:2"
+    else if(changeChar[0]=='S' && changeChar[1]=='S' && changeChar[2]=='0' && changeChar[3]=='0' && changeString.length()==4) {
       sensitivityCounter = getJoystickSensitivity(true);
       delay(5);
-    } else if(changeChar[0]=='J' && changeChar[1]=='S' && changeChar[2]=='1' && changeChar[3]=='1' && changeString.length()==4) {
+    } else if(changeChar[0]=='S' && changeChar[1]=='S' && changeChar[2]=='1' && changeChar[3]=='1' && changeString.length()==4) {
       sensitivityCounter = decreaseJoystickSensitivity(sensitivityCounter,true);
       delay(5);
-    } else if (changeChar[0]=='J' && changeChar[1]=='S' && changeChar[2]=='1' && changeChar[3]=='2' && changeString.length()==4) {
+    } else if (changeChar[0]=='S' && changeChar[1]=='S' && changeChar[2]=='1' && changeChar[3]=='2' && changeString.length()==4) {
       sensitivityCounter = increaseJoystickSensitivity(sensitivityCounter,true);
       delay(5);
     } 
@@ -848,19 +889,19 @@ void writeSettings(String changeString) {
       joystickDeadzone = setDeadzone(deadzoneString.toInt(),true);
       delay(5);
     }
-     //Get joystick initialization values if received "JI,0:0" and perform joystick initialization if received "JI,1:1"
-     else if(changeChar[0]=='J' && changeChar[1]=='I' && changeChar[3]=='0' && changeChar[3]=='0' && changeString.length()==4) {
+     //Get joystick initialization values if received "IN,0:0" and perform joystick initialization if received "IN,1:1"
+     else if(changeChar[0]=='I' && changeChar[1]=='N' && changeChar[3]=='0' && changeChar[3]=='0' && changeString.length()==4) {
       getJoystickInitialization();
       delay(5);
-    } else if (changeChar[0]=='J' && changeChar[1]=='I' && changeChar[3]=='1' && changeChar[3]=='1' && changeString.length()==4) {
+    } else if (changeChar[0]=='I' && changeChar[1]=='N' && changeChar[3]=='1' && changeChar[3]=='1' && changeString.length()==4) {
       setJoystickInitialization(true);
       delay(5);
     } 
-     //Get joystick calibration values if received "JC,0:0" and perform joystick calibration if received "JC,1:1"
-      else if(changeChar[0]=='J' && changeChar[1]=='C' && changeChar[2]=='0' && changeChar[3]=='0' && changeString.length()==4) {
+     //Get joystick calibration values if received "CA,0:0" and perform joystick calibration if received "CA,1:1"
+      else if(changeChar[0]=='C' && changeChar[1]=='A' && changeChar[2]=='0' && changeChar[3]=='0' && changeString.length()==4) {
       getJoystickCalibration();
       delay(5);
-    } else if (changeChar[0]=='J' && changeChar[1]=='C' && changeChar[2]=='1' && changeChar[3]=='1' && changeString.length()==4) {
+    } else if (changeChar[0]=='C' && changeChar[1]=='A' && changeChar[2]=='1' && changeChar[3]=='1' && changeString.length()==4) {
       setJoystickCalibration(true);
       delay(5);
     } 
@@ -1052,18 +1093,18 @@ void pushButtonHandler(int switchPin1, int switchPin2) {
   delay(5);
 }
 
-//***SIP AND PUFF BUTTON HANDLER FUNCTION***//
+//***SIP AND PUFF ACTION HANDLER FUNCTION***//
 
 void sipAndPuffHandler(int mode) {
 
-  joystickPress = (((float)analogRead(PRESSURE_PIN)) / 1023.0) * 5.0;   
+  joystickPressure = (((float)analogRead(PRESSURE_PIN)) / 1023.0) * 5.0;   
   
   //Measure the pressure value and compare the result with puff pressure Thresholds 
-  if (joystickPress < puffThreshold) {
+  if (joystickPressure < puffThreshold) {
     switch (mode) {
       case 1:                                             //Default button mode (short/long puff)
-        while (joystickPress < puffThreshold) {
-          joystickPress = (((float)analogRead(PRESSURE_PIN)) / 1023.0) * 5.0;
+        while (joystickPressure < puffThreshold) {
+          joystickPressure = (((float)analogRead(PRESSURE_PIN)) / 1023.0) * 5.0;
           puffCount++;                                    //Threshold counter
           delay(5);
         }
@@ -1102,11 +1143,11 @@ void sipAndPuffHandler(int mode) {
     }
   }
   //Measure the pressure value and compare the result with sip pressure Thresholds 
-  if (joystickPress > sipThreshold) {
+  if (joystickPressure > sipThreshold) {
     switch (mode) {
       case 1:                                           //Default button mode (short/long puff)
-        while (joystickPress > sipThreshold) {
-          joystickPress = (((float)analogRead(PRESSURE_PIN)) / 1023.0) * 5.0;
+        while (joystickPressure > sipThreshold) {
+          joystickPressure = (((float)analogRead(PRESSURE_PIN)) / 1023.0) * 5.0;
           sipCount++;
           delay(5);
         }
@@ -1148,7 +1189,7 @@ void sipAndPuffHandler(int mode) {
         break;
     }
   }
-  if (joystickPress <= sipThreshold && joystickPress >= puffThreshold && mode==2) {       //Release buttons in analog trigger button mode
+  if (joystickPressure <= sipThreshold && joystickPressure >= puffThreshold && mode==2) {       //Release buttons in analog trigger button mode
     Joystick.releaseButton(actionButton[0]);
     Joystick.releaseButton(actionButton[1]);
     delay(10);
@@ -1158,11 +1199,6 @@ void sipAndPuffHandler(int mode) {
   }
 }
 
-//***GET VERSION FUNCTION***//
-
-void getVersionNumber(void) {
-  Serial.println("SUCCESS:VN,0:V1.16");
-}
 
 //***LED ON FUNCTION***//
 
