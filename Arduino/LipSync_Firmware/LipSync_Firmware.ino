@@ -45,6 +45,7 @@
 //***CUSTOMIZABLE VARIABLES***//
 
 #define DEBUG_MODE false
+#define RAW_MODE false
 #define SPEED_COUNTER 5
 #define PRESSURE_THRESHOLD 10                   //Pressure sip and puff threshold 
 
@@ -122,6 +123,7 @@ _cursor setting11 = {5, -1.1, CURSOR_DEFAULT_SPEED + (5 * CURSOR_DELTA_SPEED)};
 _cursor cursorParams[11] = {setting1, setting2, setting3, setting4, setting5, setting6, setting7, setting8, setting9, setting10, setting11};
 
 bool debugModeEnabled;
+bool rawModeEnabled;
 
 int cursorSpeedCounter; 
 
@@ -219,22 +221,26 @@ void loop() {
     if (pollCounter >= 3) {
         if ((xHighYHigh >= xHighYLow) && (xHighYHigh >= xLowYHigh) && (xHighYHigh >= xLowYLow)) {
           //Serial.println("quad1");
-          Mouse.move(xCursorHigh(xHigh), yCursorHigh(yHigh), 0);
+          //Mouse.move(xCursorHigh(xHigh), yCursorHigh(yHigh), 0);
+          (rawModeEnabled)? sendRawData(xCursorHigh(xHigh),yCursorHigh(yHigh),sipAndPuffRawHandler(),xHigh,xLow,yHigh,yLow) : Mouse.move(xCursorHigh(xHigh), yCursorHigh(yHigh), 0);
           delay(cursorDelay);
           pollCounter = 0;
         } else if ((xHighYLow > xHighYHigh) && (xHighYLow > xLowYLow) && (xHighYLow > xLowYHigh)) {
           //Serial.println("quad4");
-          Mouse.move(xCursorHigh(xHigh), yCursorLow(yLow), 0);
+          //Mouse.move(xCursorHigh(xHigh), yCursorLow(yLow), 0);
+          (rawModeEnabled)? sendRawData(xCursorHigh(xHigh),yCursorLow(yLow),sipAndPuffRawHandler(),xHigh,xLow,yHigh,yLow) : Mouse.move(xCursorHigh(xHigh), yCursorLow(yLow), 0);
           delay(cursorDelay);
           pollCounter = 0;
         } else if ((xLowYLow >= xHighYHigh) && (xLowYLow >= xHighYLow) && (xLowYLow >= xLowYHigh)) {
           //Serial.println("quad3");
-          Mouse.move(xCursorLow(xLow), yCursorLow(yLow), 0);
+          //Mouse.move(xCursorLow(xLow), yCursorLow(yLow), 0);
+           (rawModeEnabled)? sendRawData(xCursorLow(xLow),yCursorLow(yLow),sipAndPuffRawHandler(),xHigh,xLow,yHigh,yLow) : Mouse.move(xCursorLow(xLow), yCursorLow(yLow), 0);
           delay(cursorDelay);
           pollCounter = 0;
         } else if ((xLowYHigh > xHighYHigh) && (xLowYHigh >= xHighYLow) && (xLowYHigh >= xLowYLow)) {
           //Serial.println("quad2");
-          Mouse.move(xCursorLow(xLow), yCursorHigh(yHigh), 0);
+          //Mouse.move(xCursorLow(xLow), yCursorHigh(yHigh), 0);
+          (rawModeEnabled)? sendRawData(xCursorLow(xLow),yCursorHigh(yHigh),sipAndPuffRawHandler(),xHigh,xLow,yHigh,yLow) : Mouse.move(xCursorLow(xLow), yCursorHigh(yHigh), 0);
           delay(cursorDelay);
           pollCounter = 0;
         }
@@ -255,7 +261,10 @@ void loop() {
     Serial.println(yLow); 
     delay(200);
   }
-  sipAndPuffHandler();                                                       //Pressure sensor sip and puff functions                                                   //Pressure sensor sip and puff functions
+
+  if(!rawModeEnabled) {
+    sipAndPuffHandler();
+  }                                                       //Pressure sensor sip and puff functions                                                   //Pressure sensor sip and puff functions
   delay(5);
   pushButtonHandler(BUTTON_UP_PIN,BUTTON_DOWN_PIN); 
 }
@@ -263,6 +272,7 @@ void loop() {
 //***END OF INFINITE LOOP***//
 
 //-----------------------------------------------------------------------------------//
+
 
 //***GET MODEL NUMBER FUNCTION***//
 
@@ -707,16 +717,78 @@ void sendDebugData() {
   delay(100);
 }
 
+//***SEND RAW DATA FUNCTION***//
+
+void sendRawData(int x, int y, int action, int xUp, int xDown,int yUp,int yDown) {
+  Serial.print("RAW:1:"); 
+  Serial.print(x); 
+  Serial.print(","); 
+  Serial.print(y); 
+  Serial.print(",");
+  Serial.print(action); 
+  Serial.print(":"); 
+  Serial.print(xUp); 
+  Serial.print(","); 
+  Serial.print(xDown); 
+  Serial.print(",");
+  Serial.print(yUp); 
+  Serial.print(",");
+  Serial.println(yDown); 
+}
+
+//***GET RAW MODE STATE FUNCTION***//
+
+bool getRawMode(bool responseEnabled) {
+  bool rawState=RAW_MODE;
+  if(SERIAL_SETTINGS) {
+    EEPROM.get(36, rawState);
+    delay(5);
+    if(rawState!=0 && rawState!=1) {
+      EEPROM.put(36, RAW_MODE);
+      delay(5);
+      rawState=RAW_MODE;
+      }   
+  } else {
+    rawState=RAW_MODE;
+    delay(5);   
+  }
+
+  if(responseEnabled) {
+    Serial.print("SUCCESS:RM,0:");
+    Serial.println(rawState); 
+    delay(5);
+   }
+  return rawState;
+}
+
+//***SET RAW MODE STATE FUNCTION***//
+
+bool setRawMode(bool rawState,bool responseEnabled) {
+  if(SERIAL_SETTINGS) {
+    (rawState) ? EEPROM.put(36, 1) : EEPROM.put(36, 0);
+    delay(5);    
+  } else {
+    rawState=RAW_MODE;
+    delay(5);    
+  }
+  if(responseEnabled) {
+    Serial.print("SUCCESS:RM,1:");
+    Serial.println(rawState); 
+    delay(5);
+   }
+  return rawState;
+}
+
 //***GET BUTTON MAPPING FUNCTION***//
 
 void getButtonMapping(bool responseEnabled) {
   if (SERIAL_SETTINGS) {
     for (int i = 0; i < 6; i++) {
       int buttonMapping;
-      EEPROM.get(40+i*2, buttonMapping);
+      EEPROM.get(42+i*2, buttonMapping);
       delay(5);
       if(buttonMapping<1 || buttonMapping >8) {
-        EEPROM.put(40+i*2, actionButton[i]);
+        EEPROM.put(42+i*2, actionButton[i]);
         delay(5);
       } else {
         actionButton[i]=buttonMapping;
@@ -741,7 +813,7 @@ void getButtonMapping(bool responseEnabled) {
 void setButtonMapping(int buttonMapping[],bool responseEnabled) {
   if (SERIAL_SETTINGS) {
    for(int i = 0; i < 6; i++){
-    EEPROM.put(40+i*2, buttonMapping[i]);
+    EEPROM.put(42+i*2, buttonMapping[i]);
     delay(5);
     actionButton[i]=buttonMapping[i];
     delay(5);
@@ -770,13 +842,15 @@ void factoryReset(bool responseEnabled) {
     delay(10);
     EEPROM.put(34, DEBUG_MODE);
     delay(10);  
+    EEPROM.put(36, RAW_MODE);
+    delay(10);  
     setButtonMapping(defaultButtonMapping,false);
     delay(10);
     
     cursorSpeedCounter=SPEED_COUNTER;
     debugModeEnabled=DEBUG_MODE;  
-
-  }
+    rawModeEnabled=RAW_MODE;
+    }
 
   if(responseEnabled) {
     Serial.println("SUCCESS:FR,0:0");
@@ -862,6 +936,17 @@ void writeSettings(String changeString) {
       delay(5);
     } else if (changeChar[0]=='D' && changeChar[1]=='M' && changeChar[2]=='1' && changeChar[3]=='1' && changeString.length()==4) {
       debugModeEnabled = setDebugMode(1,true);
+      delay(5);
+    } 
+    //Get raw mode value if received "RM,0:0" , set raw mode value to 0 if received "RM,1:0" and set raw mode value to 1 if received "RM,1:1"
+     else if(changeChar[0]=='R' && changeChar[1]=='M' && changeChar[2]=='0' && changeChar[3]=='0' && changeString.length()==4) {
+      rawModeEnabled = getRawMode(true);
+      delay(5);
+    } else if (changeChar[0]=='R' && changeChar[1]=='M' && changeChar[2]=='1' && changeChar[3]=='0' && changeString.length()==4) {
+      rawModeEnabled = setRawMode(0,true);
+      delay(5);
+    } else if (changeChar[0]=='R' && changeChar[1]=='M' && changeChar[2]=='1' && changeChar[3]=='1' && changeString.length()==4) {
+      rawModeEnabled = setRawMode(1,true);
       delay(5);
     } 
      //Get cursor initialization values if received "IN,0:0" and perform cursor initialization if received "IN,1:1"
@@ -973,6 +1058,23 @@ void sipAndPuffHandler() {
       }
     sipCount = 0;                                 //Reset sip counter
   }
+}
+
+int sipAndPuffRawHandler() {
+  int currentAction = 0;
+  cursorPressure = (((float)analogRead(PRESSURE_PIN)) / 1023.0) * 5.0;   
+  
+  //Measure the pressure value and compare the result with puff pressure Thresholds 
+  if (cursorPressure < puffThreshold) {
+        delay(5);
+        currentAction = 1;
+  }
+  //Measure the pressure value and compare the result with sip pressure Thresholds 
+  if (cursorPressure > sipThreshold) {
+        delay(5);
+        currentAction = 2;
+  }
+  return currentAction;
 }
 
 void clearButtonAction(){
