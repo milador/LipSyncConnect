@@ -52,6 +52,7 @@
 
 #define JS_FSR_DEADZONE 60                       //The deadzone for input FSR analog value
 #define DEBUG_MODE false
+#define RAW_MODE false
 #define BUTTON_MODE 1                             //Set button mode ( 1 = Digital buttons , 2 = Analog buttons )
 #define SENSITIVITY_COUNTER 5
 #define PRESSURE_THRESHOLD 10                   //Pressure sip and puff threshold 
@@ -134,6 +135,7 @@ _equationCoef levelEquation11 = {-0.0001,-0.0051,0.3441,-6.1204,45.4111,0.0000};
 _equationCoef levelEquations[11] = {levelEquation1, levelEquation2, levelEquation3, levelEquation4, levelEquation5, levelEquation6, levelEquation7, levelEquation8, levelEquation9, levelEquation10, levelEquation11};
 
 bool debugModeEnabled;
+bool rawModeEnabled;
 
 int sensitivityCounter;                             //Declare variables for sensitivity adjustment  
 
@@ -204,6 +206,8 @@ void setup() {
   getPressureThreshold(false);                       //Initialize the pressure sensor
   delay(10);
   debugModeEnabled = getDebugMode(false);
+  delay(10);
+  rawModeEnabled = getRawMode(false);
   delay(50); 
   joystickDeadzone = getDeadzone(false);
   delay(10);
@@ -263,15 +267,33 @@ void loop() {
   //Get the final X and Y output values for Joystick set axis function
   int xOut = getXYValue(xDelta, JS_OUT_DEAD_ZONE, JS_OUT_MAX, levelEquations[sensitivityCounter]);
   int yOut = -getXYValue(yDelta, JS_OUT_DEAD_ZONE, JS_OUT_MAX, levelEquations[sensitivityCounter]);
- 
-  //Perform Joystick X and Y move 
-  Joystick.setXAxis(xOut); 
-  Joystick.setYAxis(yOut); 
 
-  sipAndPuffHandler(buttonMode);                                                       //Pressure sensor sip and puff functions
-  delay(5);
-  pushButtonHandler(BUTTON_UP_PIN,BUTTON_DOWN_PIN);                                    //The joystick buttons function
-  delay(JS_DELAY);                                                                     //The fixed delay for each action loop
+  if(rawModeEnabled) {
+    Serial.print("RAW:1:");
+    Serial.print(xOut);
+    Serial.print(",");
+    Serial.print(yOut);
+    Serial.print(",");
+    Serial.print(sipAndPuffRawHandler());
+    Serial.print(":");    
+    Serial.print(xHigh);
+    Serial.print(",");
+    Serial.print(xLow);
+    Serial.print(",");
+    Serial.print(yHigh);
+    Serial.print(",");
+    Serial.println(yLow); 
+    delay(5);
+  } else {
+    //Perform Joystick X and Y move 
+    Joystick.setXAxis(xOut); 
+    Joystick.setYAxis(yOut);
+    sipAndPuffHandler(buttonMode);  
+    delay(5); 
+  }                                                     //Pressure sensor sip and puff functions
+  pushButtonHandler(BUTTON_UP_PIN,BUTTON_DOWN_PIN);     //The joystick buttons function
+  
+  delay(JS_DELAY);                                      //The fixed delay for each action loop
 
 }
 
@@ -634,16 +656,58 @@ void sendDebugData() {
   delay(100);
 }
 
+//***GET RAW MODE STATE FUNCTION***//
+
+bool getRawMode(bool responseEnabled) {
+  bool rawState=RAW_MODE;
+  if(SERIAL_SETTINGS) {
+    EEPROM.get(36, rawState);
+    delay(5);
+    if(rawState!=0 && rawState!=1) {
+      EEPROM.put(36, RAW_MODE);
+      delay(5);
+      rawState=RAW_MODE;
+      }   
+  } else {
+    rawState=RAW_MODE;
+    delay(5);   
+  }
+
+  if(responseEnabled) {
+    Serial.print("SUCCESS:RM,0:");
+    Serial.println(rawState); 
+    delay(5);
+   }
+  return rawState;
+}
+
+//***SET RAW MODE STATE FUNCTION***//
+
+bool setRawMode(bool rawState,bool responseEnabled) {
+  if(SERIAL_SETTINGS) {
+    (rawState) ? EEPROM.put(36, 1) : EEPROM.put(36, 0);
+    delay(5);    
+  } else {
+    rawState=RAW_MODE;
+    delay(5);    
+  }
+  if(responseEnabled) {
+    Serial.print("SUCCESS:RM,1:");
+    Serial.println(rawState); 
+    delay(5);
+   }
+  return rawState;
+}
 
 //***GET DEADZONE VALUE FUNCTION***//
 
 int getDeadzone(bool responseEnabled) {
   int deadzoneValue = JS_FSR_DEADZONE;
   if(SERIAL_SETTINGS) {
-    EEPROM.get(36, deadzoneValue);
+    EEPROM.get(38, deadzoneValue);
     delay(5);
     if(deadzoneValue<=0 || deadzoneValue>99) {
-      EEPROM.put(36, JS_FSR_DEADZONE);
+      EEPROM.put(38, JS_FSR_DEADZONE);
       delay(5);
       deadzoneValue=JS_FSR_DEADZONE;
       }    
@@ -664,10 +728,10 @@ int getDeadzone(bool responseEnabled) {
 int setDeadzone(int deadzoneValue,bool responseEnabled) {
   if(SERIAL_SETTINGS) {
     if(deadzoneValue>0 || deadzoneValue<=99) {
-      EEPROM.put(36, deadzoneValue);
+      EEPROM.put(38, deadzoneValue);
       delay(5);
     } else {
-      EEPROM.put(36, JS_FSR_DEADZONE);
+      EEPROM.put(38, JS_FSR_DEADZONE);
       delay(5);
       deadzoneValue=JS_FSR_DEADZONE;
     }
@@ -687,11 +751,11 @@ int setDeadzone(int deadzoneValue,bool responseEnabled) {
 
 int getButtonMode(bool responseEnabled) {
   int mode = 1;
-  EEPROM.get(38, mode);                   //Get the button mode from memory 
+  EEPROM.get(40, mode);                   //Get the button mode from memory 
   delay(5);
   if(mode !=1 && mode !=2){
     mode=BUTTON_MODE;                     //Set the button mode if it's not set before and save it in the memory 
-    EEPROM.put(38, mode);
+    EEPROM.put(40, mode);
     delay(5);
   }
   if(responseEnabled){
@@ -707,7 +771,7 @@ int getButtonMode(bool responseEnabled) {
 int setButtonMode(int mode,bool responseEnabled) {                
   if(mode ==1 || mode ==2){
     ledBlink(mode, 250, 3);
-    EEPROM.put(38, mode);                                                       //Set the button mode and save it in the memory 
+    EEPROM.put(40, mode);                                                       //Set the button mode and save it in the memory 
     delay(5);
     (responseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:");
     Serial.print("BM,1:");
@@ -723,10 +787,10 @@ void getButtonMapping(bool responseEnabled) {
   if (SERIAL_SETTINGS) {
     for (int i = 0; i < 6; i++) {
       int buttonMapping;
-      EEPROM.get(40+i*2, buttonMapping);
+      EEPROM.get(42+i*2, buttonMapping);
       delay(5);
       if(buttonMapping<1 || buttonMapping >8) {
-        EEPROM.put(40+i*2, actionButton[i]);
+        EEPROM.put(42+i*2, actionButton[i]);
         delay(5);
       } else {
         actionButton[i]=buttonMapping;
@@ -751,7 +815,7 @@ void getButtonMapping(bool responseEnabled) {
 void setButtonMapping(int buttonMapping[],bool responseEnabled) {
   if (SERIAL_SETTINGS) {
    for(int i = 0; i < 6; i++){
-    EEPROM.put(40+i*2, buttonMapping[i]);
+    EEPROM.put(42+i*2, buttonMapping[i]);
     delay(5);
     actionButton[i]=buttonMapping[i];
     delay(5);
@@ -780,15 +844,18 @@ void factoryReset(bool responseEnabled) {
     delay(10);
     EEPROM.put(34, DEBUG_MODE);
     delay(10);  
-    EEPROM.put(36, JS_FSR_DEADZONE);
+    EEPROM.put(36, RAW_MODE);
+    delay(10); 
+    EEPROM.put(38, JS_FSR_DEADZONE);
     delay(10);
-    EEPROM.put(38, BUTTON_MODE);
+    EEPROM.put(40, BUTTON_MODE);
     delay(10);
     setButtonMapping(defaultButtonMapping,false);
     delay(10);
     
     sensitivityCounter=SENSITIVITY_COUNTER;
     debugModeEnabled=DEBUG_MODE;  
+    rawModeEnabled=RAW_MODE; 
     joystickDeadzone=JS_FSR_DEADZONE;
     buttonMode=BUTTON_MODE;
 
@@ -878,6 +945,17 @@ void writeSettings(String changeString) {
       delay(5);
     } else if (changeChar[0]=='D' && changeChar[1]=='M' && changeChar[2]=='1' && changeChar[3]=='1' && changeString.length()==4) {
       debugModeEnabled = setDebugMode(1,true);
+      delay(5);
+    } 
+    //Get raw mode value if received "RM,0:0" , set raw mode value to 0 if received "RM,1:0" and set raw mode value to 1 if received "RM,1:1"
+     else if(changeChar[0]=='R' && changeChar[1]=='M' && changeChar[2]=='0' && changeChar[3]=='0' && changeString.length()==4) {
+      rawModeEnabled = getRawMode(true);
+      delay(5);
+    } else if (changeChar[0]=='R' && changeChar[1]=='M' && changeChar[2]=='1' && changeChar[3]=='0' && changeString.length()==4) {
+      rawModeEnabled = setRawMode(0,true);
+      delay(5);
+    } else if (changeChar[0]=='R' && changeChar[1]=='M' && changeChar[2]=='1' && changeChar[3]=='1' && changeString.length()==4) {
+      rawModeEnabled = setRawMode(1,true);
       delay(5);
     } 
      //Get deadzone value if received "DZ,0:0" , set deadzone value if received "DZ,1:{Value 1 to 99}" 
@@ -1096,7 +1174,6 @@ void pushButtonHandler(int switchPin1, int switchPin2) {
 //***SIP AND PUFF ACTION HANDLER FUNCTION***//
 
 void sipAndPuffHandler(int mode) {
-
   joystickPressure = (((float)analogRead(PRESSURE_PIN)) / 1023.0) * 5.0;   
   
   //Measure the pressure value and compare the result with puff pressure Thresholds 
@@ -1197,6 +1274,25 @@ void sipAndPuffHandler(int mode) {
     lastButtonState[1] = 0;
     
   }
+}
+
+//***SIP AND PUFF RAW ACTION HANDLER FUNCTION***//
+
+int sipAndPuffRawHandler() {
+  int currentAction = 0;
+  joystickPressure = (((float)analogRead(PRESSURE_PIN)) / 1023.0) * 5.0;   
+  
+  //Measure the pressure value and compare the result with puff pressure Thresholds 
+  if (joystickPressure < puffThreshold) {
+        delay(5);
+        currentAction = 1;
+  }
+  //Measure the pressure value and compare the result with sip pressure Thresholds 
+  if (joystickPressure > sipThreshold) {
+        delay(5);
+        currentAction = 2;
+  }
+  return currentAction;
 }
 
 
