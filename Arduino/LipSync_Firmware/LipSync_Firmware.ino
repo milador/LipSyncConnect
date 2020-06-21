@@ -15,7 +15,7 @@
 
 //Developed by : MakersMakingChange
 //Firmware : LipSync_Firmware
-//VERSION: 2.7 (16 September 2019) 
+//VERSION: 2.71 (20 June 2020) 
 
 
 #include <EEPROM.h>
@@ -122,7 +122,7 @@ _cursor setting11 = {5, -1.1, CURSOR_DEFAULT_SPEED + (5 * CURSOR_DELTA_SPEED)};
 
 _cursor cursorParams[11] = {setting1, setting2, setting3, setting4, setting5, setting6, setting7, setting8, setting9, setting10, setting11};
 
-bool debugModeEnabled;
+bool debugModeEnabled;                                  //Declare raw and debug enable variable
 bool rawModeEnabled;
 
 int cursorSpeedCounter; 
@@ -131,9 +131,9 @@ float sipThreshold;                                     //Declare sip and puff v
 float puffThreshold;
 float cursorPressure;
 
-int modelNumber;
+int modelNumber;                                        //Declare LipSync model number variable 
 
-bool settingsEnabled = false;  
+bool settingsEnabled = false;                           //Serial input settings command mode enabled or disabled 
 
 //-----------------------------------------------------------------------------------//
 
@@ -166,17 +166,19 @@ void setup() {
   pinMode(13, INPUT_PULLUP);
 
 
-  Mouse.begin();                                   //Initialize the HID mouse functions
+  Mouse.begin();                                  //Initialize the HID mouse functions
   delay(1000);
-  getModelNumber(false);
+  getModelNumber(false);                          //Get LipSync model number 
   delay(10);
-  setCursorInitialization(1,false);                       //Set the Home joystick and generate movement threshold boundaries
+  setCursorInitialization(1,false);               //Set the Home joystick and generate movement threshold boundaries
   delay(10);
-  getCursorCalibration(false);
+  getCursorCalibration(false);                    //Get FSR Max calibration values 
   delay(10);
-  getPressureThreshold(false);                  //Set the pressure sensor threshold boundaries
+  getPressureThreshold(false);                    //Set the pressure sensor threshold boundaries
   delay(10);
-  debugModeEnabled = getDebugMode(false);
+  debugModeEnabled = getDebugMode(false);         //Get the debug mode state
+  delay(10);
+  rawModeEnabled = getRawMode(false);             //Get the raw mode state
   delay(50); 
   getCompFactor();                                //Set the default values that are stored in EEPROM
   delay(10);
@@ -184,14 +186,14 @@ void setup() {
   delay(10);
   getButtonMapping(false); 
   delay(10);
+  cursorDelay = cursorParams[cursorSpeedCounter]._delay;
+  cursorFactor = cursorParams[cursorSpeedCounter]._factor;
+  cursorMaxSpeed = cursorParams[cursorSpeedCounter]._maxSpeed;
 
   ledBlink(4, 250, 3);                            //End initialization visual feedback
 
   forceCursorDisplay();                           //Display cursor on screen by moving it
   
-  cursorDelay = cursorParams[cursorSpeedCounter]._delay;
-  cursorFactor = cursorParams[cursorSpeedCounter]._factor;
-  cursorMaxSpeed = cursorParams[cursorSpeedCounter]._maxSpeed;
 }
 
 //-----------------------------------------------------------------------------------//
@@ -245,7 +247,10 @@ void loop() {
           pollCounter = 0;
         }
     }   
-  }
+  } else if(rawModeEnabled) {
+    sendRawData(0,0,sipAndPuffRawHandler(),xHigh,xLow,yHigh,yLow);
+    delay(cursorDelay);
+    }
 
   //Debug information 
   
@@ -259,9 +264,10 @@ void loop() {
     Serial.print(yHigh);
     Serial.print(",");
     Serial.println(yLow); 
-    delay(200);
+    delay(50);
   }
 
+  //Perform sip and puff actions raw mode is disabled 
   if(!rawModeEnabled) {
     sipAndPuffHandler();
   }                                                       //Pressure sensor sip and puff functions                                                   //Pressure sensor sip and puff functions
@@ -278,12 +284,11 @@ void loop() {
 
 void getModelNumber(bool responseEnabled) {
   EEPROM.get(0, modelNumber);
-  if (modelNumber != 1) {
-    int defaultButtonMapping[6] = {ACTION_BUTTON_1, ACTION_BUTTON_2, ACTION_BUTTON_3, ACTION_BUTTON_4, ACTION_BUTTON_5, ACTION_BUTTON_6};
-    modelNumber = 1;
+  if (modelNumber != 1) {                                 //If the previous firmware was different model then factory reset the settings 
+    modelNumber = 1;                                      //And store the model number in EEPROM 
     EEPROM.put(0, modelNumber);
     delay(10);
-    setButtonMapping(defaultButtonMapping,false);
+    factoryReset(false);
     delay(10);
   }  
   if(responseEnabled){
@@ -294,7 +299,7 @@ void getModelNumber(bool responseEnabled) {
 //***GET VERSION FUNCTION***//
 
 void getVersionNumber(void) {
-  Serial.println("SUCCESS:VN,0:V2.7");
+  Serial.println("SUCCESS:VN,0:V2.71");
 }
 
 //***HID CURSOR SPEED FUNCTION***//
@@ -372,6 +377,189 @@ int decreaseCursorSpeed(int speedCounter,bool responseEnabled) {
   Serial.println(speedCounter);  
   delay(5);
   return speedCounter;
+}
+
+//***GET PRESSURE THRESHOLD FUNCTION***//
+void getPressureThreshold(bool responseEnabled) {
+  float pressureNominal = (((float)analogRead(PRESSURE_PIN)) / 1024.0) * 5.0; // Initial neutral pressure transducer analog value [0.0V - 5.0V]
+  int pressureThreshold = PRESSURE_THRESHOLD;
+  if(SERIAL_SETTINGS) {
+    EEPROM.get(32, pressureThreshold);
+    delay(5);
+    if(pressureThreshold<=0 || pressureThreshold>50) {
+      EEPROM.put(32, PRESSURE_THRESHOLD);
+      delay(5);
+      pressureThreshold = PRESSURE_THRESHOLD;
+    }    
+  } else {
+    pressureThreshold = PRESSURE_THRESHOLD;
+  }
+  sipThreshold = pressureNominal + ((pressureThreshold * 5.0)/100.0);    //Create sip pressure threshold value ***Larger values tend to minimize frequency of inadvertent activation
+  puffThreshold = pressureNominal - ((pressureThreshold * 5.0)/100.0);   //Create puff pressure threshold value ***Larger values tend to minimize frequency of inadvertent activation
+  if(responseEnabled) {
+    Serial.print("SUCCESS:PT,0:");
+    Serial.print(pressureThreshold);
+    Serial.print(":");
+    Serial.println(pressureNominal);
+    delay(5);
+  }
+}
+
+//***SET PRESSURE THRESHOLD FUNCTION***//
+
+void setPressureThreshold(int pressureThreshold, bool responseEnabled) {
+  float pressureNominal = (((float)analogRead(PRESSURE_PIN)) / 1024.0) * 5.0; // Initial neutral pressure transducer analog value [0.0V - 5.0V]
+  if(SERIAL_SETTINGS && (pressureThreshold>0 && pressureThreshold<=50)) {
+    EEPROM.put(32, pressureThreshold);
+    delay(5); 
+  } else {
+    pressureThreshold = PRESSURE_THRESHOLD;
+    delay(5); 
+  }
+  sipThreshold = pressureNominal + ((pressureThreshold * 5.0)/100.0);    //Create sip pressure threshold value ***Larger values tend to minimize frequency of inadvertent activation
+  puffThreshold = pressureNominal - ((pressureThreshold * 5.0)/100.0);   //Create puff pressure threshold value ***Larger values tend to minimize frequency of inadvertent activation
+  if(responseEnabled) {
+    Serial.print("SUCCESS:PT,1:");
+    Serial.print(pressureThreshold);
+    Serial.print(":");
+    Serial.println(pressureNominal); 
+    delay(5);
+  }
+}
+
+//***GET DEBUG MODE STATE FUNCTION***//
+
+bool getDebugMode(bool responseEnabled) {
+  bool debugState=DEBUG_MODE;
+  if(SERIAL_SETTINGS) {
+    EEPROM.get(34, debugState);
+    delay(5);
+    if(debugState!=0 && debugState!=1) {
+      EEPROM.put(34, DEBUG_MODE);
+      delay(5);
+      debugState=DEBUG_MODE;
+      }   
+  } else {
+    debugState=DEBUG_MODE;
+    delay(5);   
+  }
+
+  if(responseEnabled) {
+    Serial.print("SUCCESS:DM,0:");
+    Serial.println(debugState); 
+    delay(5);
+    if(debugState){
+      sendDebugData();
+    }
+   }
+  return debugState;
+}
+
+//***SET DEBUG MODE STATE FUNCTION***//
+
+bool setDebugMode(bool debugState,bool responseEnabled) {
+  if(SERIAL_SETTINGS) {
+    (debugState) ? EEPROM.put(34, 1) : EEPROM.put(34, 0);
+    delay(5);    
+  } else {
+    debugState=DEBUG_MODE;
+    delay(5);    
+  }
+  if(responseEnabled) {
+    Serial.print("SUCCESS:DM,1:");
+    Serial.println(debugState); 
+    delay(5);
+    if(debugState){
+      sendDebugData();
+    }
+   }
+  return debugState;
+}
+
+//***SEND DEBUG DATA FUNCTION***//
+
+void sendDebugData() {
+  delay(100);
+  Serial.print("LOG:1:"); 
+  Serial.print(xHighNeutral); 
+  Serial.print(","); 
+  Serial.print(xLowNeutral); 
+  Serial.print(",");
+  Serial.print(yHighNeutral); 
+  Serial.print(",");
+  Serial.println(yLowNeutral); 
+  delay(100);
+  Serial.print("LOG:2:"); 
+  Serial.print(xHighMax); 
+  Serial.print(","); 
+  Serial.print(xLowMax); 
+  Serial.print(",");
+  Serial.print(yHighMax); 
+  Serial.print(",");
+  Serial.println(xHighMax); 
+  delay(100);
+}
+
+//***SEND RAW DATA FUNCTION***//
+
+void sendRawData(int x, int y, int action, int xUp, int xDown,int yUp,int yDown) {
+  Serial.print("RAW:1:"); 
+  Serial.print(x); 
+  Serial.print(","); 
+  Serial.print(y); 
+  Serial.print(",");
+  Serial.print(action); 
+  Serial.print(":"); 
+  Serial.print(xUp); 
+  Serial.print(","); 
+  Serial.print(xDown); 
+  Serial.print(",");
+  Serial.print(yUp); 
+  Serial.print(",");
+  Serial.println(yDown); 
+}
+
+//***GET RAW MODE STATE FUNCTION***//
+
+bool getRawMode(bool responseEnabled) {
+  bool rawState=RAW_MODE;
+  if(SERIAL_SETTINGS) {
+    EEPROM.get(36, rawState);
+    delay(5);
+    if(rawState!=0 && rawState!=1) {
+      EEPROM.put(36, RAW_MODE);
+      delay(5);
+      rawState=RAW_MODE;
+      }   
+  } else {
+    rawState=RAW_MODE;
+    delay(5);   
+  }
+
+  if(responseEnabled) {
+    Serial.print("SUCCESS:RM,0:");
+    Serial.println(rawState); 
+    delay(5);
+   }
+  return rawState;
+}
+
+//***SET RAW MODE STATE FUNCTION***//
+
+bool setRawMode(bool rawState,bool responseEnabled) {
+  if(SERIAL_SETTINGS) {
+    (rawState) ? EEPROM.put(36, 1) : EEPROM.put(36, 0);
+    delay(5);    
+  } else {
+    rawState=RAW_MODE;
+    delay(5);    
+  }
+  if(responseEnabled) {
+    Serial.print("SUCCESS:RM,1:");
+    Serial.println(rawState); 
+    delay(5);
+   }
+  return rawState;
 }
 
 //***GET COMP FACTOR VALUES FUNCTION***///
@@ -596,189 +784,6 @@ void setCursorCalibration(bool responseEnabled) {
   delay(10);
 }
 
-//***GET PRESSURE THRESHOLD FUNCTION***//
-void getPressureThreshold(bool responseEnabled) {
-  float pressureNominal = (((float)analogRead(PRESSURE_PIN)) / 1024.0) * 5.0; // Initial neutral pressure transducer analog value [0.0V - 5.0V]
-  int pressureThreshold = PRESSURE_THRESHOLD;
-  if(SERIAL_SETTINGS) {
-    EEPROM.get(32, pressureThreshold);
-    delay(5);
-    if(pressureThreshold<=0 || pressureThreshold>50) {
-      EEPROM.put(32, PRESSURE_THRESHOLD);
-      delay(5);
-      pressureThreshold = PRESSURE_THRESHOLD;
-    }    
-  } else {
-    pressureThreshold = PRESSURE_THRESHOLD;
-  }
-  sipThreshold = pressureNominal + ((pressureThreshold * 5.0)/100.0);    //Create sip pressure threshold value ***Larger values tend to minimize frequency of inadvertent activation
-  puffThreshold = pressureNominal - ((pressureThreshold * 5.0)/100.0);   //Create puff pressure threshold value ***Larger values tend to minimize frequency of inadvertent activation
-  if(responseEnabled) {
-    Serial.print("SUCCESS:PT,0:");
-    Serial.print(pressureThreshold);
-    Serial.print(":");
-    Serial.println(pressureNominal);
-    delay(5);
-  }
-}
-
-//***SET PRESSURE THRESHOLD FUNCTION***//
-
-void setPressureThreshold(int pressureThreshold, bool responseEnabled) {
-  float pressureNominal = (((float)analogRead(PRESSURE_PIN)) / 1024.0) * 5.0; // Initial neutral pressure transducer analog value [0.0V - 5.0V]
-  if(SERIAL_SETTINGS && (pressureThreshold>0 && pressureThreshold<=50)) {
-    EEPROM.put(32, pressureThreshold);
-    delay(5); 
-  } else {
-    pressureThreshold = PRESSURE_THRESHOLD;
-    delay(5); 
-  }
-  sipThreshold = pressureNominal + ((pressureThreshold * 5.0)/100.0);    //Create sip pressure threshold value ***Larger values tend to minimize frequency of inadvertent activation
-  puffThreshold = pressureNominal - ((pressureThreshold * 5.0)/100.0);   //Create puff pressure threshold value ***Larger values tend to minimize frequency of inadvertent activation
-  if(responseEnabled) {
-    Serial.print("SUCCESS:PT,1:");
-    Serial.print(pressureThreshold);
-    Serial.print(":");
-    Serial.println(pressureNominal); 
-    delay(5);
-  }
-}
-
-//***GET DEBUG MODE STATE FUNCTION***//
-
-bool getDebugMode(bool responseEnabled) {
-  bool debugState=DEBUG_MODE;
-  if(SERIAL_SETTINGS) {
-    EEPROM.get(34, debugState);
-    delay(5);
-    if(debugState!=0 && debugState!=1) {
-      EEPROM.put(34, DEBUG_MODE);
-      delay(5);
-      debugState=DEBUG_MODE;
-      }   
-  } else {
-    debugState=DEBUG_MODE;
-    delay(5);   
-  }
-
-  if(responseEnabled) {
-    Serial.print("SUCCESS:DM,0:");
-    Serial.println(debugState); 
-    delay(5);
-    if(debugState){
-      sendDebugData();
-    }
-   }
-  return debugState;
-}
-
-//***SET DEBUG MODE STATE FUNCTION***//
-
-bool setDebugMode(bool debugState,bool responseEnabled) {
-  if(SERIAL_SETTINGS) {
-    (debugState) ? EEPROM.put(34, 1) : EEPROM.put(34, 0);
-    delay(5);    
-  } else {
-    debugState=DEBUG_MODE;
-    delay(5);    
-  }
-  if(responseEnabled) {
-    Serial.print("SUCCESS:DM,1:");
-    Serial.println(debugState); 
-    delay(5);
-    if(debugState){
-      sendDebugData();
-    }
-   }
-  return debugState;
-}
-
-//***SEND DEBUG DATA FUNCTION***//
-
-void sendDebugData() {
-  delay(100);
-  Serial.print("LOG:1:"); 
-  Serial.print(xHighNeutral); 
-  Serial.print(","); 
-  Serial.print(xLowNeutral); 
-  Serial.print(",");
-  Serial.print(yHighNeutral); 
-  Serial.print(",");
-  Serial.println(yLowNeutral); 
-  delay(100);
-  Serial.print("LOG:2:"); 
-  Serial.print(xHighMax); 
-  Serial.print(","); 
-  Serial.print(xLowMax); 
-  Serial.print(",");
-  Serial.print(yHighMax); 
-  Serial.print(",");
-  Serial.println(xHighMax); 
-  delay(100);
-}
-
-//***SEND RAW DATA FUNCTION***//
-
-void sendRawData(int x, int y, int action, int xUp, int xDown,int yUp,int yDown) {
-  Serial.print("RAW:1:"); 
-  Serial.print(x); 
-  Serial.print(","); 
-  Serial.print(y); 
-  Serial.print(",");
-  Serial.print(action); 
-  Serial.print(":"); 
-  Serial.print(xUp); 
-  Serial.print(","); 
-  Serial.print(xDown); 
-  Serial.print(",");
-  Serial.print(yUp); 
-  Serial.print(",");
-  Serial.println(yDown); 
-}
-
-//***GET RAW MODE STATE FUNCTION***//
-
-bool getRawMode(bool responseEnabled) {
-  bool rawState=RAW_MODE;
-  if(SERIAL_SETTINGS) {
-    EEPROM.get(36, rawState);
-    delay(5);
-    if(rawState!=0 && rawState!=1) {
-      EEPROM.put(36, RAW_MODE);
-      delay(5);
-      rawState=RAW_MODE;
-      }   
-  } else {
-    rawState=RAW_MODE;
-    delay(5);   
-  }
-
-  if(responseEnabled) {
-    Serial.print("SUCCESS:RM,0:");
-    Serial.println(rawState); 
-    delay(5);
-   }
-  return rawState;
-}
-
-//***SET RAW MODE STATE FUNCTION***//
-
-bool setRawMode(bool rawState,bool responseEnabled) {
-  if(SERIAL_SETTINGS) {
-    (rawState) ? EEPROM.put(36, 1) : EEPROM.put(36, 0);
-    delay(5);    
-  } else {
-    rawState=RAW_MODE;
-    delay(5);    
-  }
-  if(responseEnabled) {
-    Serial.print("SUCCESS:RM,1:");
-    Serial.println(rawState); 
-    delay(5);
-   }
-  return rawState;
-}
-
 //***GET BUTTON MAPPING FUNCTION***//
 
 void getButtonMapping(bool responseEnabled) {
@@ -846,10 +851,19 @@ void factoryReset(bool responseEnabled) {
     delay(10);  
     setButtonMapping(defaultButtonMapping,false);
     delay(10);
-    
-    cursorSpeedCounter=SPEED_COUNTER;
+
+    //Set the default values that are stored in EEPROM
+    cursorSpeedCounter = SPEED_COUNTER; 
     debugModeEnabled=DEBUG_MODE;  
     rawModeEnabled=RAW_MODE;
+
+    getCompFactor();                                          
+    delay(10);
+    cursorDelay = cursorParams[cursorSpeedCounter]._delay;
+    cursorFactor = cursorParams[cursorSpeedCounter]._factor;
+    cursorMaxSpeed = cursorParams[cursorSpeedCounter]._maxSpeed;
+    delay(10);
+
     }
 
   if(responseEnabled) {
@@ -1133,7 +1147,7 @@ void performButtonAction(int actionButtonNumber) {
         break;
       }
       case 5: {
-        //CursorInitialization: Perform cursor manual home initialization to reset default value of FSR's if puff counter value is more than 750 ( 5 second Long Puff )
+        //Cursor Initialization: Perform cursor manual home initialization to reset default value of FSR's if puff counter value is more than 750 ( 5 second Long Puff )
         clearButtonAction();
         ledClear();
         ledBlink(4, 350, 3); 
@@ -1142,7 +1156,7 @@ void performButtonAction(int actionButtonNumber) {
         break;
       }
       case 6: {
-        //CursorCalibration: Perform cursor Calibration to reset default value of FSR's if puff counter value is more than 750 ( 5 second Long Puff )
+        //Cursor Calibration: Perform cursor Calibration to reset default value of FSR's if puff counter value is more than 750 ( 5 second Long Puff )
         clearButtonAction();
         ledClear();
         setCursorCalibration(false);
