@@ -30,6 +30,7 @@ import com.mmc.lipsyncconnect.Fragments.DebugFragment;
 import com.mmc.lipsyncconnect.Fragments.FactoryResetFragment;
 import com.mmc.lipsyncconnect.Fragments.GamingDeadzoneFragment;
 import com.mmc.lipsyncconnect.Fragments.GamingMappingFragment;
+import com.mmc.lipsyncconnect.Fragments.MouseMappingFragment;
 import com.mmc.lipsyncconnect.Fragments.PressureThresholdFragment;
 import com.mmc.lipsyncconnect.Fragments.VersionFragment;
 import com.mmc.lipsyncconnect.R;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity
         VersionFragment.OnVersionFragmentListener,
         FactoryResetFragment.OnFactoryResetFragmentListener,
         MouseSensitivityFragment.OnMouseSensitivityFragmentListener,
+        MouseMappingFragment.OnMouseMappingFragmentListener,
         GamingSensitivityFragment.OnGamingSensitivityFragmentListener,
         GamingMappingFragment.OnGamingMappingFragmentListener,
         GamingButtonModeFragment.OnGamingButtonModeFragmentListener,
@@ -68,6 +70,7 @@ public class MainActivity extends AppCompatActivity
     private MouseFragment mouseFragment;
     private GamingFragment gamingFragment;
     private MouseSensitivityFragment mouseSensitivityFragment;
+    private MouseMappingFragment mouseMappingFragment;
     private GamingSensitivityFragment gamingSensitivityFragment;
     private GamingMappingFragment gamingMappingFragment;
     private GamingButtonModeFragment gamingButtonModeFragment;
@@ -242,7 +245,7 @@ public class MainActivity extends AppCompatActivity
             String[] actionList = commandList[2].split(",");
             if (commandList[0].equals(getString(R.string.log_res_command))) {
                 if(commandList[1].equals(getString(R.string.log_initialization_res_command))){
-                    onUpdateDataText("xHNeutral:"+actionList[0]+",xLNeutral:"+actionList[1]+",yHNeutral:"+actionList[2]+",yLNeutral:"+actionList[3]);
+                    onUpdateDataText("xHNt:"+actionList[0]+",xLNt:"+actionList[1]+",yHNt:"+actionList[2]+",yLNt:"+actionList[3]);
                     sendCommand="";
                 } else if (commandList[1].equals(getString(R.string.log_calibration_res_command))){
                     onUpdateDataText("xHMax:"+actionList[0]+",xLMax:"+actionList[1]+",yHMax:"+actionList[2]+",yLMax:"+actionList[3]);
@@ -520,6 +523,10 @@ public class MainActivity extends AppCompatActivity
                     mouseSensitivityFragment =  (MouseSensitivityFragment)getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
                     mouseSensitivityFragment.setMouseSensitivityChangeText(changeText);
                     Log.v("Fragment", "MouseSensitivityFragment");
+                } else if (currentFragment instanceof MouseMappingFragment) {
+                    mouseMappingFragment =  (MouseMappingFragment) getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
+                    mouseMappingFragment.setMouseMappingChangeText(changeText);
+                    Log.v("Fragment", "MouseMappingFragment");
                 } else if (currentFragment instanceof GamingSensitivityFragment) {
                     gamingSensitivityFragment =  (GamingSensitivityFragment) getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
                     gamingSensitivityFragment.setGamingSensitivityChangeText(changeText);
@@ -597,7 +604,11 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void run() {
                 currentFragment = getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
-                if (currentFragment instanceof GamingMappingFragment) {
+                if (currentFragment instanceof MouseMappingFragment) {
+                    mouseMappingFragment =  (MouseMappingFragment) getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
+                    mouseMappingFragment.setMouseMappingSpinnerSelections(mapping);
+                    Log.v("Fragment", "MouseMappingFragment");
+                } else if (currentFragment instanceof GamingMappingFragment) {
                     gamingMappingFragment =  (GamingMappingFragment) getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
                     gamingMappingFragment.setGamingMappingSpinnerSelections(mapping);
                     Log.v("Fragment", "GamingMappingFragment");
@@ -645,6 +656,10 @@ public class MainActivity extends AppCompatActivity
                     mouseSensitivityFragment =  (MouseSensitivityFragment)getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
                     mouseSensitivityFragment.setMouseSensitivityStatusText(statusText);
                     Log.v("Fragment", "MouseSensitivityFragment");
+                } else if (currentFragment instanceof MouseMappingFragment) {
+                    mouseMappingFragment =  (MouseMappingFragment) getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
+                    mouseMappingFragment.setMouseMappingStatusText(statusText);
+                    Log.v("Fragment", "MouseMappingFragment");
                 } else if (currentFragment instanceof GamingSensitivityFragment) {
                     gamingSensitivityFragment =  (GamingSensitivityFragment) getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
                     gamingSensitivityFragment.setGamingSensitivityStatusText(statusText);
@@ -702,6 +717,21 @@ public class MainActivity extends AppCompatActivity
                 return true;
         }
         return false;
+    }
+
+    @Override
+    public void setMouseMappingSpinnerSelections(String text) {
+
+    }
+
+    @Override
+    public void setMouseMappingChangeText(String text) {
+
+    }
+
+    @Override
+    public void setMouseMappingStatusText(String text) {
+
     }
 
     @Override

@@ -1,13 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/gamingMappingFragmentLayout"
+    android:id="@+id/mouseMappingFragmentLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context=".Fragments.GamingMappingFragment">
+    tools:context=".Fragments.MouseMappingFragment">
     <LinearLayout
-        android:id="@+id/gamingMappingFragmentTop"
+        android:id="@+id/mouseMappingFragmentTop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="0dp"
@@ -15,25 +15,25 @@
         android:gravity="center"
         tools:ignore="MissingConstraints">
         <TextView
-            android:id="@+id/gamingMappingChangeTextView"
+            android:id="@+id/mouseMappingChangeTextView"
             android:layout_width="match_parent"
             android:layout_height="50dip"
             android:gravity="center"
             android:padding="16dip"
             android:textStyle="bold"
-            android:text="@string/gaming_mapping_fragment_default_change_text"
+            android:text="@string/mouse_mapping_fragment_default_change_text"
             android:background="@color/colorPrimaryLight" />
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/gamingMappingFragmentMiddle"
+        android:id="@+id/mouseMappingFragmentMiddle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_below="@id/gamingMappingFragmentTop"
+        android:layout_below="@id/mouseMappingFragmentTop"
         android:layout_marginBottom="0dp"
         android:orientation="vertical">
         <LinearLayout
-            android:id="@+id/gamingMappingFragmentShortPuff"
+            android:id="@+id/mouseMappingFragmentShortPuff"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -42,7 +42,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="2">
                 <TextView
-                    android:id="@+id/gamingMappingFragmentShortPuffAction"
+                    android:id="@+id/mouseMappingFragmentShortPuffAction"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="18dip"
@@ -56,24 +56,24 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
                 <Spinner
-                    android:id="@+id/gamingMappingFragmentShortPuffSpinner"
+                    android:id="@+id/mouseMappingFragmentShortPuffSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/spinnerStyle" />
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/gamingMappingFragmentShortSip"
+            android:id="@+id/mouseMappingFragmentShortSip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/gamingMappingFragmentShortPuff"
+            android:layout_below="@id/mouseMappingFragmentShortPuff"
             android:orientation="horizontal">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="2">
                 <TextView
-                    android:id="@+id/gamingMappingFragmentShortSipAction"
+                    android:id="@+id/mouseMappingFragmentShortSipAction"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="18dip"
@@ -87,24 +87,24 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
                 <Spinner
-                    android:id="@+id/gamingMappingFragmentShortSipSpinner"
+                    android:id="@+id/mouseMappingFragmentShortSipSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/spinnerStyle"/>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/gamingMappingFragmentLongPuff"
+            android:id="@+id/mouseMappingFragmentLongPuff"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/gamingMappingFragmentShortSip"
+            android:layout_below="@id/mouseMappingFragmentShortSip"
             android:orientation="horizontal">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="2">
                 <TextView
-                    android:id="@+id/gamingMappingFragmentLongPuffAction"
+                    android:id="@+id/mouseMappingFragmentLongPuffAction"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="18dip"
@@ -118,25 +118,24 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
                 <Spinner
-                android:id="@+id/gamingMappingFragmentLongPuffSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/spinnerStyle"/>
+                    android:id="@+id/mouseMappingFragmentLongPuffSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/spinnerStyle"/>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/gamingMappingFragmentLongSip"
+            android:id="@+id/mouseMappingFragmentLongSip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryLight"
-            android:layout_below="@id/gamingMappingFragmentLongPuff"
+            android:layout_below="@id/mouseMappingFragmentLongPuff"
             android:orientation="horizontal">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="2">
                 <TextView
-                    android:id="@+id/gamingMappingFragmentLongSipAction"
+                    android:id="@+id/mouseMappingFragmentLongSipAction"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="18dip"
@@ -150,25 +149,25 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
                 <Spinner
-                android:id="@+id/gamingMappingFragmentLongSipSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/spinnerStyle"
-                android:layout_weight="3" />
+                    android:id="@+id/mouseMappingFragmentLongSipSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/spinnerStyle"
+                    android:layout_weight="3" />
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/gamingMappingFragmentVeryLongPuff"
+            android:id="@+id/mouseMappingFragmentVeryLongPuff"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/gamingMappingFragmentLongSip"
+            android:layout_below="@id/mouseMappingFragmentLongSip"
             android:orientation="horizontal">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="2">
                 <TextView
-                    android:id="@+id/gamingMappingFragmentVeryLongPuffAction"
+                    android:id="@+id/mouseMappingFragmentVeryLongPuffAction"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="18dip"
@@ -182,24 +181,24 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
                 <Spinner
-                android:id="@+id/gamingMappingFragmentVeryLongPuffSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/spinnerStyle"/>
+                    android:id="@+id/mouseMappingFragmentVeryLongPuffSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/spinnerStyle"/>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/gamingMappingFragmentVeryLongSip"
+            android:id="@+id/mouseMappingFragmentVeryLongSip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/gamingMappingFragmentVeryLongPuff"
+            android:layout_below="@id/mouseMappingFragmentVeryLongPuff"
             android:orientation="horizontal">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="2">
                 <TextView
-                    android:id="@+id/gamingMappingFragmentVeryLongSipAction"
+                    android:id="@+id/mouseMappingFragmentVeryLongSipAction"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="18dip"
@@ -213,15 +212,15 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
                 <Spinner
-                android:id="@+id/gamingMappingFragmentVeryLongSipSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/spinnerStyle"/>
+                    android:id="@+id/mouseMappingFragmentVeryLongSipSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/spinnerStyle"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/gamingMappingFragmentBottom"
+        android:id="@+id/mouseMappingFragmentBottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -229,31 +228,31 @@
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
         <LinearLayout
-            android:id="@+id/gamingMappingFragmentBottom1"
+            android:id="@+id/mouseMappingFragmentBottom1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/fragment_left_padding"
             android:paddingRight="@dimen/fragment_right_padding">
             <Button
-                android:id="@+id/gamingMappingSetButton"
+                android:id="@+id/mouseMappingSetButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
-                android:text="@string/gaming_mapping_fragment_set_button_text"
+                android:text="@string/mouse_mapping_fragment_set_button_text"
                 android:tag="@string/mapping_set_send_command"
                 />
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/gamingMappingFragmentBottom2"
+            android:id="@+id/mouseMappingFragmentBottom2"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:paddingLeft="@dimen/fragment_left_padding"
             android:paddingRight="@dimen/fragment_right_padding"
             android:background="@color/colorPrimaryLight">
             <TextView
-                android:id="@+id/gamingMappingStatusTextView"
+                android:id="@+id/mouseMappingStatusTextView"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:padding="16dip"

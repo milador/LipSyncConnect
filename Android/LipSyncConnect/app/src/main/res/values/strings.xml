@@ -106,6 +106,35 @@
     <string name="mapping_fragment_very_long_puff_action_text">Very Long Puff:</string>
     <string name="mapping_fragment_very_long_sip_action_text">Very Long Sip:</string>
 
+    <string-array name="mouse_mapping_fragment_button_main_titles">
+        <item>Left Click</item>
+        <item>Right Click</item>
+        <item>Drag</item>
+        <item>Scroll</item>
+        <item>Middle Click</item>
+        <item>Initialization</item>
+        <item>Calibration</item>
+    </string-array>
+    <string-array name="mouse_mapping_fragment_button_secondary_titles">
+        <item>Tap</item>
+        <item>Tap-and-hold</item>
+        <item>Press+Hold left</item>
+        <item>Scroll</item>
+        <item>Middle Click</item>
+        <item>Initialize FSRs</item>
+        <item>Calibrate FSRs</item>
+    </string-array>
+
+    <string-array name="mouse_mapping_fragment_button_images">
+        <item>@drawable/mapping_left_click</item>
+        <item>@drawable/mapping_right_click</item>
+        <item>@drawable/mapping_drag</item>
+        <item>@drawable/mapping_scroll</item>
+        <item>@drawable/mapping_middle_click</item>
+        <item>@drawable/mapping_initialization</item>
+        <item>@drawable/mapping_calibration</item>
+    </string-array>
+
     <string-array name="gaming_mapping_fragment_button_main_titles">
         <item>Button 1</item>
         <item>Button 2</item>
@@ -359,12 +388,12 @@
 
     <!-- Set bluetooth mode value if received "BT,1" -->
     <string name="ble_mode_set_send_command">BT,1</string>
-    <string name="ble_mode_zero_set_send_command">0</string>
-    <string name="ble_mode_one_set_send_command">1</string>
-    <string name="ble_mode_two_set_send_command">2</string>
-    <string name="ble_mode_three_set_send_command">3</string>
+    <string name="ble_mode_mouse_set_send_command">0</string>
+    <string name="ble_mode_keyboard_set_send_command">1</string>
+    <string name="ble_mode_joystick_set_send_command">2</string>
+    <string name="ble_mode_mouse_keyboard_send_command">3</string>
 
-    <string name="ble_mode_set_res_command">BT,1:1</string>
+    <string name="ble_wireless_set_res_command">BT,1:1</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

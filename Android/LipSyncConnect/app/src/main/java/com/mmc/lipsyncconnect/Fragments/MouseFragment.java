@@ -43,14 +43,26 @@ public class MouseFragment extends Fragment {
 
     private MainFragment mMainFragment;
     // Log
+    private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
     private final static String MOUSE_FRAGMENT_TAG = MouseFragment.class.getSimpleName();
     private final static String MOUSE_SENSITIVITY_FRAGMENT_TAG = MouseSensitivityFragment.class.getSimpleName();
+    private final static String MOUSE_MAPPING_FRAGMENT_TAG = MouseMappingFragment.class.getSimpleName();
     private final static String MOUSE_INITIALIZATION_FRAGMENT_TAG = InitializationFragment.class.getSimpleName();
-    private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
+    private final static String MOUSE_CALIBRATION_FRAGMENT_TAG =CalibrationFragment.class.getSimpleName();
+    private final static String MOUSE_PRESSURE_THRESHOLD_FRAGMENT_TAG =PressureThresholdFragment.class.getSimpleName();
+    private final static String MOUSE_DEBUG_FRAGMENT_TAG =DebugFragment.class.getSimpleName();
+    private final static String MOUSE_FACTORY_RESET_FRAGMENT_TAG =FactoryResetFragment.class.getSimpleName();
+    private final static String MOUSE_VERSION_FRAGMENT_TAG =VersionFragment.class.getSimpleName();
 
     private static final int kModule_Sensitivity = 0;
-    private static final int kModule_Initialization = 1;
-    private static final int kNumModules = 2;
+    private static final int kModule_Mapping = 1;
+    private static final int kModule_Initialization = 2;
+    private static final int kModule_Calibration = 3;
+    private static final int kModule_PressureThreshold = 4;
+    private static final int kModule_Debug = 5;
+    private static final int kModule_FactoryReset = 6;
+    private static final int kModule_Version = 7;
+    private static final int kNumModules = 8;
 
     private TextView mouseChangeTextView;
     private TextView mouseStatusTextView;
@@ -60,7 +72,13 @@ public class MouseFragment extends Fragment {
 
 
     private WeakReference<MouseSensitivityFragment> mWeakMouseSensitivityFragment = null;
+    private WeakReference<MouseMappingFragment> mWeakMouseMappingFragment = null;
     private WeakReference<InitializationFragment> mWeakInitializationFragment = null;
+    private WeakReference<CalibrationFragment> mWeakCalibrationFragment = null;
+    private WeakReference<PressureThresholdFragment> mWeakPressureThresholdFragment = null;
+    private WeakReference<DebugFragment> mWeakDebugFragment = null;
+    private WeakReference<VersionFragment> mWeakVersionFragment = null;
+    private WeakReference<FactoryResetFragment> mWeakFactoryResetFragment = null;
 
     private MouseFragment.OnMouseFragmentListener mListener;
 
@@ -138,12 +156,48 @@ public class MouseFragment extends Fragment {
                                     fragmentTag = MOUSE_SENSITIVITY_FRAGMENT_TAG;
                                     mWeakMouseSensitivityFragment = new WeakReference<>(mouseSensitivityFragment);
                                     break;
+                                case kModule_Mapping:
+                                    MouseMappingFragment mouseMappingFragment = MouseMappingFragment.newInstance();
+                                    fragment = mouseMappingFragment;
+                                    fragmentTag = MOUSE_MAPPING_FRAGMENT_TAG;
+                                    mWeakMouseMappingFragment= new WeakReference<>(mouseMappingFragment);
+                                    break;
                                 case kModule_Initialization:
                                     InitializationFragment initializationFragment = InitializationFragment.newInstance();
                                     fragment = initializationFragment;
                                     //fragmentTag = getString(R.string.mouse_initialization_fragment_tag);
                                     fragmentTag = MOUSE_INITIALIZATION_FRAGMENT_TAG;
                                     mWeakInitializationFragment= new WeakReference<>(initializationFragment);
+                                    break;
+                                case kModule_Calibration:
+                                    CalibrationFragment calibrationFragment = CalibrationFragment.newInstance();
+                                    fragment = calibrationFragment;
+                                    fragmentTag = MOUSE_CALIBRATION_FRAGMENT_TAG;
+                                    mWeakCalibrationFragment = new WeakReference<>(calibrationFragment);
+                                    break;
+                                case kModule_PressureThreshold:
+                                    PressureThresholdFragment pressureThresholdFragment = PressureThresholdFragment.newInstance();
+                                    fragment = pressureThresholdFragment;
+                                    fragmentTag = MOUSE_PRESSURE_THRESHOLD_FRAGMENT_TAG;
+                                    mWeakPressureThresholdFragment = new WeakReference<>(pressureThresholdFragment);
+                                    break;
+                                case kModule_Debug:
+                                    DebugFragment debugFragment = DebugFragment.newInstance();
+                                    fragment = debugFragment;
+                                    fragmentTag = MOUSE_DEBUG_FRAGMENT_TAG;
+                                    mWeakDebugFragment = new WeakReference<>(debugFragment);
+                                    break;
+                                case kModule_FactoryReset:
+                                    FactoryResetFragment factoryResetFragment = FactoryResetFragment.newInstance();
+                                    fragment = factoryResetFragment;
+                                    fragmentTag = MOUSE_FACTORY_RESET_FRAGMENT_TAG;
+                                    mWeakFactoryResetFragment = new WeakReference<>(factoryResetFragment);
+                                    break;
+                                case kModule_Version:
+                                    VersionFragment versionFragment = VersionFragment.newInstance();
+                                    fragment = versionFragment;
+                                    fragmentTag = MOUSE_VERSION_FRAGMENT_TAG;
+                                    mWeakVersionFragment = new WeakReference<>(versionFragment);
                                     break;
                             }
 
@@ -360,10 +414,17 @@ public class MouseFragment extends Fragment {
     // region Adapter
     private static class ControllerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         // Config
-        private static final int[] kModuleTitleKeys = {R.string.mouse_sensitivity_fragment_title, R.string.initialization_fragment_title};
-
+        private static final int[] kModuleTitleKeys = {
+                R.string.mouse_sensitivity_fragment_title,
+                R.string.mouse_mapping_fragment_title,
+                R.string.initialization_fragment_title,
+                R.string.calibration_fragment_title,
+                R.string.pressure_threshold_fragment_title,
+                R.string.debug_fragment_title,
+                R.string.factory_reset_fragment_title,
+                R.string.version_fragment_title};
         // Constants
-        private static final int kCellType_ModuleCell = 2;
+        private static final int kCellType_ModuleCell = 8;
 
         private static final int kModuleCellsStartPosition = 0;
 
