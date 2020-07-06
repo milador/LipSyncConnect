@@ -206,12 +206,14 @@ public class GamingButtonModeFragment extends Fragment {
             gamingButtonModeStatusTextView.setText(getString(R.string.attached_status_text));
         } else {
             gamingButtonModeStatusTextView.setText(getString(R.string.default_status_text));
+            /*
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             mMainFragment = new MainFragment();
             fragmentTransaction.replace(R.id.contentFragmentLayout, mMainFragment,MAIN_FRAGMENT_TAG);
             fragmentTransaction.addToBackStack(MAIN_FRAGMENT_TAG);
             fragmentTransaction.commit();
+             */
         }
         if (mListener.onIsArduinoOpened()) {
             new AsyncSendCheck().execute(getString(R.string.button_mode_send_command));

@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -71,7 +72,7 @@ public class MacroBluetoothConfigFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.wireless_bluetooth_config_fragment, container, false);
+        View view = inflater.inflate(R.layout.macro_bluetooth_config_fragment, container, false);
         return view;
     }
 
@@ -83,7 +84,7 @@ public class MacroBluetoothConfigFragment extends Fragment {
         macroBluetoothConfigStatusTextView = (TextView) view.findViewById(R.id.macroBluetoothConfigStatusTextView);
         macroBluetoothConfigButton = (Button) view.findViewById(R.id.macroBluetoothConfigButton);
         macroBluetoothConfigButton.setOnTouchListener(mButtonTouchListener);
-        setActionBarTitle(R.string.wireless_bluetooth_config_fragment_title);
+        setActionBarTitle(R.string.macro_bluetooth_config_fragment_title);
     }
 
     protected void setActionBarTitle(int titleStringId) {
@@ -200,12 +201,14 @@ public class MacroBluetoothConfigFragment extends Fragment {
             macroBluetoothConfigStatusTextView.setText(getString(R.string.attached_status_text));
         } else {
             macroBluetoothConfigStatusTextView.setText(getString(R.string.default_status_text));
+            /*
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             mMainFragment = new MainFragment();
             fragmentTransaction.replace(R.id.contentFragmentLayout, mMainFragment,MAIN_FRAGMENT_TAG);
             fragmentTransaction.addToBackStack(MAIN_FRAGMENT_TAG);
             fragmentTransaction.commit();
+             */
         }
         if (mListener.onIsArduinoOpened()) {
             new MacroBluetoothConfigFragment.AsyncSendCheck().execute(getString(R.string.bluetooth_config_send_command));

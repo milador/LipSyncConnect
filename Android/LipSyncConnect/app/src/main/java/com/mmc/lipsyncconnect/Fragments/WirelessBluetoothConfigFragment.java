@@ -200,12 +200,14 @@ public class WirelessBluetoothConfigFragment extends Fragment {
             wirelessBluetoothConfigStatusTextView.setText(getString(R.string.attached_status_text));
         } else {
             wirelessBluetoothConfigStatusTextView.setText(getString(R.string.default_status_text));
+            /*
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             mMainFragment = new MainFragment();
             fragmentTransaction.replace(R.id.contentFragmentLayout, mMainFragment,MAIN_FRAGMENT_TAG);
             fragmentTransaction.addToBackStack(MAIN_FRAGMENT_TAG);
             fragmentTransaction.commit();
+             */
         }
         if (mListener.onIsArduinoOpened()) {
             new WirelessBluetoothConfigFragment.AsyncSendCheck().execute(getString(R.string.bluetooth_config_send_command));

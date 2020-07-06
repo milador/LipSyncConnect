@@ -167,19 +167,6 @@ public class MouseSensitivityFragment extends Fragment {
         }
     }
 
-    /*private void onSendCheck(String command) {
-        boolean enableSending = true;
-        while (enableSending){
-            if(mListener.onIsArduinoSending()){
-                enableSending=true;
-            } else {
-                mListener.onSendCommand(command);
-                enableSending=false;
-                break;
-            }
-        }
-    }*/
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -219,12 +206,14 @@ public class MouseSensitivityFragment extends Fragment {
             mouseSensitivityStatusTextView.setText(getString(R.string.attached_status_text));
         } else {
             mouseSensitivityStatusTextView.setText(getString(R.string.default_status_text));
+            /*
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             mMainFragment = new MainFragment();
             fragmentTransaction.replace(R.id.contentFragmentLayout, mMainFragment,MAIN_FRAGMENT_TAG);
             fragmentTransaction.addToBackStack(MAIN_FRAGMENT_TAG);
             fragmentTransaction.commit();
+             */
         }
         if (mListener.onIsArduinoOpened()) {
             new AsyncSendCheck().execute(getString(R.string.sensitivity_send_command));
