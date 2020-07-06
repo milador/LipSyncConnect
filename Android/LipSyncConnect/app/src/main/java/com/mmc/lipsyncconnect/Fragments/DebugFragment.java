@@ -32,6 +32,11 @@ import com.mmc.lipsyncconnect.R;
 
 import static java.lang.Math.max;
 
+/******************************************************************************
+ Copyright (c) 2020. MakersMakingChange.com (info@makersmakingchange.com)
+ Developed by : Milad Hajihassan (milador)
+ ******************************************************************************/
+
 public class DebugFragment extends Fragment {
 
     private MainFragment mMainFragment;

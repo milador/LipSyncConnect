@@ -33,6 +33,11 @@ import com.google.firebase.crashlytics.internal.common.CrashlyticsCore;
 import com.mmc.lipsyncconnect.R;
 import com.mmc.lipsyncconnect.ViewModels.MainViewModel;
 
+/******************************************************************************
+ Copyright (c) 2020. MakersMakingChange.com (info@makersmakingchange.com)
+ Developed by : Milad Hajihassan (milador)
+ ******************************************************************************/
+
 public class MainFragment extends Fragment implements View.OnClickListener {
 
     private MainViewModel mViewModel;

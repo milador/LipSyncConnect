@@ -56,6 +56,11 @@ import com.mmc.lipsyncconnect.Fragments.MouseSensitivityFragment;
 
 import java.io.UnsupportedEncodingException;
 
+/******************************************************************************
+ Copyright (c) 2020. MakersMakingChange.com (info@makersmakingchange.com)
+Developed by : Milad Hajihassan (milador)
+ ******************************************************************************/
+
 public class MainActivity extends AppCompatActivity
     implements
         ArduinoListener,

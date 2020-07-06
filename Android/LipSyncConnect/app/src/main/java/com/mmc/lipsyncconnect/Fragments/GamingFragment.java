@@ -37,6 +37,11 @@ import com.mmc.lipsyncconnect.R;
 
 import java.lang.ref.WeakReference;
 
+/******************************************************************************
+ Copyright (c) 2020. MakersMakingChange.com (info@makersmakingchange.com)
+ Developed by : Milad Hajihassan (milador)
+ ******************************************************************************/
+
 public class GamingFragment extends Fragment {
     // Log
     private final static String GAMING_FRAGMENT_TAG = GamingFragment.class.getSimpleName();

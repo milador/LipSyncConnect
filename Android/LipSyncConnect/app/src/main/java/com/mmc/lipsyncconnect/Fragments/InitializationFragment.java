@@ -26,6 +26,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.mmc.lipsyncconnect.R;
 
+/******************************************************************************
+ Copyright (c) 2020. MakersMakingChange.com (info@makersmakingchange.com)
+ Developed by : Milad Hajihassan (milador)
+ ******************************************************************************/
 
 public class InitializationFragment extends Fragment {
 

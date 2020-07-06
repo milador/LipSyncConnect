@@ -38,6 +38,10 @@ import com.mmc.lipsyncconnect.R;
 
 import java.lang.ref.WeakReference;
 
+/******************************************************************************
+ Copyright (c) 2020. MakersMakingChange.com (info@makersmakingchange.com)
+ Developed by : Milad Hajihassan (milador)
+ ******************************************************************************/
 
 public class MouseFragment extends Fragment {
     // Log

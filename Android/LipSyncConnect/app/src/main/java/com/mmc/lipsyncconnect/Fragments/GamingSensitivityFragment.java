@@ -29,6 +29,10 @@ import android.widget.TextView;
 import com.mmc.lipsyncconnect.R;
 import com.mmc.lipsyncconnect.Activates.MainActivity;
 
+/******************************************************************************
+ Copyright (c) 2020. MakersMakingChange.com (info@makersmakingchange.com)
+ Developed by : Milad Hajihassan (milador)
+ ******************************************************************************/
 
 public class GamingSensitivityFragment extends Fragment{
 

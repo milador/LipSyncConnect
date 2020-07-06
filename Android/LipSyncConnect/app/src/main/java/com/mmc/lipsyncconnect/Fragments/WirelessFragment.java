@@ -34,6 +34,11 @@ import com.mmc.lipsyncconnect.R;
 
 import java.lang.ref.WeakReference;
 
+/******************************************************************************
+ Copyright (c) 2020. MakersMakingChange.com (info@makersmakingchange.com)
+ Developed by : Milad Hajihassan (milador)
+ ******************************************************************************/
+
 public class WirelessFragment extends Fragment {
     // Log
     private final static String WIRELESS_FRAGMENT_TAG = WirelessFragment.class.getSimpleName();

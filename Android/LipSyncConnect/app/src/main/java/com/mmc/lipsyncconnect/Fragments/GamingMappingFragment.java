@@ -37,6 +37,11 @@ import com.mmc.lipsyncconnect.R;
 
 import java.lang.reflect.Array;
 
+/******************************************************************************
+ Copyright (c) 2020. MakersMakingChange.com (info@makersmakingchange.com)
+ Developed by : Milad Hajihassan (milador)
+ ******************************************************************************/
+
 public class GamingMappingFragment extends Fragment {
 
     private MainFragment mMainFragment;
