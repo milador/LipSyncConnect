@@ -22,6 +22,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -197,13 +198,14 @@ public class MainActivity extends AppCompatActivity
             endTime = System.currentTimeMillis();
             long timeDifference = endTime - startTime;
             if (timeDifference >= minProgressTime && result.equals("success")){
+                setEnabledMainButton(true,lipsyncModel);
                 progressDialog.dismiss();
             } else {
                 Handler h = new Handler();
                 h.postDelayed(new Runnable() {
                     public void run() {
-                        progressDialog.dismiss();
                         setEnabledMainButton(true,lipsyncModel);
+                        progressDialog.dismiss();
                     }
                 }, minProgressTime - timeDifference);
             }
@@ -238,7 +240,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onArduinoAttached(UsbDevice device) {
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
         //statusTextView.setText("Lipsync/Arduino attached!");
         onUpdateStatusText(getString(R.string.attached_status_text));
         arduinoIsAttached=true;
@@ -248,7 +249,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onArduinoDetached() {
         //statusTextView.setText("Arduino detached");
+        mMainFragment.setEnabledAllMainButtons(false);
         onUpdateStatusText(getString(R.string.detached_status_text));
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        mMainFragment = new MainFragment();
+        fragmentTransaction.replace(R.id.contentFragmentLayout, mMainFragment,MAIN_FRAGMENT_TAG);
+        fragmentTransaction.addToBackStack(MAIN_FRAGMENT_TAG);
+        fragmentTransaction.commit();
         arduinoIsAttached=false;
     }
 

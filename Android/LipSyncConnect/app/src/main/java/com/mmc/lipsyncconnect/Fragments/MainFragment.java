@@ -250,6 +250,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
         //mListener.onSendCommand(getString(R.string.model_send_command));
         if (mListener.onIsArduinoAttached()) {
+
             mainStatusTextView.setText(getString(R.string.attached_status_text));
         } else {
             mainStatusTextView.setText(getString(R.string.default_status_text));
