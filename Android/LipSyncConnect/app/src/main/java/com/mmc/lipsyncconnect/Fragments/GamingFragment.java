@@ -38,33 +38,28 @@ import com.mmc.lipsyncconnect.R;
 import java.lang.ref.WeakReference;
 
 public class GamingFragment extends Fragment {
-
-    private MainFragment mMainFragment;
-
     // Log
     private final static String GAMING_FRAGMENT_TAG = GamingFragment.class.getSimpleName();
-    private final static String GAMING_SENSITIVITY_FRAGMENT_TAG = GamingSensitivityFragment.class.getSimpleName();
-    private final static String GAMING_MAPPING_FRAGMENT_TAG = GamingMappingFragment.class.getSimpleName();
     private final static String GAMING_BUTTON_MODE_FRAGMENT_TAG = GamingButtonModeFragment.class.getSimpleName();
-    private final static String GAMING_INITIALIZATION_FRAGMENT_TAG =InitializationFragment.class.getSimpleName();
     private final static String GAMING_CALIBRATION_FRAGMENT_TAG =CalibrationFragment.class.getSimpleName();
-    private final static String GAMING_PRESSURE_THRESHOLD_FRAGMENT_TAG =PressureThresholdFragment.class.getSimpleName();
-    private final static String GAMING_DEADZONE_FRAGMENT_TAG =GamingDeadzoneFragment.class.getSimpleName();
+    private final static String GAMING_DEADZONE_FRAGMENT_TAG =DeadzoneFragment.class.getSimpleName();
     private final static String GAMING_DEBUG_FRAGMENT_TAG =DebugFragment.class.getSimpleName();
     private final static String GAMING_FACTORY_RESET_FRAGMENT_TAG =FactoryResetFragment.class.getSimpleName();
+    private final static String GAMING_INITIALIZATION_FRAGMENT_TAG =InitializationFragment.class.getSimpleName();
+    private final static String GAMING_MAPPING_FRAGMENT_TAG =GamingMappingFragment.class.getSimpleName();
+    private final static String GAMING_PRESSURE_THRESHOLD_FRAGMENT_TAG =PressureThresholdFragment.class.getSimpleName();
+    private final static String GAMING_SENSITIVITY_FRAGMENT_TAG = GamingSensitivityFragment.class.getSimpleName();
     private final static String GAMING_VERSION_FRAGMENT_TAG =VersionFragment.class.getSimpleName();
 
-    private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
-
-    private static final int kModule_Sensitivity = 0;
-    private static final int kModule_Mapping = 1;
-    private static final int kModule_ButtonMode = 2;
-    private static final int kModule_Initialization = 3;
-    private static final int kModule_Calibration = 4;
-    private static final int kModule_PressureThreshold = 5;
-    private static final int kModule_Deadzone = 6;
-    private static final int kModule_Debug = 7;
-    private static final int kModule_FactoryReset = 8;
+    private static final int kModule_ButtonMode = 0;
+    private static final int kModule_Calibration = 1;
+    private static final int kModule_Deadzone = 2;
+    private static final int kModule_Debug = 3;
+    private static final int kModule_FactoryReset = 4;
+    private static final int kModule_Initialization = 5;
+    private static final int kModule_Mapping = 6;
+    private static final int kModule_PressureThreshold = 7;
+    private static final int kModule_Sensitivity = 8;
     private static final int kModule_Version = 9;
     private static final int kNumModules = 10;
 
@@ -75,16 +70,16 @@ public class GamingFragment extends Fragment {
     private GamingFragment.ControllerAdapter mControllerAdapter;
 
 
-    private WeakReference<GamingSensitivityFragment> mWeakGamingSensitivityFragment = null;
-    private WeakReference<GamingMappingFragment> mWeakGamingMappingFragment = null;
     private WeakReference<GamingButtonModeFragment> mWeakGamingButtonModeFragment = null;
-    private WeakReference<InitializationFragment> mWeakInitializationFragment = null;
     private WeakReference<CalibrationFragment> mWeakCalibrationFragment = null;
-    private WeakReference<PressureThresholdFragment> mWeakPressureThresholdFragment = null;
-    private WeakReference<GamingDeadzoneFragment> mWeakGamingDeadzoneFragment = null;
+    private WeakReference<DeadzoneFragment> mWeakDeadzoneFragment = null;
     private WeakReference<DebugFragment> mWeakDebugFragment = null;
-    private WeakReference<VersionFragment> mWeakVersionFragment = null;
     private WeakReference<FactoryResetFragment> mWeakFactoryResetFragment = null;
+    private WeakReference<InitializationFragment> mWeakInitializationFragment = null;
+    private WeakReference<GamingMappingFragment> mWeakGamingMappingFragment = null;
+    private WeakReference<PressureThresholdFragment> mWeakPressureThresholdFragment = null;
+    private WeakReference<GamingSensitivityFragment> mWeakGamingSensitivityFragment = null;
+    private WeakReference<VersionFragment> mWeakVersionFragment = null;
 
     private GamingFragment.OnGamingFragmentListener mListener;
 
@@ -154,30 +149,12 @@ public class GamingFragment extends Fragment {
                             Fragment fragment = null;
                             String fragmentTag = null;
                             switch (moduleId) {
-                                case kModule_Sensitivity:
-                                    GamingSensitivityFragment gamingSensitivityFragment = GamingSensitivityFragment.newInstance();
-                                    fragment = gamingSensitivityFragment;
-                                    fragmentTag = GAMING_SENSITIVITY_FRAGMENT_TAG;
-                                    fragmentTag = getString(R.string.gaming_sensitivity_fragment_tag);
-                                    mWeakGamingSensitivityFragment = new WeakReference<>(gamingSensitivityFragment);
-                                    break;
-                                case kModule_Mapping:
-                                    GamingMappingFragment gamingMappingFragment = GamingMappingFragment.newInstance();
-                                    fragment = gamingMappingFragment;
-                                    fragmentTag = GAMING_MAPPING_FRAGMENT_TAG;
-                                    mWeakGamingMappingFragment= new WeakReference<>(gamingMappingFragment);
-                                    break;
                                 case kModule_ButtonMode:
                                     GamingButtonModeFragment gamingButtonModeFragment = GamingButtonModeFragment.newInstance();
                                     fragment = gamingButtonModeFragment;
                                     fragmentTag = GAMING_BUTTON_MODE_FRAGMENT_TAG;
+                                    //fragmentTag = getString(R.string.gaming_button_mode_fragment_tag);
                                     mWeakGamingButtonModeFragment= new WeakReference<>(gamingButtonModeFragment);
-                                    break;
-                                case kModule_Initialization:
-                                    InitializationFragment initializationFragment = InitializationFragment.newInstance();
-                                    fragment = initializationFragment;
-                                    fragmentTag = GAMING_INITIALIZATION_FRAGMENT_TAG;
-                                    mWeakInitializationFragment= new WeakReference<>(initializationFragment);
                                     break;
                                 case kModule_Calibration:
                                     CalibrationFragment calibrationFragment = CalibrationFragment.newInstance();
@@ -185,17 +162,11 @@ public class GamingFragment extends Fragment {
                                     fragmentTag = GAMING_CALIBRATION_FRAGMENT_TAG;
                                     mWeakCalibrationFragment = new WeakReference<>(calibrationFragment);
                                     break;
-                                case kModule_PressureThreshold:
-                                    PressureThresholdFragment pressureThresholdFragment = PressureThresholdFragment.newInstance();
-                                    fragment = pressureThresholdFragment;
-                                    fragmentTag = GAMING_PRESSURE_THRESHOLD_FRAGMENT_TAG;
-                                    mWeakPressureThresholdFragment = new WeakReference<>(pressureThresholdFragment);
-                                    break;
                                 case kModule_Deadzone:
-                                    GamingDeadzoneFragment gamingDeadzoneFragment = GamingDeadzoneFragment.newInstance();
-                                    fragment = gamingDeadzoneFragment;
+                                    DeadzoneFragment deadzoneFragmentFragment = DeadzoneFragment.newInstance();
+                                    fragment = deadzoneFragmentFragment;
                                     fragmentTag = GAMING_DEADZONE_FRAGMENT_TAG;
-                                    mWeakGamingDeadzoneFragment = new WeakReference<>(gamingDeadzoneFragment);
+                                    mWeakDeadzoneFragment = new WeakReference<>(deadzoneFragmentFragment);
                                     break;
                                 case kModule_Debug:
                                     DebugFragment debugFragment = DebugFragment.newInstance();
@@ -208,6 +179,31 @@ public class GamingFragment extends Fragment {
                                     fragment = factoryResetFragment;
                                     fragmentTag = GAMING_FACTORY_RESET_FRAGMENT_TAG;
                                     mWeakFactoryResetFragment = new WeakReference<>(factoryResetFragment);
+                                    break;
+                                case kModule_Initialization:
+                                    InitializationFragment initializationFragment = InitializationFragment.newInstance();
+                                    fragment = initializationFragment;
+                                    fragmentTag = GAMING_INITIALIZATION_FRAGMENT_TAG;
+                                    mWeakInitializationFragment= new WeakReference<>(initializationFragment);
+                                    break;
+                                case kModule_Mapping:
+                                    GamingMappingFragment gamingMappingFragment = GamingMappingFragment.newInstance();
+                                    fragment = gamingMappingFragment;
+                                    fragmentTag = GAMING_MAPPING_FRAGMENT_TAG;
+                                    mWeakGamingMappingFragment= new WeakReference<>(gamingMappingFragment);
+                                    break;
+                                case kModule_PressureThreshold:
+                                    PressureThresholdFragment pressureThresholdFragment = PressureThresholdFragment.newInstance();
+                                    fragment = pressureThresholdFragment;
+                                    fragmentTag = GAMING_PRESSURE_THRESHOLD_FRAGMENT_TAG;
+                                    mWeakPressureThresholdFragment = new WeakReference<>(pressureThresholdFragment);
+                                    break;
+                                case kModule_Sensitivity:
+                                    GamingSensitivityFragment gamingSensitivityFragment = GamingSensitivityFragment.newInstance();
+                                    fragment = gamingSensitivityFragment;
+                                    fragmentTag = GAMING_SENSITIVITY_FRAGMENT_TAG;
+                                    fragmentTag = getString(R.string.gaming_sensitivity_fragment_tag);
+                                    mWeakGamingSensitivityFragment = new WeakReference<>(gamingSensitivityFragment);
                                     break;
                                 case kModule_Version:
                                     VersionFragment versionFragment = VersionFragment.newInstance();
@@ -265,9 +261,7 @@ public class GamingFragment extends Fragment {
         @Override
         protected void onPreExecute(){
             super.onPreExecute();
-            progressDialog = new ProgressDialog(getActivity(),R.style.progressDialogStyle);
-            progressDialog.setCancelable(false);
-            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog = new ProgressDialog(getActivity());
             progressDialog.setMessage("Loading...");
             progressDialog.show();
             startTime = System.currentTimeMillis();
@@ -355,16 +349,11 @@ public class GamingFragment extends Fragment {
             gamingStatusTextView.setText(getString(R.string.attached_status_text));
         } else {
             gamingStatusTextView.setText(getString(R.string.default_status_text));
-            FragmentManager fragmentManager = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            mMainFragment = new MainFragment();
-            fragmentTransaction.replace(R.id.contentFragmentLayout, mMainFragment,MAIN_FRAGMENT_TAG);
-            fragmentTransaction.addToBackStack(MAIN_FRAGMENT_TAG);
-            fragmentTransaction.commit();
         }
         if (mListener.onIsArduinoOpened()) {
             new AsyncSendCheck().execute(getString(R.string.model_send_command));
         } else {
+
         }
     }
 
@@ -402,15 +391,15 @@ public class GamingFragment extends Fragment {
     private static class ControllerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         // Config
         private static final int[] kModuleTitleKeys = {
-                R.string.gaming_sensitivity_fragment_title,
-                R.string.gaming_mapping_fragment_title,
                 R.string.gaming_button_mode_fragment_title,
-                R.string.initialization_fragment_title,
                 R.string.calibration_fragment_title,
-                R.string.pressure_threshold_fragment_title,
-                R.string.gaming_deadzone_fragment_title,
+                R.string.deadzone_fragment_title,
                 R.string.debug_fragment_title,
                 R.string.factory_reset_fragment_title,
+                R.string.initialization_fragment_title,
+                R.string.gaming_mapping_fragment_title,
+                R.string.pressure_threshold_fragment_title,
+                R.string.gaming_sensitivity_fragment_title,
                 R.string.version_fragment_title};
 
         // Constants

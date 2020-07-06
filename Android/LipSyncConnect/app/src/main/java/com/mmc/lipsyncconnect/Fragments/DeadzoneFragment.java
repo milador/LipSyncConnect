@@ -1,9 +1,7 @@
 package com.mmc.lipsyncconnect.Fragments;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -16,8 +14,8 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,26 +27,62 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.mmc.lipsyncconnect.R;
 
-public class FactoryResetFragment extends Fragment {
+public class DeadzoneFragment extends Fragment {
 
     private MainFragment mMainFragment;
 
-    private Button factoryResetButton;
-    private TextView factoryResetChangeTextView;
-    private TextView factoryResetStatusTextView;
-    private ViewGroup factoryResetFragmentLayout;
-    private final static String FACTORY_RESET_FRAGMENT_TAG = FactoryResetFragment.class.getSimpleName();
+    private Button deadzoneSetButton;
+    private Button deadzoneIncButton;
+    private Button deadzoneDecButton;
+    private TextView deadzoneValueTextView;
+    private TextView deadzoneChangeTextView;
+    private TextView deadzoneStatusTextView;
+    private SeekBar deadzoneSeekBar;
+    private ViewGroup deadzoneFragmentLayout;
+    private final static String DEADZONE_FRAGMENT_TAG = DeadzoneFragment.class.getSimpleName();
     private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
 
-    private FactoryResetFragment.OnFactoryResetFragmentListener mListener;
+
+    private final static int DEADZONE_STEP = 1;
+
+    private DeadzoneFragment.OnDeadzoneFragmentListener mListener;
+    SeekBar.OnSeekBarChangeListener mSeekBarChangeListener= new SeekBar.OnSeekBarChangeListener() {
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            final String stringValue = String.valueOf(progress);
+            deadzoneValueTextView.setText(stringValue);
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
+        }
+    };
     View.OnTouchListener mButtonTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent event) {
             final String command = (String) view.getTag();
-            if (event.getAction() == MotionEvent.ACTION_UP) {
+            final int id= view.getId();
+            if (event.getAction() == MotionEvent.ACTION_UP && id== R.id.deadzoneSetButton) {
                 view.setPressed(false);
-                onFactoryResetDialog(command);
-                //new AsyncSendCheck().execute(command);
+                String deadzone = String.valueOf(deadzoneSeekBar.getProgress());
+                new AsyncSendCheck().execute(command+":"+deadzone);
+                view.performClick();
+                return true;
+            } else if (event.getAction() == MotionEvent.ACTION_UP && id==R.id.deadzoneDecButton) {
+                view.setPressed(false);
+                onDecPressureThreshold(DEADZONE_STEP);
+                view.performClick();
+                return true;
+            } else if (event.getAction() == MotionEvent.ACTION_UP && id==R.id.deadzoneIncButton) {
+                view.setPressed(false);
+                onIncPressureThreshold(DEADZONE_STEP);
                 view.performClick();
                 return true;
             }
@@ -57,12 +91,12 @@ public class FactoryResetFragment extends Fragment {
     };
 
 
-    public FactoryResetFragment() {
+    public DeadzoneFragment() {
         // Required empty public constructor
     }
 
-    public static FactoryResetFragment newInstance() {
-        FactoryResetFragment fragment = new FactoryResetFragment();
+    public static DeadzoneFragment newInstance() {
+        DeadzoneFragment fragment = new DeadzoneFragment();
         return fragment;
     }
 
@@ -75,19 +109,27 @@ public class FactoryResetFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.factory_reset_fragment, container, false);
+        View view = inflater.inflate(R.layout.deadzone_fragment, container, false);
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        factoryResetFragmentLayout = view.findViewById(R.id.factoryResetFragmentLayout);
-        factoryResetChangeTextView = (TextView) view.findViewById(R.id.factoryResetChangeTextView);
-        factoryResetStatusTextView = (TextView) view.findViewById(R.id.factoryResetStatusTextView);
-        factoryResetButton = (Button) view.findViewById(R.id.factoryResetButton);
-        factoryResetButton.setOnTouchListener(mButtonTouchListener);
-        setActionBarTitle(R.string.factory_reset_fragment_title);
+        deadzoneFragmentLayout = view.findViewById(R.id.deadzoneFragmentLayout);
+        deadzoneChangeTextView = (TextView) view.findViewById(R.id.deadzoneChangeTextView);
+        deadzoneStatusTextView = (TextView) view.findViewById(R.id.deadzoneStatusTextView);
+        deadzoneSeekBar = (SeekBar) view.findViewById(R.id.deadzoneSeekBar);
+        deadzoneValueTextView = (TextView) view.findViewById(R.id.deadzoneValueTextView);
+        deadzoneSetButton = (Button) view.findViewById(R.id.deadzoneSetButton);
+        deadzoneDecButton = (Button) view.findViewById(R.id.deadzoneDecButton);
+        deadzoneIncButton = (Button) view.findViewById(R.id.deadzoneIncButton);
+        deadzoneSetButton.setOnTouchListener(mButtonTouchListener);
+        deadzoneDecButton.setOnTouchListener(mButtonTouchListener);
+        deadzoneIncButton.setOnTouchListener(mButtonTouchListener);
+        deadzoneSeekBar.setProgress(1);
+        deadzoneSeekBar.setOnSeekBarChangeListener(mSeekBarChangeListener);
+        setActionBarTitle(R.string.deadzone_fragment_title);
     }
 
     protected void setActionBarTitle(int titleStringId) {
@@ -110,31 +152,7 @@ public class FactoryResetFragment extends Fragment {
         }
     }
 
-    private void onFactoryResetDialog (String command) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Factory Reset?")
-                .setMessage("Are you sure, you want to Factory reset Lipsync?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        new AsyncSendCheck().execute(command);
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        //Creating dialog box
-        AlertDialog dialog  = builder.create();
-        dialog.show();
-    }
-
-    private class AsyncSendCheck extends AsyncTask<String, Void, String>
-    {
+    private class AsyncSendCheck extends AsyncTask<String, Void, String> {
 
         boolean enableSending = true;
         private ProgressDialog progressDialog;
@@ -142,7 +160,7 @@ public class FactoryResetFragment extends Fragment {
         long startTime;
         long endTime;
         @Override
-        protected void onPreExecute(){
+        public void onPreExecute(){
             super.onPreExecute();
             progressDialog = new ProgressDialog(getActivity(),R.style.progressDialogStyle);
             progressDialog.setCancelable(false);
@@ -170,6 +188,7 @@ public class FactoryResetFragment extends Fragment {
             }
             return result;
         }
+
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
@@ -191,12 +210,12 @@ public class FactoryResetFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof FactoryResetFragment.OnFactoryResetFragmentListener) {
-            mListener = (FactoryResetFragment.OnFactoryResetFragmentListener) context;
-        } else if (getTargetFragment() instanceof FactoryResetFragment.OnFactoryResetFragmentListener) {
-            mListener = (FactoryResetFragment.OnFactoryResetFragmentListener) getTargetFragment();
+        if (context instanceof DeadzoneFragment.OnDeadzoneFragmentListener) {
+            mListener = (DeadzoneFragment.OnDeadzoneFragmentListener) context;
+        } else if (getTargetFragment() instanceof DeadzoneFragment.OnDeadzoneFragmentListener) {
+            mListener = (DeadzoneFragment.OnDeadzoneFragmentListener) getTargetFragment();
         } else {
-            throw new RuntimeException(context.toString() + " must implement OnFactoryResetFragmentListener");
+            throw new RuntimeException(context.toString() + " must implement OnDeadzoneFragmentListener");
         }
     }
 
@@ -215,18 +234,19 @@ public class FactoryResetFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        ViewTreeObserver observer = factoryResetFragmentLayout.getViewTreeObserver();
+        ViewTreeObserver observer = deadzoneFragmentLayout.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                factoryResetFragmentLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                deadzoneFragmentLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
 
+
         if (mListener.onIsArduinoAttached()) {
-            factoryResetStatusTextView.setText(getString(R.string.attached_status_text));
+            deadzoneStatusTextView.setText(getString(R.string.attached_status_text));
         } else {
-            factoryResetStatusTextView.setText(getString(R.string.default_status_text));
+            deadzoneStatusTextView.setText(getString(R.string.default_status_text));
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             mMainFragment = new MainFragment();
@@ -234,27 +254,55 @@ public class FactoryResetFragment extends Fragment {
             fragmentTransaction.addToBackStack(MAIN_FRAGMENT_TAG);
             fragmentTransaction.commit();
         }
+
         if (mListener.onIsArduinoOpened()) {
-            new AsyncSendCheck().execute(getString(R.string.model_send_command));
+            new AsyncSendCheck().execute(getString(R.string.deadzone_send_command));
         } else {
         }
     }
 
-
-    public void setFactoryResetChangeText(String text) {
-        factoryResetChangeTextView.setText(text);
+    public void onIncPressureThreshold(int step) {
+        int value = deadzoneSeekBar.getProgress();
+        if (value==deadzoneSeekBar.getMax()) {
+            value=deadzoneSeekBar.getMax();
+        } else {
+            value=value+step;
+        }
+        deadzoneValueTextView.setText(String.valueOf(value));
+        deadzoneSeekBar.setProgress(value);
     }
 
-    public void setFactoryResetStatusText(String text) {
-        factoryResetStatusTextView.setText(text);
+    public void onDecPressureThreshold(int step) {
+        int value = deadzoneSeekBar.getProgress();
+        if (value ==1) {
+            value=1;
+        } else {
+            value=value-step;
+        }
+        deadzoneValueTextView.setText(String.valueOf(value));
+        deadzoneSeekBar.setProgress(value);
     }
 
-    public interface OnFactoryResetFragmentListener {
+    public void setDeadzoneSeekBar(int value) {
+        deadzoneSeekBar.setProgress(value);
+    }
+
+
+    public void setDeadzoneChangeText(String text) {
+        deadzoneChangeTextView.setText(text);
+    }
+
+    public void setDeadzoneStatusText(String text) {
+        deadzoneStatusTextView.setText(text);
+    }
+
+    public interface OnDeadzoneFragmentListener {
         void onSendCommand(String command);
         boolean onIsArduinoAttached();
         boolean onIsArduinoOpened();
         boolean onIsArduinoSending();
-        void setFactoryResetChangeText(String text);
-        void setFactoryResetStatusText(String text);
+        void setDeadzoneSeekBar(int value);
+        void setDeadzoneChangeText(String text);
+        void setDeadzoneStatusText(String text);
     }
 }

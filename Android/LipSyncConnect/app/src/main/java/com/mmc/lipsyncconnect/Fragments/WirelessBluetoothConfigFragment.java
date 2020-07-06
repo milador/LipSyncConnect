@@ -1,9 +1,7 @@
 package com.mmc.lipsyncconnect.Fragments;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -17,7 +15,6 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,26 +26,25 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.mmc.lipsyncconnect.R;
 
-public class FactoryResetFragment extends Fragment {
+public class WirelessBluetoothConfigFragment extends Fragment {
 
     private MainFragment mMainFragment;
 
-    private Button factoryResetButton;
-    private TextView factoryResetChangeTextView;
-    private TextView factoryResetStatusTextView;
-    private ViewGroup factoryResetFragmentLayout;
-    private final static String FACTORY_RESET_FRAGMENT_TAG = FactoryResetFragment.class.getSimpleName();
+    private Button wirelessBluetoothConfigButton;
+    private TextView wirelessBluetoothConfigChangeTextView;
+    private TextView wirelessBluetoothConfigStatusTextView;
+    private ViewGroup wirelessBluetoothConfigFragmentLayout;
+    private final static String WIRELESS_BLUETOOTH_CONFIG_FRAGMENT_TAG = WirelessBluetoothConfigFragment.class.getSimpleName();
     private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
 
-    private FactoryResetFragment.OnFactoryResetFragmentListener mListener;
+    private WirelessBluetoothConfigFragment.OnWirelessBluetoothConfigFragmentListener mListener;
     View.OnTouchListener mButtonTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent event) {
             final String command = (String) view.getTag();
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 view.setPressed(false);
-                onFactoryResetDialog(command);
-                //new AsyncSendCheck().execute(command);
+                new WirelessBluetoothConfigFragment.AsyncSendCheck().execute(command);
                 view.performClick();
                 return true;
             }
@@ -57,12 +53,12 @@ public class FactoryResetFragment extends Fragment {
     };
 
 
-    public FactoryResetFragment() {
+    public WirelessBluetoothConfigFragment() {
         // Required empty public constructor
     }
 
-    public static FactoryResetFragment newInstance() {
-        FactoryResetFragment fragment = new FactoryResetFragment();
+    public static WirelessBluetoothConfigFragment newInstance() {
+        WirelessBluetoothConfigFragment fragment = new WirelessBluetoothConfigFragment();
         return fragment;
     }
 
@@ -75,19 +71,19 @@ public class FactoryResetFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.factory_reset_fragment, container, false);
+        View view = inflater.inflate(R.layout.wireless_bluetooth_config_fragment, container, false);
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        factoryResetFragmentLayout = view.findViewById(R.id.factoryResetFragmentLayout);
-        factoryResetChangeTextView = (TextView) view.findViewById(R.id.factoryResetChangeTextView);
-        factoryResetStatusTextView = (TextView) view.findViewById(R.id.factoryResetStatusTextView);
-        factoryResetButton = (Button) view.findViewById(R.id.factoryResetButton);
-        factoryResetButton.setOnTouchListener(mButtonTouchListener);
-        setActionBarTitle(R.string.factory_reset_fragment_title);
+        wirelessBluetoothConfigFragmentLayout = view.findViewById(R.id.wirelessBluetoothConfigFragmentLayout);
+        wirelessBluetoothConfigChangeTextView = (TextView) view.findViewById(R.id.wirelessBluetoothConfigChangeTextView);
+        wirelessBluetoothConfigStatusTextView = (TextView) view.findViewById(R.id.wirelessBluetoothConfigStatusTextView);
+        wirelessBluetoothConfigButton = (Button) view.findViewById(R.id.wirelessBluetoothConfigButton);
+        wirelessBluetoothConfigButton.setOnTouchListener(mButtonTouchListener);
+        setActionBarTitle(R.string.wireless_bluetooth_config_fragment_title);
     }
 
     protected void setActionBarTitle(int titleStringId) {
@@ -108,29 +104,6 @@ public class FactoryResetFragment extends Fragment {
                 actionBar.setDisplayHomeAsUpEnabled(true);
             }
         }
-    }
-
-    private void onFactoryResetDialog (String command) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Factory Reset?")
-                .setMessage("Are you sure, you want to Factory reset Lipsync?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        new AsyncSendCheck().execute(command);
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        //Creating dialog box
-        AlertDialog dialog  = builder.create();
-        dialog.show();
     }
 
     private class AsyncSendCheck extends AsyncTask<String, Void, String>
@@ -191,12 +164,12 @@ public class FactoryResetFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof FactoryResetFragment.OnFactoryResetFragmentListener) {
-            mListener = (FactoryResetFragment.OnFactoryResetFragmentListener) context;
-        } else if (getTargetFragment() instanceof FactoryResetFragment.OnFactoryResetFragmentListener) {
-            mListener = (FactoryResetFragment.OnFactoryResetFragmentListener) getTargetFragment();
+        if (context instanceof WirelessBluetoothConfigFragment.OnWirelessBluetoothConfigFragmentListener) {
+            mListener = (WirelessBluetoothConfigFragment.OnWirelessBluetoothConfigFragmentListener) context;
+        } else if (getTargetFragment() instanceof WirelessBluetoothConfigFragment.OnWirelessBluetoothConfigFragmentListener) {
+            mListener = (WirelessBluetoothConfigFragment.OnWirelessBluetoothConfigFragmentListener) getTargetFragment();
         } else {
-            throw new RuntimeException(context.toString() + " must implement OnFactoryResetFragmentListener");
+            throw new RuntimeException(context.toString() + " must implement OnWirelessBluetoothConfigFragmentListener");
         }
     }
 
@@ -215,18 +188,18 @@ public class FactoryResetFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        ViewTreeObserver observer = factoryResetFragmentLayout.getViewTreeObserver();
+        ViewTreeObserver observer = wirelessBluetoothConfigFragmentLayout.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                factoryResetFragmentLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                wirelessBluetoothConfigFragmentLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
 
         if (mListener.onIsArduinoAttached()) {
-            factoryResetStatusTextView.setText(getString(R.string.attached_status_text));
+            wirelessBluetoothConfigStatusTextView.setText(getString(R.string.attached_status_text));
         } else {
-            factoryResetStatusTextView.setText(getString(R.string.default_status_text));
+            wirelessBluetoothConfigStatusTextView.setText(getString(R.string.default_status_text));
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             mMainFragment = new MainFragment();
@@ -235,26 +208,26 @@ public class FactoryResetFragment extends Fragment {
             fragmentTransaction.commit();
         }
         if (mListener.onIsArduinoOpened()) {
-            new AsyncSendCheck().execute(getString(R.string.model_send_command));
+            new WirelessBluetoothConfigFragment.AsyncSendCheck().execute(getString(R.string.bluetooth_config_send_command));
         } else {
         }
     }
 
 
-    public void setFactoryResetChangeText(String text) {
-        factoryResetChangeTextView.setText(text);
+    public void setWirelessBluetoothConfigChangeText(String text) {
+        wirelessBluetoothConfigChangeTextView.setText(text);
     }
 
-    public void setFactoryResetStatusText(String text) {
-        factoryResetStatusTextView.setText(text);
+    public void setWirelessBluetoothConfigStatusText(String text) {
+        wirelessBluetoothConfigStatusTextView.setText(text);
     }
 
-    public interface OnFactoryResetFragmentListener {
+    public interface OnWirelessBluetoothConfigFragmentListener {
         void onSendCommand(String command);
         boolean onIsArduinoAttached();
         boolean onIsArduinoOpened();
         boolean onIsArduinoSending();
-        void setFactoryResetChangeText(String text);
-        void setFactoryResetStatusText(String text);
+        void setWirelessBluetoothConfigChangeText(String text);
+        void setWirelessBluetoothConfigStatusText(String text);
     }
 }

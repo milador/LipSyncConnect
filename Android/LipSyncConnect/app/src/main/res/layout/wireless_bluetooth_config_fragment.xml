@@ -1,13 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/initializationFragmentLayout"
+    android:id="@+id/wirelessBluetoothConfigFragmentLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context=".Fragments.InitializationFragment">
+    tools:context=".Fragments.WirelessBluetoothConfigFragment">
     <LinearLayout
-        android:id="@+id/initializationFragmentTop"
+        android:id="@+id/wirelessBluetoothConfigFragmentTop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="0dp"
@@ -16,53 +16,53 @@
         android:textStyle="bold"
         tools:ignore="MissingConstraints">
         <TextView
-            android:id="@+id/initializationChangeTextView"
+            android:id="@+id/wirelessBluetoothConfigChangeTextView"
             android:layout_width="match_parent"
             android:layout_height="50dip"
             android:gravity="center"
             android:textStyle="bold"
             android:padding="16dip"
-            android:text="@string/initialization_fragment_default_change_text"
+            android:text="@string/wireless_bluetooth_config_fragment_default_change_text"
             android:background="@color/colorPrimaryLight" />
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/initializationFragmentMiddle1"
+        android:id="@+id/wirelessBluetoothConfigFragmentMiddle1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_below="@id/initializationFragmentTop"
+        android:layout_below="@id/wirelessBluetoothConfigFragmentTop"
         android:paddingLeft="@dimen/fragment_left_padding"
         android:paddingRight="@dimen/fragment_right_padding"
         android:layout_marginBottom="0dp"
         android:orientation="horizontal">
         <Button
-            android:id="@+id/initializationButton"
+            android:id="@+id/wirelessBluetoothConfigButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
-            android:text="@string/initialization_fragment_button_text"
-            android:tag="@string/initialization_set_send_command"
+            android:text="@string/wireless_bluetooth_config_fragment_button_text"
+            android:tag="@string/bluetooth_config_comp_set_send_command"
             />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/initializationFragmentMiddle2"
+        android:id="@+id/wirelessBluetoothConfigFragmentMiddle2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/initializationFragmentTop"
+        android:layout_below="@id/wirelessBluetoothConfigFragmentTop"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/fragment_left_padding"
         android:paddingRight="@dimen/fragment_right_padding">
         <ImageView
-            android:id="@+id/initializationImageView"
+            android:id="@+id/wirelessBluetoothConfigImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/initialization_default" />
+            android:src="@drawable/bluetooth_config_default" />
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/initializationFragmentBottom"
+        android:id="@+id/wirelessBluetoothConfigFragmentBottom"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
@@ -71,7 +71,7 @@
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
         <TextView
-            android:id="@+id/initializationStatusTextView"
+            android:id="@+id/wirelessBluetoothConfigStatusTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="16dip"

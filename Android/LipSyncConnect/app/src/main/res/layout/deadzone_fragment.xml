@@ -1,13 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/gamingDeadzoneFragmentLayout"
+    android:id="@+id/deadzoneFragmentLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context=".Fragments.GamingDeadzoneFragment">
+    tools:context=".Fragments.DeadzoneFragment">
     <LinearLayout
-        android:id="@+id/gamingDeadzoneFragmentTop"
+        android:id="@+id/deadzoneFragmentTop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="0dp"
@@ -15,25 +15,25 @@
         android:gravity="center"
         tools:ignore="MissingConstraints">
         <TextView
-            android:id="@+id/gamingDeadzoneChangeTextView"
+            android:id="@+id/deadzoneChangeTextView"
             android:layout_width="match_parent"
             android:layout_height="50dip"
             android:gravity="center"
             android:textStyle="bold"
             android:padding="16dip"
-            android:text="@string/gaming_deadzone_fragment_default_change_text"
+            android:text="@string/deadzone_fragment_default_change_text"
             android:background="@color/colorPrimaryLight" />
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/gamingDeadzoneFragmentMiddle"
+        android:id="@+id/deadzoneFragmentMiddle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_below="@id/gamingDeadzoneFragmentTop"
+        android:layout_below="@id/deadzoneFragmentTop"
         android:layout_marginBottom="0dp"
         android:orientation="vertical">
         <LinearLayout
-            android:id="@+id/gamingDeadzoneFragmentMiddle1"
+            android:id="@+id/deadzoneFragmentMiddle1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/fragment_left_padding"
@@ -42,7 +42,7 @@
             android:paddingBottom="10dp">
 
             <SeekBar
-                android:id="@+id/gamingDeadzoneSeekBar"
+                android:id="@+id/deadzoneSeekBar"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@color/colorSeekBar"
@@ -54,22 +54,22 @@
                 android:thumbOffset="0dp" />
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/gamingDeadzoneFragmentMiddle2"
+            android:id="@+id/deadzoneFragmentMiddle2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/gamingDeadzoneFragmentMiddle2"
+            android:layout_below="@id/deadzoneFragmentMiddle2"
             android:orientation="horizontal">
             <Button
-                android:id="@+id/gamingDeadzoneDecButton"
+                android:id="@+id/deadzoneDecButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/gaming_deadzone_fragment_dec_button_text"
+                android:text="@string/deadzone_fragment_dec_button_text"
                 android:textStyle="bold"
                 android:layout_weight="1"
                 android:tag="pressureThresholdDec"
                 />
             <TextView
-                android:id="@+id/gamingDeadzoneValueTextView"
+                android:id="@+id/deadzoneValueTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="16dip"
@@ -77,36 +77,36 @@
                 android:textStyle="bold"
                 android:textSize="16dp"
                 android:gravity="center"
-                android:text="@string/gaming_deadzone_fragment_default_value_text"
+                android:text="@string/deadzone_fragment_default_value_text"
                 android:layout_alignParentBottom="true" />
             <Button
-                android:id="@+id/gamingDeadzoneIncButton"
+                android:id="@+id/deadzoneIncButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/gaming_deadzone_fragment_inc_button_text"
+                android:text="@string/deadzone_fragment_inc_button_text"
                 android:layout_weight="1"
                 android:textStyle="bold"
                 android:tag="pressureThresholdInc"
                 />
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/gamingDeadzoneFragmentMiddle3"
+            android:id="@+id/deadzoneFragmentMiddle3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/gamingDeadzoneFragmentMiddle2"
+            android:layout_below="@id/deadzoneFragmentMiddle2"
             android:orientation="horizontal">
             <Button
-                android:id="@+id/gamingDeadzoneSetButton"
+                android:id="@+id/deadzoneSetButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/gaming_deadzone_fragment_set_button_text"
+                android:text="@string/deadzone_fragment_set_button_text"
                 android:tag="@string/deadzone_set_send_command"
                 />
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/gamingDeadzoneFragmentBottom"
+        android:id="@+id/deadzoneFragmentBottom"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
@@ -115,7 +115,7 @@
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
         <TextView
-            android:id="@+id/gamingDeadzoneStatusTextView"
+            android:id="@+id/deadzoneStatusTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="16dip"

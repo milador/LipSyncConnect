@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,62 +26,28 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.mmc.lipsyncconnect.R;
 
-public class GamingDeadzoneFragment extends Fragment {
+public class WirelessSensitivityFragment extends Fragment {
 
     private MainFragment mMainFragment;
 
-    private Button gamingDeadzoneSetButton;
-    private Button gamingDeadzoneIncButton;
-    private Button gamingDeadzoneDecButton;
-    private TextView gamingDeadzoneValueTextView;
-    private TextView gamingDeadzoneChangeTextView;
-    private TextView gamingDeadzoneStatusTextView;
-    private SeekBar gamingDeadzoneSeekBar;
-    private ViewGroup gamingDeadzoneFragmentLayout;
-    private final static String GAMING_DEADZONE_FRAGMENT_TAG = GamingDeadzoneFragment.class.getSimpleName();
+    private Button wirelessSensitivityIncButton;
+    private Button wirelessSensitivityDecButton;
+    private TextView wirelessSensitivityChangeTextView;
+    private TextView wirelessSensitivityStatusTextView;
+    private ViewGroup wirelessSensitivityFragmentLayout;
+    private final static String WIRELESS_SENSITIVITY_FRAGMENT_TAG = WirelessSensitivityFragment.class.getSimpleName();
     private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
 
-
-    private final static int DEADZONE_STEP = 1;
-
-    private GamingDeadzoneFragment.OnGamingDeadzoneFragmentListener mListener;
-    SeekBar.OnSeekBarChangeListener mSeekBarChangeListener= new SeekBar.OnSeekBarChangeListener() {
-
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            final String stringValue = String.valueOf(progress);
-            gamingDeadzoneValueTextView.setText(stringValue);
-        }
-
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-
-        }
-
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-
-        }
-    };
+    private WirelessSensitivityFragment.OnWirelessSensitivityFragmentListener mListener;
     View.OnTouchListener mButtonTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent event) {
             final String command = (String) view.getTag();
-            final int id= view.getId();
-            if (event.getAction() == MotionEvent.ACTION_UP && id== R.id.gamingDeadzoneSetButton) {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
                 view.setPressed(false);
-                String deadzone = String.valueOf(gamingDeadzoneSeekBar.getProgress());
-                new AsyncSendCheck().execute(command+":"+deadzone);
-                view.performClick();
-                return true;
-            } else if (event.getAction() == MotionEvent.ACTION_UP && id==R.id.gamingDeadzoneDecButton) {
-                view.setPressed(false);
-                onDecPressureThreshold(DEADZONE_STEP);
-                view.performClick();
-                return true;
-            } else if (event.getAction() == MotionEvent.ACTION_UP && id==R.id.gamingDeadzoneIncButton) {
-                view.setPressed(false);
-                onIncPressureThreshold(DEADZONE_STEP);
+                //mListener.onSendCommand(command);
+                //onSendCheck(command);
+                new WirelessSensitivityFragment.AsyncSendCheck().execute(command);
                 view.performClick();
                 return true;
             }
@@ -91,12 +56,12 @@ public class GamingDeadzoneFragment extends Fragment {
     };
 
 
-    public GamingDeadzoneFragment() {
+    public WirelessSensitivityFragment() {
         // Required empty public constructor
     }
 
-    public static GamingDeadzoneFragment newInstance() {
-        GamingDeadzoneFragment fragment = new GamingDeadzoneFragment();
+    public static WirelessSensitivityFragment newInstance() {
+        WirelessSensitivityFragment fragment = new WirelessSensitivityFragment();
         return fragment;
     }
 
@@ -109,27 +74,21 @@ public class GamingDeadzoneFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.gaming_deadzone_fragment, container, false);
+        View view = inflater.inflate(R.layout.wireless_sensitivity_fragment, container, false);
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        gamingDeadzoneFragmentLayout = view.findViewById(R.id.gamingDeadzoneFragmentLayout);
-        gamingDeadzoneChangeTextView = (TextView) view.findViewById(R.id.gamingDeadzoneChangeTextView);
-        gamingDeadzoneStatusTextView = (TextView) view.findViewById(R.id.gamingDeadzoneStatusTextView);
-        gamingDeadzoneSeekBar = (SeekBar) view.findViewById(R.id.gamingDeadzoneSeekBar);
-        gamingDeadzoneValueTextView = (TextView) view.findViewById(R.id.gamingDeadzoneValueTextView);
-        gamingDeadzoneSetButton = (Button) view.findViewById(R.id.gamingDeadzoneSetButton);
-        gamingDeadzoneDecButton = (Button) view.findViewById(R.id.gamingDeadzoneDecButton);
-        gamingDeadzoneIncButton = (Button) view.findViewById(R.id.gamingDeadzoneIncButton);
-        gamingDeadzoneSetButton.setOnTouchListener(mButtonTouchListener);
-        gamingDeadzoneDecButton.setOnTouchListener(mButtonTouchListener);
-        gamingDeadzoneIncButton.setOnTouchListener(mButtonTouchListener);
-        gamingDeadzoneSeekBar.setProgress(1);
-        gamingDeadzoneSeekBar.setOnSeekBarChangeListener(mSeekBarChangeListener);
-        setActionBarTitle(R.string.gaming_deadzone_fragment_title);
+        wirelessSensitivityFragmentLayout = view.findViewById(R.id.wirelessSensitivityFragmentLayout);
+        wirelessSensitivityChangeTextView = (TextView) view.findViewById(R.id.wirelessSensitivityChangeTextView);
+        wirelessSensitivityStatusTextView = (TextView) view.findViewById(R.id.wirelessSensitivityStatusTextView);
+        wirelessSensitivityIncButton = (Button) view.findViewById(R.id.wirelessSensitivityIncButton);
+        wirelessSensitivityDecButton = (Button) view.findViewById(R.id.wirelessSensitivityDecButton);
+        wirelessSensitivityIncButton.setOnTouchListener(mButtonTouchListener);
+        wirelessSensitivityDecButton.setOnTouchListener(mButtonTouchListener);
+        setActionBarTitle(R.string.wireless_sensitivity_fragment_title);
     }
 
     protected void setActionBarTitle(int titleStringId) {
@@ -152,7 +111,8 @@ public class GamingDeadzoneFragment extends Fragment {
         }
     }
 
-    private class AsyncSendCheck extends AsyncTask<String, Void, String> {
+    private class AsyncSendCheck extends AsyncTask<String, Void, String>
+    {
 
         boolean enableSending = true;
         private ProgressDialog progressDialog;
@@ -160,7 +120,7 @@ public class GamingDeadzoneFragment extends Fragment {
         long startTime;
         long endTime;
         @Override
-        public void onPreExecute(){
+        protected void onPreExecute(){
             super.onPreExecute();
             progressDialog = new ProgressDialog(getActivity(),R.style.progressDialogStyle);
             progressDialog.setCancelable(false);
@@ -188,7 +148,6 @@ public class GamingDeadzoneFragment extends Fragment {
             }
             return result;
         }
-
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
@@ -207,15 +166,28 @@ public class GamingDeadzoneFragment extends Fragment {
         }
     }
 
+    /*private void onSendCheck(String command) {
+        boolean enableSending = true;
+        while (enableSending){
+            if(mListener.onIsArduinoSending()){
+                enableSending=true;
+            } else {
+                mListener.onSendCommand(command);
+                enableSending=false;
+                break;
+            }
+        }
+    }*/
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof GamingDeadzoneFragment.OnGamingDeadzoneFragmentListener) {
-            mListener = (GamingDeadzoneFragment.OnGamingDeadzoneFragmentListener) context;
-        } else if (getTargetFragment() instanceof GamingDeadzoneFragment.OnGamingDeadzoneFragmentListener) {
-            mListener = (GamingDeadzoneFragment.OnGamingDeadzoneFragmentListener) getTargetFragment();
+        if (context instanceof WirelessSensitivityFragment.OnWirelessSensitivityFragmentListener) {
+            mListener = (WirelessSensitivityFragment.OnWirelessSensitivityFragmentListener) context;
+        } else if (getTargetFragment() instanceof WirelessSensitivityFragment.OnWirelessSensitivityFragmentListener) {
+            mListener = (WirelessSensitivityFragment.OnWirelessSensitivityFragmentListener) getTargetFragment();
         } else {
-            throw new RuntimeException(context.toString() + " must implement OnGamingDeadzoneFragmentListener");
+            throw new RuntimeException(context.toString() + " must implement OnWirelessSensitivityFragmentListener");
         }
     }
 
@@ -228,25 +200,24 @@ public class GamingDeadzoneFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        ViewTreeObserver observer = gamingDeadzoneFragmentLayout.getViewTreeObserver();
+        ViewTreeObserver observer = wirelessSensitivityFragmentLayout.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                gamingDeadzoneFragmentLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                wirelessSensitivityFragmentLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
-
-
         if (mListener.onIsArduinoAttached()) {
-            gamingDeadzoneStatusTextView.setText(getString(R.string.attached_status_text));
+            wirelessSensitivityStatusTextView.setText(getString(R.string.attached_status_text));
         } else {
-            gamingDeadzoneStatusTextView.setText(getString(R.string.default_status_text));
+            wirelessSensitivityStatusTextView.setText(getString(R.string.default_status_text));
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             mMainFragment = new MainFragment();
@@ -254,55 +225,27 @@ public class GamingDeadzoneFragment extends Fragment {
             fragmentTransaction.addToBackStack(MAIN_FRAGMENT_TAG);
             fragmentTransaction.commit();
         }
-
         if (mListener.onIsArduinoOpened()) {
-            new AsyncSendCheck().execute(getString(R.string.deadzone_send_command));
+            new WirelessSensitivityFragment.AsyncSendCheck().execute(getString(R.string.sensitivity_send_command));
         } else {
         }
+
     }
 
-    public void onIncPressureThreshold(int step) {
-        int value = gamingDeadzoneSeekBar.getProgress();
-        if (value==gamingDeadzoneSeekBar.getMax()) {
-            value=gamingDeadzoneSeekBar.getMax();
-        } else {
-            value=value+step;
-        }
-        gamingDeadzoneValueTextView.setText(String.valueOf(value));
-        gamingDeadzoneSeekBar.setProgress(value);
+    public void setWirelessSensitivityChangeText(String text) {
+        wirelessSensitivityChangeTextView.setText(text);
     }
 
-    public void onDecPressureThreshold(int step) {
-        int value = gamingDeadzoneSeekBar.getProgress();
-        if (value ==1) {
-            value=1;
-        } else {
-            value=value-step;
-        }
-        gamingDeadzoneValueTextView.setText(String.valueOf(value));
-        gamingDeadzoneSeekBar.setProgress(value);
+    public void setWirelessSensitivityStatusText(String text) {
+        wirelessSensitivityStatusTextView.setText(text);
     }
 
-    public void setGamingDeadzoneSeekBar(int value) {
-        gamingDeadzoneSeekBar.setProgress(value);
-    }
-
-
-    public void setGamingDeadzoneChangeText(String text) {
-        gamingDeadzoneChangeTextView.setText(text);
-    }
-
-    public void setGamingDeadzoneStatusText(String text) {
-        gamingDeadzoneStatusTextView.setText(text);
-    }
-
-    public interface OnGamingDeadzoneFragmentListener {
+    public interface OnWirelessSensitivityFragmentListener {
         void onSendCommand(String command);
         boolean onIsArduinoAttached();
         boolean onIsArduinoOpened();
         boolean onIsArduinoSending();
-        void setGamingDeadzoneSeekBar(int value);
-        void setGamingDeadzoneChangeText(String text);
-        void setGamingDeadzoneStatusText(String text);
+        void setWirelessSensitivityChangeText(String text);
+        void setWirelessSensitivityStatusText(String text);
     }
 }

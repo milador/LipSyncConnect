@@ -2,12 +2,19 @@ package com.mmc.lipsyncconnect.Fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,69 +30,60 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
-import android.os.Handler;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-
 import com.mmc.lipsyncconnect.R;
 
 import java.lang.ref.WeakReference;
 
-
-public class MouseFragment extends Fragment {
+public class WirelessFragment extends Fragment {
     // Log
-    private final static String MOUSE_FRAGMENT_TAG = MouseFragment.class.getSimpleName();
-    private final static String MOUSE_CALIBRATION_FRAGMENT_TAG =CalibrationFragment.class.getSimpleName();
-    private final static String MOUSE_DEBUG_FRAGMENT_TAG =DebugFragment.class.getSimpleName();
-    private final static String MOUSE_FACTORY_RESET_FRAGMENT_TAG =FactoryResetFragment.class.getSimpleName();
-    private final static String MOUSE_INITIALIZATION_FRAGMENT_TAG =InitializationFragment.class.getSimpleName();
-    private final static String MOUSE_MAPPING_FRAGMENT_TAG =MouseMappingFragment.class.getSimpleName();
-    private final static String MOUSE_PRESSURE_THRESHOLD_FRAGMENT_TAG =PressureThresholdFragment.class.getSimpleName();
-    private final static String MOUSE_SENSITIVITY_FRAGMENT_TAG = MouseSensitivityFragment.class.getSimpleName();
-    private final static String MOUSE_VERSION_FRAGMENT_TAG =VersionFragment.class.getSimpleName();
+    private final static String WIRELESS_FRAGMENT_TAG = WirelessFragment.class.getSimpleName();
+    private final static String WIRELESS_BLUETOOTH_CONFIG_FRAGMENT_TAG = WirelessBluetoothConfigFragment.class.getSimpleName();
+    private final static String WIRELESS_CALIBRATION_FRAGMENT_TAG =CalibrationFragment.class.getSimpleName();
+    private final static String WIRELESS_DEBUG_FRAGMENT_TAG =DebugFragment.class.getSimpleName();
+    private final static String WIRELESS_FACTORY_RESET_FRAGMENT_TAG =FactoryResetFragment.class.getSimpleName();
+    private final static String WIRELESS_INITIALIZATION_FRAGMENT_TAG =InitializationFragment.class.getSimpleName();
+    private final static String WIRELESS_MAPPING_FRAGMENT_TAG =WirelessMappingFragment.class.getSimpleName();
+    private final static String WIRELESS_PRESSURE_THRESHOLD_FRAGMENT_TAG =PressureThresholdFragment.class.getSimpleName();
+    private final static String WIRELESS_SENSITIVITY_FRAGMENT_TAG = WirelessSensitivityFragment.class.getSimpleName();
+    private final static String WIRELESS_VERSION_FRAGMENT_TAG =VersionFragment.class.getSimpleName();
 
-    private static final int kModule_Calibration = 0;
-    private static final int kModule_Debug = 1;
-    private static final int kModule_FactoryReset = 2;
-    private static final int kModule_Initialization = 3;
-    private static final int kModule_Mapping = 4;
-    private static final int kModule_PressureThreshold = 5;
-    private static final int kModule_Sensitivity = 6;
-    private static final int kModule_Version = 7;
-    private static final int kNumModules = 8;
+    private static final int kModule_BluetoothConfig = 0;
+    private static final int kModule_Calibration = 1;
+    private static final int kModule_Debug = 2;
+    private static final int kModule_FactoryReset = 3;
+    private static final int kModule_Initialization = 4;
+    private static final int kModule_Mapping = 5;
+    private static final int kModule_PressureThreshold = 6;
+    private static final int kModule_Sensitivity = 7;
+    private static final int kModule_Version = 8;
+    private static final int kNumModules = 9;
 
-    private TextView mouseChangeTextView;
-    private TextView mouseStatusTextView;
-    private ViewGroup mouseFragmentLayout;
+    private TextView wirelessChangeTextView;
+    private TextView wirelessStatusTextView;
+    private ViewGroup wirelessFragmentLayout;
     // UI
-    private MouseFragment.ControllerAdapter mControllerAdapter;
+    private WirelessFragment.ControllerAdapter mControllerAdapter;
 
 
+    private WeakReference<WirelessBluetoothConfigFragment> mWeakWirelessBluetoothConfigFragment = null;
     private WeakReference<CalibrationFragment> mWeakCalibrationFragment = null;
     private WeakReference<DebugFragment> mWeakDebugFragment = null;
     private WeakReference<FactoryResetFragment> mWeakFactoryResetFragment = null;
     private WeakReference<InitializationFragment> mWeakInitializationFragment = null;
-    private WeakReference<MouseMappingFragment> mWeakMouseMappingFragment = null;
+    private WeakReference<WirelessMappingFragment> mWeakWirelessMappingFragment = null;
     private WeakReference<PressureThresholdFragment> mWeakPressureThresholdFragment = null;
-    private WeakReference<MouseSensitivityFragment> mWeakMouseSensitivityFragment = null;
+    private WeakReference<WirelessSensitivityFragment> mWeakWirelessSensitivityFragment = null;
     private WeakReference<VersionFragment> mWeakVersionFragment = null;
 
-    private MouseFragment.OnMouseFragmentListener mListener;
+    private WirelessFragment.OnWirelessFragmentListener mListener;
 
     // region Fragment Lifecycle
-    public static MouseFragment newInstance(@Nullable String singlePeripheralIdentifier) {
-        MouseFragment fragment = new MouseFragment();
+    public static WirelessFragment newInstance(@Nullable String singlePeripheralIdentifier) {
+        WirelessFragment fragment = new WirelessFragment();
         return fragment;
     }
 
-    public MouseFragment() {
+    public WirelessFragment() {
         // Required empty public constructor
     }
 
@@ -101,7 +99,7 @@ public class MouseFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.mouse_fragment, container, false);
+        View view = inflater.inflate(R.layout.wireless_fragment, container, false);
         return view;
     }
 
@@ -109,17 +107,17 @@ public class MouseFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mouseFragmentLayout = view.findViewById(R.id.mouseFragmentLayout);
-        mouseChangeTextView = (TextView) view.findViewById(R.id.mouseChangeTextView);
-        mouseStatusTextView = (TextView) view.findViewById(R.id.mouseStatusTextView);
+        wirelessFragmentLayout = view.findViewById(R.id.wirelessFragmentLayout);
+        wirelessChangeTextView = (TextView) view.findViewById(R.id.wirelessChangeTextView);
+        wirelessStatusTextView = (TextView) view.findViewById(R.id.wirelessStatusTextView);
         // Update ActionBar
-        setActionBarTitle(R.string.mouse_fragment_title);
+        setActionBarTitle(R.string.wireless_fragment_title);
         // UI
         final Context context = getContext();
         if (context != null) {
 
             // Recycler view
-            RecyclerView recyclerView = view.findViewById(R.id.mouseFragmentRecyclerView);
+            RecyclerView recyclerView = view.findViewById(R.id.wirelessFragmentRecyclerView);
             DividerItemDecoration itemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
             Drawable lineSeparatorDrawable = ContextCompat.getDrawable(context, R.drawable.simpledivideritemdecoration);
             assert lineSeparatorDrawable != null;
@@ -133,8 +131,8 @@ public class MouseFragment extends Fragment {
             ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
 
             // Adapter
-            WeakReference<MouseFragment> weakThis = new WeakReference<>(this);
-            mControllerAdapter = new MouseFragment.ControllerAdapter(context, new MouseFragment.ControllerAdapter.Listener() {
+            WeakReference<WirelessFragment> weakThis = new WeakReference<>(this);
+            mControllerAdapter = new WirelessFragment.ControllerAdapter(context, new WirelessFragment.ControllerAdapter.Listener() {
 
                 @Override
                 public void onModuleSelected(int moduleId) {
@@ -145,59 +143,65 @@ public class MouseFragment extends Fragment {
                             Fragment fragment = null;
                             String fragmentTag = null;
                             switch (moduleId) {
+                                case kModule_BluetoothConfig:
+                                    WirelessBluetoothConfigFragment wirelessBluetoothConfigFragment = WirelessBluetoothConfigFragment.newInstance();
+                                    fragment = wirelessBluetoothConfigFragment;
+                                    fragmentTag = WIRELESS_BLUETOOTH_CONFIG_FRAGMENT_TAG;
+                                    mWeakWirelessBluetoothConfigFragment= new WeakReference<>(wirelessBluetoothConfigFragment);
+                                    break;
                                 case kModule_Calibration:
                                     CalibrationFragment calibrationFragment = CalibrationFragment.newInstance();
                                     fragment = calibrationFragment;
-                                    fragmentTag = MOUSE_CALIBRATION_FRAGMENT_TAG;
+                                    fragmentTag = WIRELESS_CALIBRATION_FRAGMENT_TAG;
                                     mWeakCalibrationFragment = new WeakReference<>(calibrationFragment);
                                     break;
                                 case kModule_Debug:
                                     DebugFragment debugFragment = DebugFragment.newInstance();
                                     fragment = debugFragment;
-                                    fragmentTag = MOUSE_DEBUG_FRAGMENT_TAG;
+                                    fragmentTag = WIRELESS_DEBUG_FRAGMENT_TAG;
                                     mWeakDebugFragment = new WeakReference<>(debugFragment);
                                     break;
                                 case kModule_FactoryReset:
                                     FactoryResetFragment factoryResetFragment = FactoryResetFragment.newInstance();
                                     fragment = factoryResetFragment;
-                                    fragmentTag = MOUSE_FACTORY_RESET_FRAGMENT_TAG;
+                                    fragmentTag = WIRELESS_FACTORY_RESET_FRAGMENT_TAG;
                                     mWeakFactoryResetFragment = new WeakReference<>(factoryResetFragment);
                                     break;
                                 case kModule_Initialization:
                                     InitializationFragment initializationFragment = InitializationFragment.newInstance();
                                     fragment = initializationFragment;
-                                    fragmentTag = MOUSE_INITIALIZATION_FRAGMENT_TAG;
+                                    fragmentTag = WIRELESS_INITIALIZATION_FRAGMENT_TAG;
                                     mWeakInitializationFragment= new WeakReference<>(initializationFragment);
                                     break;
                                 case kModule_Mapping:
-                                    MouseMappingFragment mouseMappingFragment = MouseMappingFragment.newInstance();
-                                    fragment = mouseMappingFragment;
-                                    fragmentTag = MOUSE_MAPPING_FRAGMENT_TAG;
-                                    mWeakMouseMappingFragment= new WeakReference<>(mouseMappingFragment);
+                                    WirelessMappingFragment wirelessMappingFragment = WirelessMappingFragment.newInstance();
+                                    fragment = wirelessMappingFragment;
+                                    fragmentTag = WIRELESS_MAPPING_FRAGMENT_TAG;
+                                    mWeakWirelessMappingFragment= new WeakReference<>(wirelessMappingFragment);
                                     break;
                                 case kModule_PressureThreshold:
                                     PressureThresholdFragment pressureThresholdFragment = PressureThresholdFragment.newInstance();
                                     fragment = pressureThresholdFragment;
-                                    fragmentTag = MOUSE_PRESSURE_THRESHOLD_FRAGMENT_TAG;
+                                    fragmentTag = WIRELESS_PRESSURE_THRESHOLD_FRAGMENT_TAG;
                                     mWeakPressureThresholdFragment = new WeakReference<>(pressureThresholdFragment);
                                     break;
                                 case kModule_Sensitivity:
-                                    MouseSensitivityFragment mouseSensitivityFragment = MouseSensitivityFragment.newInstance();
-                                    fragment = mouseSensitivityFragment;
-                                    fragmentTag = MOUSE_SENSITIVITY_FRAGMENT_TAG;
-                                    fragmentTag = getString(R.string.mouse_sensitivity_fragment_tag);
-                                    mWeakMouseSensitivityFragment = new WeakReference<>(mouseSensitivityFragment);
+                                    WirelessSensitivityFragment wirelessSensitivityFragment = WirelessSensitivityFragment.newInstance();
+                                    fragment = wirelessSensitivityFragment;
+                                    fragmentTag = WIRELESS_SENSITIVITY_FRAGMENT_TAG;
+                                    fragmentTag = getString(R.string.wireless_sensitivity_fragment_tag);
+                                    mWeakWirelessSensitivityFragment = new WeakReference<>(wirelessSensitivityFragment);
                                     break;
                                 case kModule_Version:
                                     VersionFragment versionFragment = VersionFragment.newInstance();
                                     fragment = versionFragment;
-                                    fragmentTag = MOUSE_VERSION_FRAGMENT_TAG;
+                                    fragmentTag = WIRELESS_VERSION_FRAGMENT_TAG;
                                     mWeakVersionFragment = new WeakReference<>(versionFragment);
                                     break;
                             }
 
                             if (fragment != null) {
-                                fragment.setTargetFragment(MouseFragment.this, 0);
+                                fragment.setTargetFragment(WirelessFragment.this, 0);
                                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
                                         .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right, R.anim.slide_in_right, R.anim.slide_out_left)
                                         .replace(R.id.contentFragmentLayout, fragment, fragmentTag);
@@ -289,12 +293,12 @@ public class MouseFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof MouseFragment.OnMouseFragmentListener) {
-            mListener = (MouseFragment.OnMouseFragmentListener) context;
-        } else if (getTargetFragment() instanceof MouseFragment.OnMouseFragmentListener) {
-            mListener = (MouseFragment.OnMouseFragmentListener) getTargetFragment();
+        if (context instanceof WirelessFragment.OnWirelessFragmentListener) {
+            mListener = (WirelessFragment.OnWirelessFragmentListener) context;
+        } else if (getTargetFragment() instanceof WirelessFragment.OnWirelessFragmentListener) {
+            mListener = (WirelessFragment.OnWirelessFragmentListener) getTargetFragment();
         } else {
-            throw new RuntimeException(context.toString() + " must implement OnMouseFragmentListener");
+            throw new RuntimeException(context.toString() + " must implement OnWirelessFragmentListener");
         }
     }
 
@@ -312,29 +316,29 @@ public class MouseFragment extends Fragment {
 
     @Override
     public void onStop() {
-        //Log.d(MOUSE_FRAGMENT_TAG, "onStop");
+        //Log.d(WIRELESS_FRAGMENT_TAG, "onStop");
         super.onStop();
     }
 
     @Override
     public void onResume() {
-        //Log.d(MOUSE_FRAGMENT_TAG, "onResume");
+        //Log.d(WIRELESS_FRAGMENT_TAG, "onResume");
         super.onResume();
         final Context context = getContext();
-        ViewTreeObserver observer = mouseFragmentLayout.getViewTreeObserver();
+        ViewTreeObserver observer = wirelessFragmentLayout.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                mouseFragmentLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                wirelessFragmentLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
         if (mListener.onIsArduinoAttached()) {
-            mouseStatusTextView.setText(getString(R.string.attached_status_text));
+            wirelessStatusTextView.setText(getString(R.string.attached_status_text));
         } else {
-            mouseStatusTextView.setText(getString(R.string.default_status_text));
+            wirelessStatusTextView.setText(getString(R.string.default_status_text));
         }
         if (mListener.onIsArduinoOpened()) {
-            new MouseFragment.AsyncSendCheck().execute(getString(R.string.model_send_command));
+            new WirelessFragment.AsyncSendCheck().execute(getString(R.string.model_send_command));
         } else {
 
         }
@@ -342,7 +346,7 @@ public class MouseFragment extends Fragment {
 
     @Override
     public void onPause() {
-        //Log.d(MOUSE_FRAGMENT_TAG, "onPause");
+        //Log.d(WIRELESS_FRAGMENT_TAG, "onPause");
         super.onPause();
         final Context context = getContext();
 
@@ -350,7 +354,7 @@ public class MouseFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        //Log.d(MOUSE_FRAGMENT_TAG, "onDestroy");
+        //Log.d(WIRELESS_FRAGMENT_TAG, "onDestroy");
         final Context context = getContext();
         super.onDestroy();
     }
@@ -374,17 +378,18 @@ public class MouseFragment extends Fragment {
     private static class ControllerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         // Config
         private static final int[] kModuleTitleKeys = {
+                R.string.wireless_bluetooth_config_fragment_title,
                 R.string.calibration_fragment_title,
                 R.string.debug_fragment_title,
                 R.string.factory_reset_fragment_title,
                 R.string.initialization_fragment_title,
-                R.string.mouse_mapping_fragment_title,
+                R.string.wireless_mapping_fragment_title,
                 R.string.pressure_threshold_fragment_title,
-                R.string.mouse_sensitivity_fragment_title,
+                R.string.wireless_sensitivity_fragment_title,
                 R.string.version_fragment_title};
 
         // Constants
-        private static final int kCellType_ModuleCell = 8;
+        private static final int kCellType_ModuleCell = 9;
 
         private static final int kModuleCellsStartPosition = 0;
 
@@ -418,9 +423,9 @@ public class MouseFragment extends Fragment {
 
         // Data
         private Context mContext;
-        private MouseFragment.ControllerAdapter.Listener mListener;
+        private WirelessFragment.ControllerAdapter.Listener mListener;
 
-        ControllerAdapter(@NonNull Context context, @NonNull MouseFragment.ControllerAdapter.Listener listener) {
+        ControllerAdapter(@NonNull Context context, @NonNull WirelessFragment.ControllerAdapter.Listener listener) {
             mContext = context.getApplicationContext();
             mListener = listener;
         }
@@ -435,7 +440,7 @@ public class MouseFragment extends Fragment {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_common_textview_item, parent, false);
-            return new MouseFragment.ControllerAdapter.ModuleViewHolder(view);
+            return new WirelessFragment.ControllerAdapter.ModuleViewHolder(view);
         }
 
         @Override
@@ -443,7 +448,7 @@ public class MouseFragment extends Fragment {
             final int viewType = getItemViewType(position);
             switch (viewType) {
                 case kCellType_ModuleCell:
-                    MouseFragment.ControllerAdapter.ModuleViewHolder moduleViewHolder = (MouseFragment.ControllerAdapter.ModuleViewHolder) holder;
+                    WirelessFragment.ControllerAdapter.ModuleViewHolder moduleViewHolder = (WirelessFragment.ControllerAdapter.ModuleViewHolder) holder;
                     final int moduleId = position - kModuleCellsStartPosition;
                     moduleViewHolder.nameTextView.setText(kModuleTitleKeys[position - kModuleCellsStartPosition]);
                     moduleViewHolder.mainViewGroup.setOnClickListener(new View.OnClickListener() {
@@ -464,21 +469,22 @@ public class MouseFragment extends Fragment {
         }
     }
 
-    public void setMouseChangeText(String text) {
-        mouseChangeTextView.setText(text);
+    public void setWirelessChangeText(String text) {
+        wirelessChangeTextView.setText(text);
     }
 
-    public void setMouseStatusText(String text) {
-        mouseStatusTextView.setText(text);
+    public void setWirelessStatusText(String text) {
+        wirelessStatusTextView.setText(text);
     }
 
-    public interface OnMouseFragmentListener {
+    public interface OnWirelessFragmentListener {
         void onSendCommand(String command);
         boolean onIsArduinoAttached();
         boolean onIsArduinoOpened();
         boolean onIsArduinoSending();
-        void setMouseChangeText(String text);
-        void setMouseStatusText(String text);
+        void setWirelessChangeText(String text);
+        void setWirelessStatusText(String text);
     }
 
 }
+

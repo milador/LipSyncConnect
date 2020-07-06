@@ -1,9 +1,7 @@
 package com.mmc.lipsyncconnect.Fragments;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -17,7 +15,6 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,26 +26,28 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.mmc.lipsyncconnect.R;
 
-public class FactoryResetFragment extends Fragment {
+public class MacroSensitivityFragment extends Fragment {
 
     private MainFragment mMainFragment;
 
-    private Button factoryResetButton;
-    private TextView factoryResetChangeTextView;
-    private TextView factoryResetStatusTextView;
-    private ViewGroup factoryResetFragmentLayout;
-    private final static String FACTORY_RESET_FRAGMENT_TAG = FactoryResetFragment.class.getSimpleName();
+    private Button macroSensitivityIncButton;
+    private Button macroSensitivityDecButton;
+    private TextView macroSensitivityChangeTextView;
+    private TextView macroSensitivityStatusTextView;
+    private ViewGroup macroSensitivityFragmentLayout;
+    private final static String MACRO_SENSITIVITY_FRAGMENT_TAG = MacroSensitivityFragment.class.getSimpleName();
     private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
 
-    private FactoryResetFragment.OnFactoryResetFragmentListener mListener;
+    private MacroSensitivityFragment.OnMacroSensitivityFragmentListener mListener;
     View.OnTouchListener mButtonTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent event) {
             final String command = (String) view.getTag();
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 view.setPressed(false);
-                onFactoryResetDialog(command);
-                //new AsyncSendCheck().execute(command);
+                //mListener.onSendCommand(command);
+                //onSendCheck(command);
+                new MacroSensitivityFragment.AsyncSendCheck().execute(command);
                 view.performClick();
                 return true;
             }
@@ -57,12 +56,12 @@ public class FactoryResetFragment extends Fragment {
     };
 
 
-    public FactoryResetFragment() {
+    public MacroSensitivityFragment() {
         // Required empty public constructor
     }
 
-    public static FactoryResetFragment newInstance() {
-        FactoryResetFragment fragment = new FactoryResetFragment();
+    public static MacroSensitivityFragment newInstance() {
+        MacroSensitivityFragment fragment = new MacroSensitivityFragment();
         return fragment;
     }
 
@@ -75,19 +74,21 @@ public class FactoryResetFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.factory_reset_fragment, container, false);
+        View view = inflater.inflate(R.layout.macro_sensitivity_fragment, container, false);
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        factoryResetFragmentLayout = view.findViewById(R.id.factoryResetFragmentLayout);
-        factoryResetChangeTextView = (TextView) view.findViewById(R.id.factoryResetChangeTextView);
-        factoryResetStatusTextView = (TextView) view.findViewById(R.id.factoryResetStatusTextView);
-        factoryResetButton = (Button) view.findViewById(R.id.factoryResetButton);
-        factoryResetButton.setOnTouchListener(mButtonTouchListener);
-        setActionBarTitle(R.string.factory_reset_fragment_title);
+        macroSensitivityFragmentLayout = view.findViewById(R.id.macroSensitivityFragmentLayout);
+        macroSensitivityChangeTextView = (TextView) view.findViewById(R.id.macroSensitivityChangeTextView);
+        macroSensitivityStatusTextView = (TextView) view.findViewById(R.id.macroSensitivityStatusTextView);
+        macroSensitivityIncButton = (Button) view.findViewById(R.id.macroSensitivityIncButton);
+        macroSensitivityDecButton = (Button) view.findViewById(R.id.macroSensitivityDecButton);
+        macroSensitivityIncButton.setOnTouchListener(mButtonTouchListener);
+        macroSensitivityDecButton.setOnTouchListener(mButtonTouchListener);
+        setActionBarTitle(R.string.macro_sensitivity_fragment_title);
     }
 
     protected void setActionBarTitle(int titleStringId) {
@@ -108,29 +109,6 @@ public class FactoryResetFragment extends Fragment {
                 actionBar.setDisplayHomeAsUpEnabled(true);
             }
         }
-    }
-
-    private void onFactoryResetDialog (String command) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Factory Reset?")
-                .setMessage("Are you sure, you want to Factory reset Lipsync?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        new AsyncSendCheck().execute(command);
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        //Creating dialog box
-        AlertDialog dialog  = builder.create();
-        dialog.show();
     }
 
     private class AsyncSendCheck extends AsyncTask<String, Void, String>
@@ -188,15 +166,28 @@ public class FactoryResetFragment extends Fragment {
         }
     }
 
+    /*private void onSendCheck(String command) {
+        boolean enableSending = true;
+        while (enableSending){
+            if(mListener.onIsArduinoSending()){
+                enableSending=true;
+            } else {
+                mListener.onSendCommand(command);
+                enableSending=false;
+                break;
+            }
+        }
+    }*/
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof FactoryResetFragment.OnFactoryResetFragmentListener) {
-            mListener = (FactoryResetFragment.OnFactoryResetFragmentListener) context;
-        } else if (getTargetFragment() instanceof FactoryResetFragment.OnFactoryResetFragmentListener) {
-            mListener = (FactoryResetFragment.OnFactoryResetFragmentListener) getTargetFragment();
+        if (context instanceof MacroSensitivityFragment.OnMacroSensitivityFragmentListener) {
+            mListener = (MacroSensitivityFragment.OnMacroSensitivityFragmentListener) context;
+        } else if (getTargetFragment() instanceof MacroSensitivityFragment.OnMacroSensitivityFragmentListener) {
+            mListener = (MacroSensitivityFragment.OnMacroSensitivityFragmentListener) getTargetFragment();
         } else {
-            throw new RuntimeException(context.toString() + " must implement OnFactoryResetFragmentListener");
+            throw new RuntimeException(context.toString() + " must implement OnMacroSensitivityFragmentListener");
         }
     }
 
@@ -209,24 +200,24 @@ public class FactoryResetFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        ViewTreeObserver observer = factoryResetFragmentLayout.getViewTreeObserver();
+        ViewTreeObserver observer = macroSensitivityFragmentLayout.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                factoryResetFragmentLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                macroSensitivityFragmentLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
-
         if (mListener.onIsArduinoAttached()) {
-            factoryResetStatusTextView.setText(getString(R.string.attached_status_text));
+            macroSensitivityStatusTextView.setText(getString(R.string.attached_status_text));
         } else {
-            factoryResetStatusTextView.setText(getString(R.string.default_status_text));
+            macroSensitivityStatusTextView.setText(getString(R.string.default_status_text));
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             mMainFragment = new MainFragment();
@@ -235,26 +226,26 @@ public class FactoryResetFragment extends Fragment {
             fragmentTransaction.commit();
         }
         if (mListener.onIsArduinoOpened()) {
-            new AsyncSendCheck().execute(getString(R.string.model_send_command));
+            new MacroSensitivityFragment.AsyncSendCheck().execute(getString(R.string.sensitivity_send_command));
         } else {
         }
+
     }
 
-
-    public void setFactoryResetChangeText(String text) {
-        factoryResetChangeTextView.setText(text);
+    public void setMacroSensitivityChangeText(String text) {
+        macroSensitivityChangeTextView.setText(text);
     }
 
-    public void setFactoryResetStatusText(String text) {
-        factoryResetStatusTextView.setText(text);
+    public void setMacroSensitivityStatusText(String text) {
+        macroSensitivityStatusTextView.setText(text);
     }
 
-    public interface OnFactoryResetFragmentListener {
+    public interface OnMacroSensitivityFragmentListener {
         void onSendCommand(String command);
         boolean onIsArduinoAttached();
         boolean onIsArduinoOpened();
         boolean onIsArduinoSending();
-        void setFactoryResetChangeText(String text);
-        void setFactoryResetStatusText(String text);
+        void setMacroSensitivityChangeText(String text);
+        void setMacroSensitivityStatusText(String text);
     }
 }

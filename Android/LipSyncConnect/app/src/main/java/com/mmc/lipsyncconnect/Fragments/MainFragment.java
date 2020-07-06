@@ -38,10 +38,13 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private MainViewModel mViewModel;
     private MouseFragment mMouseFragment;
     private GamingFragment mGamingFragment;
+    private WirelessFragment mWirelessFragment;
+    private MacroFragment mMacroFragment;
+
     private Button mainMouseButton;
     private Button mainGamingButton;
     private Button mainWirelessButton;
-    private Button mainMicroButton;
+    private Button mainMacroButton;
     private TextView mainChangeTextView;
     private TextView mainStatusTextView;
     private ViewGroup mainFragmentLayout;
@@ -51,6 +54,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
     private final static String MOUSE_FRAGMENT_TAG = MouseFragment.class.getSimpleName();
     private final static String GAMING_FRAGMENT_TAG = GamingFragment.class.getSimpleName();
+    private final static String WIRELESS_FRAGMENT_TAG = WirelessFragment.class.getSimpleName();
+    private final static String MACRO_FRAGMENT_TAG = MacroFragment.class.getSimpleName();
 
     private MainFragment.OnMainFragmentListener mListener;
     public static MainFragment newInstance() {
@@ -76,10 +81,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         mainMouseButton = (Button) view.findViewById(R.id.mainMouseButton);
         mainGamingButton = (Button) view.findViewById(R.id.mainGamingButton);
         mainWirelessButton = (Button) view.findViewById(R.id.mainWirelessButton);
-        mainMicroButton = (Button) view.findViewById(R.id.mainMicroButton);
+        mainMacroButton = (Button) view.findViewById(R.id.mainMacroButton);
 
         mainMouseButton.setOnClickListener((View.OnClickListener) this);
         mainGamingButton.setOnClickListener((View.OnClickListener) this);
+        mainWirelessButton.setOnClickListener((View.OnClickListener) this);
+        mainMacroButton.setOnClickListener((View.OnClickListener) this);
         setActionBarTitle(R.string.main_fragment_title);
     }
 
@@ -122,9 +129,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         @Override
         protected void onPreExecute(){
             super.onPreExecute();
-            progressDialog = new ProgressDialog(getActivity(),R.style.progressDialogStyle);
-            progressDialog.setCancelable(false);
-            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog = new ProgressDialog(getActivity());
             progressDialog.setMessage("Loading...");
             progressDialog.show();
             startTime = System.currentTimeMillis();
@@ -186,6 +191,18 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 fragmentTransaction.addToBackStack(GAMING_FRAGMENT_TAG);
                 fragmentTransaction.commit();
                 break;
+            case R.id.mainWirelessButton:
+                mWirelessFragment = new WirelessFragment();
+                fragmentTransaction.replace(R.id.contentFragmentLayout, mWirelessFragment,GAMING_FRAGMENT_TAG);
+                fragmentTransaction.addToBackStack(WIRELESS_FRAGMENT_TAG);
+                fragmentTransaction.commit();
+                break;
+            case R.id.mainMacroButton:
+                mMacroFragment = new MacroFragment();
+                fragmentTransaction.replace(R.id.contentFragmentLayout, mMacroFragment,GAMING_FRAGMENT_TAG);
+                fragmentTransaction.addToBackStack(MACRO_FRAGMENT_TAG);
+                fragmentTransaction.commit();
+                break;
         }
     }
 
@@ -239,8 +256,10 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         }
 
         if (mListener.onIsArduinoOpened()) {
+            //setEnabledAllMainButtons(true);
             new AsyncSendCheck().execute(getString(R.string.model_send_command));
         } else {
+            //setEnabledAllMainButtons(false);
         }
     }
 
@@ -248,7 +267,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         mainMouseButton.setEnabled(bool);
         mainGamingButton.setEnabled(bool);
         mainWirelessButton.setEnabled(bool);
-        mainMicroButton.setEnabled(bool);
+        mainMacroButton.setEnabled(bool);
     }
 
     public void setEnabledMainButton(boolean bool, int button) {
@@ -259,7 +278,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         } else if(button==3) {
             mainWirelessButton.setEnabled(bool);
         } else if(button==4) {
-            mainMicroButton.setEnabled(bool);
+            mainMacroButton.setEnabled(bool);
         }
 
     }

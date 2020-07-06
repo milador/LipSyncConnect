@@ -89,7 +89,7 @@ public class MouseSensitivityFragment extends Fragment {
         mouseSensitivityDecButton = (Button) view.findViewById(R.id.mouseSensitivityDecButton);
         mouseSensitivityIncButton.setOnTouchListener(mButtonTouchListener);
         mouseSensitivityDecButton.setOnTouchListener(mButtonTouchListener);
-        setActionBarTitle(R.string.gaming_sensitivity_fragment_title);
+        setActionBarTitle(R.string.mouse_sensitivity_fragment_title);
     }
 
     protected void setActionBarTitle(int titleStringId) {

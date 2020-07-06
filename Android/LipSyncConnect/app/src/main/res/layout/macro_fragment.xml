@@ -1,37 +1,38 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/gamingFragmentLayout"
+    android:id="@+id/macroFragmentLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/colorBackground"
     android:orientation="vertical"
-    tools:context=".Fragments.GamingFragment">
+    tools:context=".Fragments.MacroFragment">
     <LinearLayout
-        android:id="@+id/gamingFragmentTop"
+        android:id="@+id/macroFragmentTop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="0dp"
         android:orientation="vertical"
         android:gravity="center">
         <TextView
-            android:id="@+id/gamingChangeTextView"
+            android:id="@+id/macroChangeTextView"
             android:layout_width="match_parent"
             android:layout_height="50dip"
             android:gravity="center"
+            android:textStyle="bold"
             android:padding="16dip"
-            android:text="@string/gaming_button_mode_fragment_default_change_text"
+            android:text="@string/macro_fragment_default_change_text"
             android:background="@color/colorPrimaryLight" />
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/gamingFragmentMiddle"
+        android:id="@+id/macroFragmentMiddle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/gamingFragmentTop"
+        android:layout_below="@id/macroFragmentTop"
         android:orientation="vertical"
         android:gravity="center">
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/gamingFragmentRecyclerView"
+            android:id="@+id/macroFragmentRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
@@ -39,7 +40,7 @@
             android:scrollbars="vertical" />
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/gamingFragmentBottom"
+        android:id="@+id/macroFragmentBottom"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
@@ -47,11 +48,12 @@
         android:gravity="bottom"
         android:orientation="vertical">
         <TextView
-            android:id="@+id/gamingStatusTextView"
+            android:id="@+id/macroStatusTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="16dip"
             android:gravity="center"
+            android:textStyle="bold"
             android:text="@string/default_status_text"
             android:layout_alignParentBottom="true" />
     </LinearLayout>

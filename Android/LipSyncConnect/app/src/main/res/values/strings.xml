@@ -10,7 +10,7 @@
     <string name="mouse_fragment_title">LipSync Mouse</string>
     <string name="gaming_fragment_title">LipSync Gaming</string>
     <string name="wireless_fragment_title">LipSync Wireless</string>
-    <string name="micro_fragment_title">LipSync Micro</string>
+    <string name="macro_fragment_title">LipSync Macro</string>
 
     <string name="version_fragment_title">Version Number</string>
     <string name="debug_fragment_title">Debug</string>
@@ -23,17 +23,17 @@
     <string name="mouse_sensitivity_fragment_title">Sensitivity</string>
     <string name="gaming_sensitivity_fragment_title">Sensitivity</string>
     <string name="wireless_sensitivity_fragment_title">Sensitivity</string>
-    <string name="micro_sensitivity_fragment_title">Sensitivity</string>
+    <string name="macro_sensitivity_fragment_title">Sensitivity</string>
 
-    <string name="mouse_mapping_fragment_title">Button Mapping</string>
-    <string name="gaming_mapping_fragment_title">Button Mapping</string>
-    <string name="wireless_mapping_fragment_title">Button Mapping</string>
-    <string name="micro_mapping_fragment_title">Button Mapping</string>
+    <string name="mouse_mapping_fragment_title">Mapping</string>
+    <string name="gaming_mapping_fragment_title">Mapping</string>
+    <string name="wireless_mapping_fragment_title">Mapping</string>
+    <string name="macro_mapping_fragment_title">Mapping</string>
 
-    <string name="mouse_deadzone_fragment_title">Deadzone</string>
-    <string name="gaming_deadzone_fragment_title">Deadzone</string>
-    <string name="wireless_deadzone_fragment_title">Deadzone</string>
-    <string name="micro_deadzone_fragment_title">Deadzone</string>
+    <string name="wireless_bluetooth_config_fragment_title">Bluetooth Config</string>
+    <string name="macro_bluetooth_config_fragment_title">Bluetooth Config</string>
+
+    <string name="deadzone_fragment_title">Deadzone</string>
 
     <string name="factory_reset_fragment_title">Factory Reset</string>
 
@@ -41,7 +41,7 @@
     <string name="lipsync_help_fragment_title">Help</string>
     <string name="gaming_help_fragment_title">Help</string>
     <string name="wireless_help_fragment_title">Help</string>
-    <string name="micro_help_fragment_title">Help</string>
+    <string name="macro_help_fragment_title">Help</string>
 
     <string name="default_status_text">Please plug Lipsync/Arduino via OTG.</string>
     <string name="perm_denied_status_text">Permission denied...</string>
@@ -52,7 +52,7 @@
     <string name="main_fragment_mouse_button_text">LipSync Mouse</string>
     <string name="main_fragment_gaming_button_text">LipSync Gaming</string>
     <string name="main_fragment_wireless_button_text">LipSync Wireless</string>
-    <string name="main_fragment_micro_button_text">LipSync Micro</string>
+    <string name="main_fragment_macro_button_text">LipSync Macro</string>
 
     <string name="mouse_fragment_default_change_text">Waiting...</string>
 
@@ -60,12 +60,23 @@
 
     <string name="wireless_fragment_default_change_text">Waiting...</string>
 
-    <string name="micro_fragment_default_change_text">Waiting...</string>
+    <string name="macro_fragment_default_change_text">Waiting...</string>
 
     <string name="mouse_sensitivity_fragment_default_change_text">Waiting...</string>
     <string name="mouse_sensitivity_fragment_inc_button_text">Increase</string>
     <string name="mouse_sensitivity_fragment_dec_button_text">Decrease</string>
 
+    <string name="gaming_sensitivity_fragment_default_change_text">Waiting...</string>
+    <string name="gaming_sensitivity_fragment_inc_button_text">Increase</string>
+    <string name="gaming_sensitivity_fragment_dec_button_text">Decrease</string>
+
+    <string name="wireless_sensitivity_fragment_default_change_text">Waiting...</string>
+    <string name="wireless_sensitivity_fragment_inc_button_text">Increase</string>
+    <string name="wireless_sensitivity_fragment_dec_button_text">Decrease</string>
+
+    <string name="macro_sensitivity_fragment_default_change_text">Waiting...</string>
+    <string name="macro_sensitivity_fragment_inc_button_text">Increase</string>
+    <string name="macro_sensitivity_fragment_dec_button_text">Decrease</string>
 
     <string name="initialization_fragment_default_change_text">Waiting...</string>
     <string name="initialization_fragment_button_text">Initialization</string>
@@ -85,19 +96,23 @@
     <string name="pressure_threshold_nominal_value_text">2.5</string>
     <string name="pressure_threshold_sip_value_text">2.5</string>
 
-    <string name="gaming_sensitivity_fragment_default_change_text">Waiting...</string>
-    <string name="gaming_sensitivity_fragment_inc_button_text">Increase</string>
-    <string name="gaming_sensitivity_fragment_dec_button_text">Decrease</string>
+
 
     <string name="gaming_button_mode_fragment_default_change_text">Waiting...</string>
     <string name="gaming_button_mode_fragment_one_button_text">Mode 1</string>
     <string name="gaming_button_mode_fragment_two_button_text">Mode 2</string>
 
+    <string name="mouse_mapping_fragment_default_change_text">Waiting...</string>
+    <string name="mouse_mapping_fragment_set_button_text">Set Mapping</string>
+
     <string name="gaming_mapping_fragment_default_change_text">Waiting...</string>
     <string name="gaming_mapping_fragment_set_button_text">Set Mapping</string>
 
-    <string name="mouse_mapping_fragment_default_change_text">Waiting...</string>
-    <string name="mouse_mapping_fragment_set_button_text">Set Mapping</string>
+    <string name="wireless_mapping_fragment_default_change_text">Waiting...</string>
+    <string name="wireless_mapping_fragment_set_button_text">Set Mapping</string>
+
+    <string name="macro_mapping_fragment_default_change_text">Waiting...</string>
+    <string name="macro_mapping_fragment_set_button_text">Set Mapping</string>
 
     <string name="mapping_fragment_short_puff_action_text">Short Puff:</string>
     <string name="mapping_fragment_short_sip_action_text">Short Sip:</string>
@@ -157,21 +172,85 @@
     </string-array>
 
     <string-array name="gaming_mapping_fragment_button_images">
-        <item>@drawable/mapping_button_x1</item>
-        <item>@drawable/mapping_button_x2</item>
-        <item>@drawable/mapping_button_ls</item>
-        <item>@drawable/mapping_button_lb</item>
-        <item>@drawable/mapping_button_a</item>
-        <item>@drawable/mapping_button_b</item>
-        <item>@drawable/mapping_button_view</item>
-        <item>@drawable/mapping_button_menu</item>
+        <item>@drawable/mapping_x1_button</item>
+        <item>@drawable/mapping_x2_button</item>
+        <item>@drawable/mapping_ls_button</item>
+        <item>@drawable/mapping_lb_button</item>
+        <item>@drawable/mapping_a_button</item>
+        <item>@drawable/mapping_b_button</item>
+        <item>@drawable/mapping_view_button</item>
+        <item>@drawable/mapping_menu_button</item>
     </string-array>
 
-    <string name="gaming_deadzone_fragment_default_change_text">Waiting...</string>
-    <string name="gaming_deadzone_fragment_dec_button_text">-</string>
-    <string name="gaming_deadzone_fragment_inc_button_text">+</string>
-    <string name="gaming_deadzone_fragment_default_value_text">0</string>
-    <string name="gaming_deadzone_fragment_set_button_text">Set Deadzone</string>
+    <string-array name="wireless_mapping_fragment_button_main_titles">
+        <item>Left Click</item>
+        <item>Right Click</item>
+        <item>Drag</item>
+        <item>Scroll</item>
+        <item>Middle Click</item>
+        <item>Initialization</item>
+        <item>Calibration</item>
+    </string-array>
+    <string-array name="wireless_mapping_fragment_button_secondary_titles">
+        <item>Tap</item>
+        <item>Tap-and-hold</item>
+        <item>Press+Hold left</item>
+        <item>Scroll</item>
+        <item>Middle Click</item>
+        <item>Initialize FSRs</item>
+        <item>Calibrate FSRs</item>
+    </string-array>
+
+    <string-array name="wireless_mapping_fragment_button_images">
+        <item>@drawable/mapping_left_click</item>
+        <item>@drawable/mapping_right_click</item>
+        <item>@drawable/mapping_drag</item>
+        <item>@drawable/mapping_scroll</item>
+        <item>@drawable/mapping_middle_click</item>
+        <item>@drawable/mapping_initialization</item>
+        <item>@drawable/mapping_calibration</item>
+    </string-array>
+
+    <string-array name="macro_mapping_fragment_button_main_titles">
+        <item>Enter</item>
+        <item>Space</item>
+        <item>Dot</item>
+        <item>Dash</item>
+        <item>a</item>
+        <item>Initialization</item>
+        <item>Calibration</item>
+    </string-array>
+    <string-array name="macro_mapping_fragment_button_secondary_titles">
+        <item>Enter Key</item>
+        <item>Space Key</item>
+        <item>Dot Key</item>
+        <item>Dash Key</item>
+        <item>a Key</item>
+        <item>Initialize FSRs</item>
+        <item>Calibrate FSRs</item>
+    </string-array>
+
+    <string-array name="macro_mapping_fragment_button_images">
+        <item>@drawable/mapping_enter_key</item>
+        <item>@drawable/mapping_space_key</item>
+        <item>@drawable/mapping_dot_key</item>
+        <item>@drawable/mapping_dash_key</item>
+        <item>@drawable/mapping_a_key</item>
+        <item>@drawable/mapping_initialization</item>
+        <item>@drawable/mapping_calibration</item>
+    </string-array>
+
+    <string name="wireless_bluetooth_config_fragment_default_change_text">Waiting...</string>
+    <string name="wireless_bluetooth_config_fragment_button_text">Configuration</string>
+
+    <string name="macro_bluetooth_config_fragment_default_change_text">Waiting...</string>
+    <string name="macro_bluetooth_config_fragment_button_text">Configuration</string>
+
+    <string name="deadzone_fragment_default_change_text">Waiting...</string>
+    <string name="deadzone_fragment_dec_button_text">-</string>
+    <string name="deadzone_fragment_inc_button_text">+</string>
+    <string name="deadzone_fragment_default_value_text">0</string>
+    <string name="deadzone_fragment_set_button_text">Set Deadzone</string>
 
     <string name="debug_fragment_default_change_text">Waiting...</string>
     <string name="debug_fragment_on_button_text">Start</string>
@@ -199,17 +278,17 @@
     <string name="calibration_fragment_tag">calibration_fragment</string>
     <string name="initialization_fragment_tag">initialization_fragment</string>
     <string name="pressure_threshold_fragment_tag">pressure_threshold_fragment</string>
-    <string name="ble_mode_fragment_tag">ble_mode_fragment</string>
+    <string name="wireless_bluetooth_config_fragment_tag">wireless_bluetooth_config_fragment</string>
 
     <string name="mouse_sensitivity_fragment_tag">mouse_sensitivity_fragment</string>
     <string name="gaming_sensitivity_fragment_tag">gaming_sensitivity_fragment</string>
     <string name="wireless_sensitivity_fragment_tag">wireless_sensitivity_fragment</string>
-    <string name="micro_sensitivity_fragment_tag">micro_sensitivity_fragment</string>
+    <string name="macro_sensitivity_fragment_tag">micro_sensitivity_fragment</string>
 
     <string name="mouse_mapping_fragment_tag">mouse_mapping_fragment</string>
     <string name="gaming_mapping_fragment_tag">gaming_mapping_fragment</string>
     <string name="wireless_mapping_fragment_tag">wireless_mapping_fragment</string>
-    <string name="micro_mapping_fragment_tag">micro_mapping_fragment</string>
+    <string name="macro_mapping_fragment_tag">micro_mapping_fragment</string>
 
     <string name="mouse_deadzone_fragment_tag">mouse_deadzone_fragment</string>
     <string name="gaming_deadzone_fragment_tag">gaming_deadzone_fragment</string>
@@ -253,7 +332,7 @@
     <string name="model_mouse_res_text">Lipsync Mouse</string>
     <string name="model_gaming_res_text">Lipsync Gaming</string>
     <string name="model_wireless_res_text">Lipsync Wireless</string>
-    <string name="model_micro_res_text">Lipsync Micro</string>
+    <string name="model_macro_res_text">Lipsync Macro</string>
 
 
     <!-- Get version number if sent "VN,0:0" -->
@@ -353,6 +432,7 @@
     <!-- Get button mode value if sent "BM,0:0" -->
     <string name="button_mode_send_command">BM,0:0</string>
     <string name="button_mode_res_command">BM,0</string>
+
     <string name="button_mode_set_res_command">BM,1</string>
 
     <string name="button_mode_one_res_command">1</string>
@@ -383,17 +463,37 @@
     <string name="factory_reset_success_res_text">Successfully Reset</string>
 
     <!-- Get bluetooth mode value if sent "BT,0:0" -->
-    <string name="ble_mode_send_command">BT,0:0</string>
-    <string name="ble_mode_res_command">BT,0</string>
+    <string name="bluetooth_config_send_command">BT,0:0</string>
+    <string name="bluetooth_config_res_command">BT,0</string>
+
+
+    <string name="bluetooth_config_mouse_res_command">0</string>
+    <string name="bluetooth_config_keyboard_res_command">1</string>
+    <string name="bluetooth_config_joystick_res_command">2</string>
+    <string name="bluetooth_config_comp_res_command">3</string>
+
+    <string name="bluetooth_config_set_res_command">BT,1</string>
 
     <!-- Set bluetooth mode value if received "BT,1" -->
-    <string name="ble_mode_set_send_command">BT,1</string>
-    <string name="ble_mode_mouse_set_send_command">0</string>
-    <string name="ble_mode_keyboard_set_send_command">1</string>
-    <string name="ble_mode_joystick_set_send_command">2</string>
-    <string name="ble_mode_mouse_keyboard_send_command">3</string>
+    <string name="bluetooth_config_set_send_command">BT,1</string>
 
-    <string name="ble_wireless_set_res_command">BT,1:1</string>
+    <string name="bluetooth_config_mouse_set_send_command">BT,1:0</string>
+    <string name="bluetooth_config_mouse_set_trs_command">BT,1:0</string>
+
+    <string name="bluetooth_config_keyboard_set_send_command">BT,1:1</string>
+    <string name="bluetooth_config_keyboard_set_res_command">BT,1:1</string>
+
+    <string name="bluetooth_config_joystick_set_send_command">BT,1:2</string>
+    <string name="bluetooth_config_joystick_set_res_command">BT,1:2</string>
+
+    <string name="bluetooth_config_comp_set_send_command">BT,1:3</string>
+    <string name="bluetooth_config_comp_set_res_command">BT,1:3</string>
+
+    <string name="bluetooth_config_mouse_set_res_text">Bluetooth Mouse</string>
+    <string name="bluetooth_config_keyboard_set_res_text">Bluetooth Keyboard(Macro)</string>
+    <string name="bluetooth_config_joystick_set_res_text">Bluetooth Joystick</string>
+    <string name="bluetooth_config_comp_set_res_text">Bluetooth Mouse+Keyboard</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
