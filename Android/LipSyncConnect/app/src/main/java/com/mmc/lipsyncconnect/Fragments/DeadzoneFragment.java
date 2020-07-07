@@ -69,6 +69,29 @@ public class DeadzoneFragment extends Fragment {
 
         }
     };
+
+    View.OnClickListener mButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            final String command = (String) view.getTag();
+            switch(view.getId()){
+                case R.id.deadzoneSetButton:
+                    view.setPressed(false);
+                    String deadzone = String.valueOf(deadzoneSeekBar.getProgress());
+                    new AsyncSendCheck().execute(command+":"+deadzone);
+                    break;
+                case R.id.deadzoneDecButton:
+                    view.setPressed(false);
+                    onDecPressureThreshold(DEADZONE_STEP);
+                    break;
+                case R.id.deadzoneIncButton:
+                    view.setPressed(false);
+                    onIncPressureThreshold(DEADZONE_STEP);
+                    break;
+            }
+        }
+    };
+    /*
     View.OnTouchListener mButtonTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent event) {
@@ -94,7 +117,7 @@ public class DeadzoneFragment extends Fragment {
             return false;
         }
     };
-
+    */
 
     public DeadzoneFragment() {
         // Required empty public constructor
@@ -129,9 +152,14 @@ public class DeadzoneFragment extends Fragment {
         deadzoneSetButton = (Button) view.findViewById(R.id.deadzoneSetButton);
         deadzoneDecButton = (Button) view.findViewById(R.id.deadzoneDecButton);
         deadzoneIncButton = (Button) view.findViewById(R.id.deadzoneIncButton);
-        deadzoneSetButton.setOnTouchListener(mButtonTouchListener);
-        deadzoneDecButton.setOnTouchListener(mButtonTouchListener);
-        deadzoneIncButton.setOnTouchListener(mButtonTouchListener);
+        //deadzoneSetButton.setOnTouchListener(mButtonTouchListener);
+        //deadzoneDecButton.setOnTouchListener(mButtonTouchListener);
+        //deadzoneIncButton.setOnTouchListener(mButtonTouchListener);
+
+        deadzoneSetButton.setOnClickListener(mButtonClickListener);
+        deadzoneDecButton.setOnClickListener(mButtonClickListener);
+        deadzoneIncButton.setOnClickListener(mButtonClickListener);
+
         deadzoneSeekBar.setProgress(1);
         deadzoneSeekBar.setOnSeekBarChangeListener(mSeekBarChangeListener);
         setActionBarTitle(R.string.deadzone_fragment_title);

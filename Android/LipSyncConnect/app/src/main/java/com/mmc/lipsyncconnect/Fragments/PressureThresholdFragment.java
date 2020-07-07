@@ -75,6 +75,30 @@ public class PressureThresholdFragment extends Fragment {
 
         }
     };
+
+    View.OnClickListener mButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            final String command = (String) view.getTag();
+            switch(view.getId()){
+                case R.id.pressureThresholdSetButton:
+                    view.setPressed(false);
+                    String thresholdPercent = String.valueOf(pressureThresholdSeekBar.getProgress());
+                    new AsyncSendCheck().execute(command+":"+thresholdPercent);
+                    break;
+                case R.id.pressureThresholdDecButton:
+                    view.setPressed(false);
+                    onDecPressureThreshold(THRESHOLD_STEP);
+                    break;
+                case R.id.pressureThresholdIncButton:
+                    view.setPressed(false);
+                    onIncPressureThreshold(THRESHOLD_STEP);
+                    break;
+            }
+        }
+    };
+
+    /*
     View.OnTouchListener mButtonTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent event) {
@@ -100,7 +124,7 @@ public class PressureThresholdFragment extends Fragment {
             return false;
         }
     };
-
+    */
 
     public PressureThresholdFragment() {
         // Required empty public constructor
@@ -138,9 +162,14 @@ public class PressureThresholdFragment extends Fragment {
         pressureThresholdSetButton = (Button) view.findViewById(R.id.pressureThresholdSetButton);
         pressureThresholdDecButton = (Button) view.findViewById(R.id.pressureThresholdDecButton);
         pressureThresholdIncButton = (Button) view.findViewById(R.id.pressureThresholdIncButton);
-        pressureThresholdSetButton.setOnTouchListener(mButtonTouchListener);
-        pressureThresholdDecButton.setOnTouchListener(mButtonTouchListener);
-        pressureThresholdIncButton.setOnTouchListener(mButtonTouchListener);
+        //pressureThresholdSetButton.setOnTouchListener(mButtonTouchListener);
+        //pressureThresholdDecButton.setOnTouchListener(mButtonTouchListener);
+        //pressureThresholdIncButton.setOnTouchListener(mButtonTouchListener);
+
+        pressureThresholdSetButton.setOnClickListener(mButtonClickListener);
+        pressureThresholdDecButton.setOnClickListener(mButtonClickListener);
+        pressureThresholdIncButton.setOnClickListener(mButtonClickListener);
+
         pressureThresholdSeekBar.setProgress(1);
         pressureThresholdSeekBar.setOnSeekBarChangeListener(mSeekBarChangeListener);
         setActionBarTitle(R.string.pressure_threshold_fragment_title);

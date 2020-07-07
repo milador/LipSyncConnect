@@ -44,6 +44,24 @@ public class WirelessSensitivityFragment extends Fragment {
     private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
 
     private WirelessSensitivityFragment.OnWirelessSensitivityFragmentListener mListener;
+
+    View.OnClickListener mButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            final String command = (String) view.getTag();
+            switch(view.getId()){
+                case R.id.wirelessSensitivityIncButton:
+                    view.setPressed(false);
+                    new AsyncSendCheck().execute(command);
+                    break;
+                case R.id.wirelessSensitivityDecButton:
+                    view.setPressed(false);
+                    new AsyncSendCheck().execute(command);
+                    break;
+            }
+        }
+    };
+    /*
     View.OnTouchListener mButtonTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent event) {
@@ -59,7 +77,7 @@ public class WirelessSensitivityFragment extends Fragment {
             return false;
         }
     };
-
+    */
 
     public WirelessSensitivityFragment() {
         // Required empty public constructor
@@ -91,8 +109,11 @@ public class WirelessSensitivityFragment extends Fragment {
         wirelessSensitivityStatusTextView = (TextView) view.findViewById(R.id.wirelessSensitivityStatusTextView);
         wirelessSensitivityIncButton = (Button) view.findViewById(R.id.wirelessSensitivityIncButton);
         wirelessSensitivityDecButton = (Button) view.findViewById(R.id.wirelessSensitivityDecButton);
-        wirelessSensitivityIncButton.setOnTouchListener(mButtonTouchListener);
-        wirelessSensitivityDecButton.setOnTouchListener(mButtonTouchListener);
+        //wirelessSensitivityIncButton.setOnTouchListener(mButtonTouchListener);
+        //wirelessSensitivityDecButton.setOnTouchListener(mButtonTouchListener);
+
+        wirelessSensitivityIncButton.setOnClickListener(mButtonClickListener);
+        wirelessSensitivityDecButton.setOnClickListener(mButtonClickListener);
         setActionBarTitle(R.string.wireless_sensitivity_fragment_title);
     }
 

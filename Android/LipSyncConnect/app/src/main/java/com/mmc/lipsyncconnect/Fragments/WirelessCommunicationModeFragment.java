@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -21,8 +20,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.mmc.lipsyncconnect.R;
 
@@ -31,33 +28,38 @@ import com.mmc.lipsyncconnect.R;
  Developed by : Milad Hajihassan (milador)
  ******************************************************************************/
 
-public class InitializationFragment extends Fragment {
+public class WirelessCommunicationModeFragment extends Fragment {
 
     private MainFragment mMainFragment;
 
-    private Button initializationButton;
-    private TextView initializationChangeTextView;
-    private TextView initializationStatusTextView;
-    private ViewGroup initializationFragmentLayout;
-    private final static String INITIALIZATION_FRAGMENT_TAG = InitializationFragment.class.getSimpleName();
+    private Button wirelessCommunicationModeUsbButton;
+    private Button wirelessCommunicationModeBtButton;
+    private TextView wirelessCommunicationModeChangeTextView;
+    private TextView wirelessCommunicationModeStatusTextView;
+    private ViewGroup wirelessCommunicationModeFragmentLayout;
+    private final static String COMMUNICATION_MODE_TAG = WirelessCommunicationModeFragment.class.getSimpleName();
     private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
 
-    private InitializationFragment.OnInitializationFragmentListener mListener;
+
+    private WirelessCommunicationModeFragment.OnWirelessCommunicationModeFragmentListener mListener;
 
     View.OnClickListener mButtonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             final String command = (String) view.getTag();
             switch(view.getId()){
-                case R.id.initializationButton:
+                case R.id.wirelessCommunicationModeUsbButton:
                     view.setPressed(false);
-                    //Log.v("initializationButton","onClick");
-                    new AsyncSendCheck().execute(command);
+                    new WirelessCommunicationModeFragment.AsyncSendCheck().execute(command);
+                    break;
+                case R.id.wirelessCommunicationModeBtButton:
+                    view.setPressed(false);
+                    new WirelessCommunicationModeFragment.AsyncSendCheck().execute(command);
                     break;
             }
         }
     };
-/*
+    /*
     View.OnTouchListener mButtonTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent event) {
@@ -71,14 +73,14 @@ public class InitializationFragment extends Fragment {
             return false;
         }
     };
-*/
+    */
 
-    public InitializationFragment() {
+    public WirelessCommunicationModeFragment() {
         // Required empty public constructor
     }
 
-    public static InitializationFragment newInstance() {
-        InitializationFragment fragment = new InitializationFragment();
+    public static WirelessCommunicationModeFragment newInstance() {
+        WirelessCommunicationModeFragment fragment = new WirelessCommunicationModeFragment();
         return fragment;
     }
 
@@ -91,20 +93,25 @@ public class InitializationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.initialization_fragment, container, false);
+        View view = inflater.inflate(R.layout.wireless_communication_mode_fragment, container, false);
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initializationFragmentLayout = view.findViewById(R.id.initializationFragmentLayout);
-        initializationChangeTextView = (TextView) view.findViewById(R.id.initializationChangeTextView);
-        initializationStatusTextView = (TextView) view.findViewById(R.id.initializationStatusTextView);
-        initializationButton = (Button) view.findViewById(R.id.initializationButton);
-        //initializationButton.setOnTouchListener(mButtonTouchListener);
-        initializationButton.setOnClickListener(mButtonClickListener);
-        setActionBarTitle(R.string.initialization_fragment_title);
+        wirelessCommunicationModeFragmentLayout = view.findViewById(R.id.wirelessCommunicationModeFragmentLayout);
+        wirelessCommunicationModeChangeTextView = (TextView) view.findViewById(R.id.wirelessCommunicationModeChangeTextView);
+        wirelessCommunicationModeStatusTextView = (TextView) view.findViewById(R.id.wirelessCommunicationModeStatusTextView);
+        wirelessCommunicationModeUsbButton = (Button) view.findViewById(R.id.wirelessCommunicationModeUsbButton);
+        wirelessCommunicationModeBtButton = (Button) view.findViewById(R.id.wirelessCommunicationModeBtButton);
+        //wirelessCommunicationModeUsbButton.setOnTouchListener(mButtonTouchListener);
+        //wirelessCommunicationModeBtButton.setOnTouchListener(mButtonTouchListener);
+
+        wirelessCommunicationModeUsbButton.setOnClickListener(mButtonClickListener);
+        wirelessCommunicationModeBtButton.setOnClickListener(mButtonClickListener);
+
+        setActionBarTitle(R.string.wireless_communication_mode_fragment_title);
     }
 
     protected void setActionBarTitle(int titleStringId) {
@@ -185,12 +192,12 @@ public class InitializationFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof InitializationFragment.OnInitializationFragmentListener) {
-            mListener = (InitializationFragment.OnInitializationFragmentListener) context;
-        } else if (getTargetFragment() instanceof InitializationFragment.OnInitializationFragmentListener) {
-            mListener = (InitializationFragment.OnInitializationFragmentListener) getTargetFragment();
+        if (context instanceof WirelessCommunicationModeFragment.OnWirelessCommunicationModeFragmentListener) {
+            mListener = (WirelessCommunicationModeFragment.OnWirelessCommunicationModeFragmentListener) context;
+        } else if (getTargetFragment() instanceof WirelessCommunicationModeFragment.OnWirelessCommunicationModeFragmentListener) {
+            mListener = (WirelessCommunicationModeFragment.OnWirelessCommunicationModeFragmentListener) getTargetFragment();
         } else {
-            throw new RuntimeException(context.toString() + " must implement OnInitializationFragmentListener");
+            throw new RuntimeException(context.toString() + " must implement OnWirelessCommunicationModeFragmentListener");
         }
     }
 
@@ -209,20 +216,17 @@ public class InitializationFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        ViewTreeObserver observer = initializationFragmentLayout.getViewTreeObserver();
+        ViewTreeObserver observer = wirelessCommunicationModeFragmentLayout.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                initializationFragmentLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                wirelessCommunicationModeFragmentLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
-
-        //mListener.onSendCommand(getString(R.string.initialization_send_command));
-        //onSendCheck(getString(R.string.initialization_send_command));
         if (mListener.onIsArduinoAttached()) {
-            initializationStatusTextView.setText(getString(R.string.attached_status_text));
+            wirelessCommunicationModeStatusTextView.setText(getString(R.string.attached_status_text));
         } else {
-            initializationStatusTextView.setText(getString(R.string.default_status_text));
+            wirelessCommunicationModeStatusTextView.setText(getString(R.string.default_status_text));
             /*
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -233,26 +237,25 @@ public class InitializationFragment extends Fragment {
              */
         }
         if (mListener.onIsArduinoOpened()) {
-            new AsyncSendCheck().execute(getString(R.string.initialization_send_command));
+            new WirelessCommunicationModeFragment.AsyncSendCheck().execute(getString(R.string.communication_mode_send_command));
         } else {
         }
     }
 
-
-    public void setInitializationChangeText(String text) {
-        initializationChangeTextView.setText(text);
+    public void setWirelessCommunicationModeChangeText(String text) {
+        wirelessCommunicationModeChangeTextView.setText(text);
     }
 
-    public void setInitializationStatusText(String text) {
-        initializationStatusTextView.setText(text);
+    public void setWirelessCommunicationModeStatusText(String text) {
+        wirelessCommunicationModeStatusTextView.setText(text);
     }
 
-    public interface OnInitializationFragmentListener {
+    public interface OnWirelessCommunicationModeFragmentListener {
         void onSendCommand(String command);
         boolean onIsArduinoAttached();
         boolean onIsArduinoOpened();
         boolean onIsArduinoSending();
-        void setInitializationChangeText(String text);
-        void setInitializationStatusText(String text);
+        void setWirelessCommunicationModeChangeText(String text);
+        void setWirelessCommunicationModeStatusText(String text);
     }
 }

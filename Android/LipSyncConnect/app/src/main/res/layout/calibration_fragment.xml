@@ -58,6 +58,7 @@
             android:id="@+id/calibrationImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/calibration_default_description"
             android:src="@drawable/calibration_default" />
     </LinearLayout>
     <LinearLayout

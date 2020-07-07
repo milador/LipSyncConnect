@@ -44,6 +44,20 @@ public class MacroBluetoothConfigFragment extends Fragment {
     private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
 
     private MacroBluetoothConfigFragment.OnMacroBluetoothConfigFragmentListener mListener;
+
+    View.OnClickListener mButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            final String command = (String) view.getTag();
+            switch(view.getId()){
+                case R.id.macroBluetoothConfigButton:
+                    view.setPressed(false);
+                    new AsyncSendCheck().execute(command);
+                    break;
+            }
+        }
+    };
+    /*
     View.OnTouchListener mButtonTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent event) {
@@ -57,7 +71,7 @@ public class MacroBluetoothConfigFragment extends Fragment {
             return false;
         }
     };
-
+    */
 
     public MacroBluetoothConfigFragment() {
         // Required empty public constructor
@@ -88,7 +102,9 @@ public class MacroBluetoothConfigFragment extends Fragment {
         macroBluetoothConfigChangeTextView = (TextView) view.findViewById(R.id.macroBluetoothConfigChangeTextView);
         macroBluetoothConfigStatusTextView = (TextView) view.findViewById(R.id.macroBluetoothConfigStatusTextView);
         macroBluetoothConfigButton = (Button) view.findViewById(R.id.macroBluetoothConfigButton);
-        macroBluetoothConfigButton.setOnTouchListener(mButtonTouchListener);
+        //macroBluetoothConfigButton.setOnTouchListener(mButtonTouchListener);
+
+        macroBluetoothConfigButton.setOnClickListener(mButtonClickListener);
         setActionBarTitle(R.string.macro_bluetooth_config_fragment_title);
     }
 

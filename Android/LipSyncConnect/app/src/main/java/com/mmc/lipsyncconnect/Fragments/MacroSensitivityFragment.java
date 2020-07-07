@@ -44,14 +44,30 @@ public class MacroSensitivityFragment extends Fragment {
     private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
 
     private MacroSensitivityFragment.OnMacroSensitivityFragmentListener mListener;
+
+    View.OnClickListener mButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            final String command = (String) view.getTag();
+            switch(view.getId()){
+                case R.id.macroSensitivityIncButton:
+                    view.setPressed(false);
+                    new AsyncSendCheck().execute(command);
+                    break;
+                case R.id.macroSensitivityDecButton:
+                    view.setPressed(false);
+                    new AsyncSendCheck().execute(command);
+                    break;
+            }
+        }
+    };
+    /*
     View.OnTouchListener mButtonTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent event) {
             final String command = (String) view.getTag();
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 view.setPressed(false);
-                //mListener.onSendCommand(command);
-                //onSendCheck(command);
                 new MacroSensitivityFragment.AsyncSendCheck().execute(command);
                 view.performClick();
                 return true;
@@ -59,7 +75,7 @@ public class MacroSensitivityFragment extends Fragment {
             return false;
         }
     };
-
+    */
 
     public MacroSensitivityFragment() {
         // Required empty public constructor
@@ -91,8 +107,11 @@ public class MacroSensitivityFragment extends Fragment {
         macroSensitivityStatusTextView = (TextView) view.findViewById(R.id.macroSensitivityStatusTextView);
         macroSensitivityIncButton = (Button) view.findViewById(R.id.macroSensitivityIncButton);
         macroSensitivityDecButton = (Button) view.findViewById(R.id.macroSensitivityDecButton);
-        macroSensitivityIncButton.setOnTouchListener(mButtonTouchListener);
-        macroSensitivityDecButton.setOnTouchListener(mButtonTouchListener);
+        //macroSensitivityIncButton.setOnTouchListener(mButtonTouchListener);
+        //macroSensitivityDecButton.setOnTouchListener(mButtonTouchListener);
+
+        macroSensitivityIncButton.setOnClickListener(mButtonClickListener);
+        macroSensitivityDecButton.setOnClickListener(mButtonClickListener);
         setActionBarTitle(R.string.macro_sensitivity_fragment_title);
     }
 

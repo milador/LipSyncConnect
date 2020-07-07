@@ -47,6 +47,24 @@ public class GamingButtonModeFragment extends Fragment {
 
 
     private GamingButtonModeFragment.OnGamingButtonModeFragmentListener mListener;
+
+    View.OnClickListener mButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            final String command = (String) view.getTag();
+            switch(view.getId()){
+                case R.id.gamingButtonModeOneButton:
+                    view.setPressed(false);
+                    new AsyncSendCheck().execute(command);
+                    break;
+                case R.id.gamingButtonModeTwoButton:
+                    view.setPressed(false);
+                    new AsyncSendCheck().execute(command);
+                    break;
+            }
+        }
+    };
+    /*
     View.OnTouchListener mButtonTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent event) {
@@ -60,7 +78,7 @@ public class GamingButtonModeFragment extends Fragment {
             return false;
         }
     };
-
+    */
 
     public GamingButtonModeFragment() {
         // Required empty public constructor
@@ -92,8 +110,12 @@ public class GamingButtonModeFragment extends Fragment {
         gamingButtonModeStatusTextView = (TextView) view.findViewById(R.id.gamingButtonModeStatusTextView);
         gamingButtonModeOneButton = (Button) view.findViewById(R.id.gamingButtonModeOneButton);
         gamingButtonModeTwoButton = (Button) view.findViewById(R.id.gamingButtonModeTwoButton);
-        gamingButtonModeOneButton.setOnTouchListener(mButtonTouchListener);
-        gamingButtonModeTwoButton.setOnTouchListener(mButtonTouchListener);
+        //gamingButtonModeOneButton.setOnTouchListener(mButtonTouchListener);
+        //gamingButtonModeTwoButton.setOnTouchListener(mButtonTouchListener);
+
+        gamingButtonModeOneButton.setOnClickListener(mButtonClickListener);
+        gamingButtonModeTwoButton.setOnClickListener(mButtonClickListener);
+
         setActionBarTitle(R.string.gaming_button_mode_fragment_title);
     }
 

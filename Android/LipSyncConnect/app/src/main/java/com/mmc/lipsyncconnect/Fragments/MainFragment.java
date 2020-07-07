@@ -45,11 +45,13 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private GamingFragment mGamingFragment;
     private WirelessFragment mWirelessFragment;
     private MacroFragment mMacroFragment;
+    private HelpFragment mHelpFragment;
 
     private Button mainMouseButton;
     private Button mainGamingButton;
     private Button mainWirelessButton;
     private Button mainMacroButton;
+    private Button mainHelpButton;
     private TextView mainChangeTextView;
     private TextView mainStatusTextView;
     private ViewGroup mainFragmentLayout;
@@ -61,6 +63,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private final static String GAMING_FRAGMENT_TAG = GamingFragment.class.getSimpleName();
     private final static String WIRELESS_FRAGMENT_TAG = WirelessFragment.class.getSimpleName();
     private final static String MACRO_FRAGMENT_TAG = MacroFragment.class.getSimpleName();
+    private final static String HELP_FRAGMENT_TAG = HelpFragment.class.getSimpleName();
 
     private MainFragment.OnMainFragmentListener mListener;
     public static MainFragment newInstance() {
@@ -87,11 +90,13 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         mainGamingButton = (Button) view.findViewById(R.id.mainGamingButton);
         mainWirelessButton = (Button) view.findViewById(R.id.mainWirelessButton);
         mainMacroButton = (Button) view.findViewById(R.id.mainMacroButton);
+        mainHelpButton = (Button) view.findViewById(R.id.mainHelpButton);
 
         mainMouseButton.setOnClickListener((View.OnClickListener) this);
         mainGamingButton.setOnClickListener((View.OnClickListener) this);
         mainWirelessButton.setOnClickListener((View.OnClickListener) this);
         mainMacroButton.setOnClickListener((View.OnClickListener) this);
+        mainHelpButton.setOnClickListener((View.OnClickListener) this);
         setActionBarTitle(R.string.main_fragment_title);
     }
 
@@ -208,6 +213,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 fragmentTransaction.addToBackStack(MACRO_FRAGMENT_TAG);
                 fragmentTransaction.commit();
                 break;
+            case R.id.mainHelpButton:
+                mHelpFragment = new HelpFragment();
+                fragmentTransaction.replace(R.id.contentFragmentLayout, mHelpFragment,HELP_FRAGMENT_TAG);
+                fragmentTransaction.addToBackStack(HELP_FRAGMENT_TAG);
+                fragmentTransaction.commit();
+                break;
         }
     }
 
@@ -274,6 +285,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         mainGamingButton.setEnabled(bool);
         mainWirelessButton.setEnabled(bool);
         mainMacroButton.setEnabled(bool);
+        mainHelpButton.setEnabled(true);
     }
 
     public void setEnabledMainButton(boolean bool, int button) {

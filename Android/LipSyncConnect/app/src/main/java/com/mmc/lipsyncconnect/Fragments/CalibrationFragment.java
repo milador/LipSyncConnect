@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -48,11 +49,27 @@ public class CalibrationFragment extends Fragment {
 
 
     private CalibrationFragment.OnCalibrationFragmentListener mListener;
+
+    View.OnClickListener mButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            final String command = (String) view.getTag();
+            switch(view.getId()){
+                case R.id.calibrationButton:
+                    view.setPressed(false);
+                    //Log.v("calibrationButton","onClick");
+                    new CalibrationFragment.AsyncCalibration().execute(command);
+                    break;
+            }
+        }
+    };
+    /*
     View.OnTouchListener mButtonTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent event) {
             final String command = (String) view.getTag();
             if (event.getAction() == MotionEvent.ACTION_UP) {
+                //Log.v("calibrationButton","onTouch");
                 view.setPressed(false);
                 new CalibrationFragment.AsyncCalibration().execute(command);
                 view.performClick();
@@ -61,7 +78,7 @@ public class CalibrationFragment extends Fragment {
             return false;
         }
     };
-
+    */
 
     public CalibrationFragment() {
         // Required empty public constructor
@@ -93,7 +110,8 @@ public class CalibrationFragment extends Fragment {
         calibrationStatusTextView = (TextView) view.findViewById(R.id.calibrationStatusTextView);
         calibrationImageView = (ImageView) view.findViewById(R.id.calibrationImageView);
         calibrationButton = (Button) view.findViewById(R.id.calibrationButton);
-        calibrationButton.setOnTouchListener(mButtonTouchListener);
+        //calibrationButton.setOnTouchListener(mButtonTouchListener);
+        calibrationButton.setOnClickListener(mButtonClickListener);
 
         calibrationDialog = new CalibrationDialog(getActivity());
         //calibrationProgressDialog.setContentView(R.layout.calibration_dialog);

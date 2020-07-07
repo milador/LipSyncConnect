@@ -46,6 +46,20 @@ public class FactoryResetFragment extends Fragment {
     private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
 
     private FactoryResetFragment.OnFactoryResetFragmentListener mListener;
+
+    View.OnClickListener mButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            final String command = (String) view.getTag();
+            switch(view.getId()){
+                case R.id.factoryResetButton:
+                    view.setPressed(false);
+                    onFactoryResetDialog(command);
+                    break;
+            }
+        }
+    };
+    /*
     View.OnTouchListener mButtonTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent event) {
@@ -60,7 +74,7 @@ public class FactoryResetFragment extends Fragment {
             return false;
         }
     };
-
+    */
 
     public FactoryResetFragment() {
         // Required empty public constructor
@@ -91,7 +105,8 @@ public class FactoryResetFragment extends Fragment {
         factoryResetChangeTextView = (TextView) view.findViewById(R.id.factoryResetChangeTextView);
         factoryResetStatusTextView = (TextView) view.findViewById(R.id.factoryResetStatusTextView);
         factoryResetButton = (Button) view.findViewById(R.id.factoryResetButton);
-        factoryResetButton.setOnTouchListener(mButtonTouchListener);
+        //factoryResetButton.setOnTouchListener(mButtonTouchListener);
+        factoryResetButton.setOnClickListener(mButtonClickListener);
         setActionBarTitle(R.string.factory_reset_fragment_title);
     }
 

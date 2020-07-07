@@ -72,6 +72,17 @@
             android:layout_centerInParent="true"
             android:layout_above="@id/mainWirelessButton"
             android:text="@string/main_fragment_macro_button_text" />
+
+        <Button
+            android:id="@+id/mainHelpButton"
+            android:layout_width="180dip"
+            android:layout_height="60dip"
+            android:layout_marginTop="10dip"
+            android:layout_marginBottom="10dip"
+            android:enabled="true"
+            android:layout_centerInParent="true"
+            android:layout_above="@id/mainMacroButton"
+            android:text="@string/main_fragment_help_button_text" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/mainFragmentBottom"

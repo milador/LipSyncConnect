@@ -44,6 +44,24 @@ public class MouseSensitivityFragment extends Fragment {
     private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
 
     private MouseSensitivityFragment.OnMouseSensitivityFragmentListener mListener;
+
+    View.OnClickListener mButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            final String command = (String) view.getTag();
+            switch(view.getId()){
+                case R.id.mouseSensitivityIncButton:
+                    view.setPressed(false);
+                    new AsyncSendCheck().execute(command);
+                    break;
+                case R.id.mouseSensitivityDecButton:
+                    view.setPressed(false);
+                    new AsyncSendCheck().execute(command);
+                    break;
+            }
+        }
+    };
+    /*
     View.OnTouchListener mButtonTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent event) {
@@ -59,7 +77,7 @@ public class MouseSensitivityFragment extends Fragment {
             return false;
         }
     };
-
+    */
 
     public MouseSensitivityFragment() {
         // Required empty public constructor
@@ -91,8 +109,11 @@ public class MouseSensitivityFragment extends Fragment {
         mouseSensitivityStatusTextView = (TextView) view.findViewById(R.id.mouseSensitivityStatusTextView);
         mouseSensitivityIncButton = (Button) view.findViewById(R.id.mouseSensitivityIncButton);
         mouseSensitivityDecButton = (Button) view.findViewById(R.id.mouseSensitivityDecButton);
-        mouseSensitivityIncButton.setOnTouchListener(mButtonTouchListener);
-        mouseSensitivityDecButton.setOnTouchListener(mButtonTouchListener);
+        //mouseSensitivityIncButton.setOnTouchListener(mButtonTouchListener);
+        //mouseSensitivityDecButton.setOnTouchListener(mButtonTouchListener);
+
+        mouseSensitivityIncButton.setOnClickListener(mButtonClickListener);
+        mouseSensitivityDecButton.setOnClickListener(mButtonClickListener);
         setActionBarTitle(R.string.mouse_sensitivity_fragment_title);
     }
 

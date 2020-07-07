@@ -54,6 +54,28 @@ public class DebugFragment extends Fragment {
     private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
 
     private DebugFragment.OnDebugFragmentListener mListener;
+
+    View.OnClickListener mButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            final String command = (String) view.getTag();
+            switch(view.getId()){
+                case R.id.debugShareButton:
+                    view.setPressed(false);
+                    onShare();
+                    break;
+                case R.id.debugOnButton:
+                    view.setPressed(false);
+                    new AsyncSendCheck().execute(command);
+                    break;
+                case R.id.debugOffButton:
+                    view.setPressed(false);
+                    new AsyncSendCheck().execute(command);
+                    break;
+            }
+        }
+    };
+    /*
     View.OnTouchListener mButtonTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent event) {
@@ -72,7 +94,7 @@ public class DebugFragment extends Fragment {
             return false;
         }
     };
-
+    */
 
     public DebugFragment() {
         // Required empty public constructor
@@ -107,9 +129,13 @@ public class DebugFragment extends Fragment {
         debugOffButton = (Button) view.findViewById(R.id.debugOffButton);
         debugShareButton = (Button) view.findViewById(R.id.debugShareButton);
         debugScrollView = (ScrollView) view.findViewById(R.id.debugScrollView);
-        debugOnButton.setOnTouchListener(mButtonTouchListener);
-        debugOffButton.setOnTouchListener(mButtonTouchListener);
-        debugShareButton.setOnTouchListener(mButtonTouchListener);
+        //debugOnButton.setOnTouchListener(mButtonTouchListener);
+        //debugOffButton.setOnTouchListener(mButtonTouchListener);
+        //debugShareButton.setOnTouchListener(mButtonTouchListener);
+
+        debugOnButton.setOnClickListener(mButtonClickListener);
+        debugOffButton.setOnClickListener(mButtonClickListener);
+        debugShareButton.setOnClickListener(mButtonClickListener);
 
         setActionBarTitle(R.string.debug_fragment_title);
     }

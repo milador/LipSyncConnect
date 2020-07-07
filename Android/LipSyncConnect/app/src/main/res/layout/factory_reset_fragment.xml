@@ -58,6 +58,7 @@
             android:id="@+id/factoryResetImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/factory_reset_default_description"
             android:src="@drawable/factory_reset_default" />
     </LinearLayout>
     <LinearLayout

@@ -37,11 +37,9 @@
 
     <string name="factory_reset_fragment_title">Factory Reset</string>
 
+    <string name="wireless_communication_mode_fragment_title">Communication Mode</string>
 
-    <string name="lipsync_help_fragment_title">Help</string>
-    <string name="gaming_help_fragment_title">Help</string>
-    <string name="wireless_help_fragment_title">Help</string>
-    <string name="macro_help_fragment_title">Help</string>
+    <string name="help_fragment_title">Help</string>
 
     <string name="default_status_text">Please plug Lipsync/Arduino via OTG.</string>
     <string name="perm_denied_status_text">Permission denied...</string>
@@ -53,6 +51,7 @@
     <string name="main_fragment_gaming_button_text">LipSync Gaming</string>
     <string name="main_fragment_wireless_button_text">LipSync Wireless</string>
     <string name="main_fragment_macro_button_text">LipSync Macro</string>
+    <string name="main_fragment_help_button_text">Help</string>
 
     <string name="mouse_fragment_default_change_text">Waiting...</string>
 
@@ -114,12 +113,19 @@
     <string name="macro_mapping_fragment_default_change_text">Waiting...</string>
     <string name="macro_mapping_fragment_set_button_text">Set Mapping</string>
 
+    <string name="wireless_communication_mode_fragment_default_change_text">Waiting...</string>
+    <string name="wireless_communication_mode_fragment_usb_button_text">USB Mode</string>
+    <string name="wireless_communication_mode_fragment_bt_button_text">Bluetooth Mode</string>
+
     <string name="mapping_fragment_short_puff_action_text">Short Puff:</string>
     <string name="mapping_fragment_short_sip_action_text">Short Sip:</string>
     <string name="mapping_fragment_long_puff_action_text">Long Puff:</string>
     <string name="mapping_fragment_long_sip_action_text">Long Sip:</string>
     <string name="mapping_fragment_very_long_puff_action_text">Very Long Puff:</string>
     <string name="mapping_fragment_very_long_sip_action_text">Very Long Sip:</string>
+
+    <string name="help_fragment_default_change_text">Waiting...</string>
+    <string name="help_fragment_default_text">LipSync Connect Application is developed to assist LipSync users to customize their devices based on their needs. \n\nPlease connect your LipSync to your Android device through USB OTG Cable and then open the LipSync Connect Application.\n\nThe Application will automatically detect your LipSync Model and unlock the settings button for your LipSync Model.\n\nTap oe click on your LipSync model and then navigate the available settings options.\n\nTap or click on the option and perform the adjustment action.\n\nNote: Please avoid disconnecting the USB cable or closing the Application during settings change process or loading process of settings options.</string>
 
     <string-array name="mouse_mapping_fragment_button_main_titles">
         <item>Left Click</item>
@@ -240,6 +246,17 @@
         <item>@drawable/mapping_calibration</item>
     </string-array>
 
+    <string name="calibration_default_description">Press Calibration Button to start calibration process.</string>
+    <string name="calibration_step_description">Calibration process is underway.</string>
+    <string name="deadzone_default_description">Press Set deadzone Button to set the new deadzone value.</string>
+    <string name="factory_reset_default_description">Press Factory Reset Button to reset the settings.</string>
+    <string name="button_mode_default_description">Press Button Mode 1 or Button Mode 2 to set the new button mode.</string>
+    <string name="sensitivity_default_description">Press Increase or Decrease Sensitivity Button to set the new sensitivity level.</string>
+    <string name="initialization_default_description">Press Initialization Button to start initialization process.</string>
+    <string name="bluetooth_config_default_description">Press Configuration Button to start configuration of the bluetooth module.</string>
+    <string name="communication_mode_default_description">Press USB Mode Button or Bluetooth Mode Button to select the communication mode.</string>
+
+
     <string name="wireless_bluetooth_config_fragment_default_change_text">Waiting...</string>
     <string name="wireless_bluetooth_config_fragment_button_text">Configuration</string>
 
@@ -315,7 +332,7 @@
     <string name="settings_res_command">SUCCESS</string>
     <string name="settings_res_success_command">SUCCESS:SETTINGS</string>
     <string name="settings_res_fail_command">FAIL:SETTINGS</string>
-    <string name="manual_res_command">SUCCESS:MANUAL</string>
+    <string name="manual_res_command">MANUAL</string>
 
     <string name="exit_send_command">EXIT</string>
     <string name="exit_res_command">EXIT</string>
@@ -494,6 +511,25 @@
     <string name="bluetooth_config_joystick_set_res_text">Bluetooth Joystick</string>
     <string name="bluetooth_config_comp_set_res_text">Bluetooth Mouse+Keyboard</string>
 
+    <!-- Get communication mode value if sent "CM,0:0" -->
+    <string name="communication_mode_send_command">CM,0:0</string>
+    <string name="communication_mode_res_command">CM,0</string>
+
+    <string name="communication_mode_set_res_command">CM,1</string>
+
+    <string name="communication_mode_usb_res_command">0</string>
+    <string name="communication_mode_bt_res_command">1</string>
+
+    <!-- Set communication mode value to USB if received "CM,1:0" -->
+    <string name="communication_mode_usb_set_send_command">CM,1:0</string>
+    <string name="communication_mode_usb_set_res_command">CM,1:0</string>
+
+    <!-- Set communication mode value to Bluetooth if received "CM,1:1" -->
+    <string name="communication_mode_bt_set_send_command">CM,1:1</string>
+    <string name="communication_mode_bt_set_res_command">CM,1:1</string>
+
+    <string name="communication_mode_usb_set_res_text">USB Mode</string>
+    <string name="communication_mode_bt_set_res_text">Bluetooth Mode</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -74,6 +74,20 @@ public class MouseMappingFragment extends Fragment {
             R.drawable.mapping_button};
 
     private MouseMappingFragment.OnMouseMappingFragmentListener mListener;
+
+    View.OnClickListener mButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            final String command = (String) view.getTag();
+            switch(view.getId()){
+                case R.id.mouseMappingSetButton:
+                    view.setPressed(false);
+                    onMouseMappingDialog(command+":"+getMouseMappingSpinnerSelections());
+                    break;
+            }
+        }
+    };
+    /*
     View.OnTouchListener mButtonTouchListener = new View.OnTouchListener() {
 
         @Override
@@ -88,7 +102,7 @@ public class MouseMappingFragment extends Fragment {
             return false;
         }
     };
-
+    */
     View.OnTouchListener mSpinnerTouchListener = new View.OnTouchListener() {
 
         @Override
@@ -237,7 +251,9 @@ public class MouseMappingFragment extends Fragment {
         mappingVeryLongSipSpinner.setOnTouchListener(mSpinnerTouchListener);
 
         //setGamingMappingSpinnerSelections("121111");
-        mappingSetButton.setOnTouchListener(mButtonTouchListener);
+        //mappingSetButton.setOnTouchListener(mButtonTouchListener);
+
+        mappingSetButton.setOnClickListener(mButtonClickListener);
         setActionBarTitle(R.string.mouse_mapping_fragment_title);
     }
 

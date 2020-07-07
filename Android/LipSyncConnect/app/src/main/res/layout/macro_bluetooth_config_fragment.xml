@@ -59,6 +59,7 @@
             android:id="@+id/macroBluetoothConfigImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/bluetooth_config_default_description"
             android:src="@drawable/bluetooth_config_default" />
     </LinearLayout>
     <LinearLayout

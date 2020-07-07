@@ -32,6 +32,7 @@ import com.mmc.lipsyncconnect.Fragments.DebugFragment;
 import com.mmc.lipsyncconnect.Fragments.FactoryResetFragment;
 import com.mmc.lipsyncconnect.Fragments.DeadzoneFragment;
 import com.mmc.lipsyncconnect.Fragments.GamingMappingFragment;
+import com.mmc.lipsyncconnect.Fragments.HelpFragment;
 import com.mmc.lipsyncconnect.Fragments.MacroBluetoothConfigFragment;
 import com.mmc.lipsyncconnect.Fragments.MacroFragment;
 import com.mmc.lipsyncconnect.Fragments.MacroMappingFragment;
@@ -40,6 +41,7 @@ import com.mmc.lipsyncconnect.Fragments.MouseMappingFragment;
 import com.mmc.lipsyncconnect.Fragments.PressureThresholdFragment;
 import com.mmc.lipsyncconnect.Fragments.VersionFragment;
 import com.mmc.lipsyncconnect.Fragments.WirelessBluetoothConfigFragment;
+import com.mmc.lipsyncconnect.Fragments.WirelessCommunicationModeFragment;
 import com.mmc.lipsyncconnect.Fragments.WirelessFragment;
 import com.mmc.lipsyncconnect.Fragments.WirelessMappingFragment;
 import com.mmc.lipsyncconnect.Fragments.WirelessSensitivityFragment;
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity
         GamingFragment.OnGamingFragmentListener,
         WirelessFragment.OnWirelessFragmentListener,
         MacroFragment.OnMacroFragmentListener,
+        HelpFragment.OnHelpFragmentListener,
         CalibrationFragment.OnCalibrationFragmentListener,
         DeadzoneFragment.OnDeadzoneFragmentListener,
         DebugFragment.OnDebugFragmentListener,
@@ -86,7 +89,8 @@ public class MainActivity extends AppCompatActivity
         WirelessSensitivityFragment.OnWirelessSensitivityFragmentListener,
         MacroBluetoothConfigFragment.OnMacroBluetoothConfigFragmentListener,
         MacroMappingFragment.OnMacroMappingFragmentListener,
-        MacroSensitivityFragment.OnMacroSensitivityFragmentListener {
+        MacroSensitivityFragment.OnMacroSensitivityFragmentListener,
+        WirelessCommunicationModeFragment.OnWirelessCommunicationModeFragmentListener {
 
     private Fragment currentFragment;
     private MainFragment mainFragment;
@@ -95,6 +99,8 @@ public class MainActivity extends AppCompatActivity
     private GamingFragment gamingFragment;
     private WirelessFragment wirelessFragment;
     private MacroFragment macroFragment;
+
+    private HelpFragment helpFragment;
 
     private MouseMappingFragment mouseMappingFragment;
     private MouseSensitivityFragment mouseSensitivityFragment;
@@ -110,6 +116,8 @@ public class MainActivity extends AppCompatActivity
     private MacroBluetoothConfigFragment macroBluetoothConfigFragment;
     private MacroMappingFragment macroMappingFragment;
     private MacroSensitivityFragment macroSensitivityFragment;
+
+    private WirelessCommunicationModeFragment wirelessCommunicationModeFragment;
 
     private CalibrationFragment calibrationFragment;
     private DeadzoneFragment deadzoneFragment;
@@ -270,6 +278,7 @@ public class MainActivity extends AppCompatActivity
     public void onArduinoMessage(byte[] bytes) {
         String commandString = new String(bytes);
         String successString = getString(R.string.settings_res_command);
+        String manualString = getString(R.string.manual_res_command);
         commandString = commandString.replaceAll("\\s","");
         //statusTextView.setText(receivedString);
         int commandParts = stringCharCounter(commandString, ':',0);
@@ -333,6 +342,16 @@ public class MainActivity extends AppCompatActivity
                 onUpdateChangeText("Sensitivity:"+commandList[2]);
                 sendCommand="";
             }
+            else if (commandList[0].equals(manualString) && commandList[1].equals(getString(R.string.sensitivity_set_res_command))) {
+                currentFragment = getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
+                if (currentFragment instanceof MouseSensitivityFragment ||
+                        currentFragment instanceof GamingSensitivityFragment ||
+                        currentFragment instanceof WirelessSensitivityFragment ||
+                        currentFragment instanceof MacroSensitivityFragment) {
+                    onUpdateChangeText("Sensitivity:" + commandList[2]);
+                    sendCommand = "";
+                }
+            }
             //Deadzone
             else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.deadzone_res_command))) {
                 onUpdateChangeText("Deadzone:"+commandList[2]);
@@ -351,6 +370,23 @@ public class MainActivity extends AppCompatActivity
             }
             else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.mapping_set_res_command))) {
                 onUpdateChangeText("Button Mapping:"+commandList[2]);
+                sendCommand="";
+            }
+            //Communication Mode
+            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.communication_mode_res_command))) {
+                if (commandList[2].contains(getString(R.string.communication_mode_usb_res_command))) {
+                    onUpdateChangeText(getString(R.string.communication_mode_usb_set_res_text));
+                } else if (commandList[2].contains(getString(R.string.communication_mode_bt_res_command))) {
+                    onUpdateChangeText(getString(R.string.communication_mode_bt_set_res_text));
+                }
+                sendCommand="";
+            }
+            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.communication_mode_set_res_command))) {
+                if (commandList[2].contains(getString(R.string.communication_mode_usb_res_command))) {
+                    onUpdateChangeText(getString(R.string.communication_mode_usb_set_res_text));
+                } else if (commandList[2].contains(getString(R.string.communication_mode_bt_res_command))) {
+                    onUpdateChangeText(getString(R.string.communication_mode_bt_set_res_text));
+                }
                 sendCommand="";
             }
             //Bluetooth Config
@@ -387,6 +423,13 @@ public class MainActivity extends AppCompatActivity
                 onUpdateChangeText("Button Mode:"+commandList[2]);
                 sendCommand="";
             }
+            else if (commandList[0].equals(manualString) && commandList[1].equals(getString(R.string.button_mode_set_res_command))) {
+                currentFragment = getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
+                if (currentFragment instanceof GamingButtonModeFragment) {
+                    onUpdateChangeText("Button Mode:"+commandList[2]);
+                    sendCommand="";
+                }
+            }
             //Debug
             else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.debug_res_command))) {
                 if (commandList[2].contains(getString(R.string.debug_off_res_command))) {
@@ -420,6 +463,13 @@ public class MainActivity extends AppCompatActivity
             else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.initialization_set_res_command))) {
                 onUpdateChangeText("xH:"+actionList[0]+",xL:"+actionList[1]+",yH:"+actionList[2]+",yL:"+actionList[3]);
                 sendCommand="";
+            }
+            else if (commandList[0].equals(manualString) && commandList[1].equals(getString(R.string.initialization_set_res_command))) {
+                currentFragment = getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
+                if (currentFragment instanceof InitializationFragment) {
+                    onUpdateChangeText("xH:"+actionList[0]+",xL:"+actionList[1]+",yH:"+actionList[2]+",yL:"+actionList[3]);
+                    sendCommand="";
+                }
             }
             //Calibration
             else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.calibration_res_command))) {
@@ -541,6 +591,26 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onIsArduinoSending() {
         return arduinoIsSending;
+    }
+
+    @Override
+    public void setHelpChangeText(String text) {
+
+    }
+
+    @Override
+    public void setHelpStatusText(String text) {
+
+    }
+
+    @Override
+    public void setWirelessCommunicationModeChangeText(String text) {
+
+    }
+
+    @Override
+    public void setWirelessCommunicationModeStatusText(String text) {
+
     }
 
     @Override
@@ -716,6 +786,10 @@ public class MainActivity extends AppCompatActivity
                     macroFragment =  (MacroFragment)getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
                     macroFragment.setMacroChangeText(changeText);
                     //Log.v("Fragment", "MacroFragment");
+                } else if (currentFragment instanceof HelpFragment) {
+                    helpFragment =  (HelpFragment)getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
+                    helpFragment.setHelpChangeText(changeText);
+                    //Log.v("Fragment", "HelpFragment");
                 } else if (currentFragment instanceof MouseSensitivityFragment) {
                     mouseSensitivityFragment =  (MouseSensitivityFragment)getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
                     mouseSensitivityFragment.setMouseSensitivityChangeText(changeText);
@@ -760,6 +834,10 @@ public class MainActivity extends AppCompatActivity
                     gamingButtonModeFragment =  (GamingButtonModeFragment) getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
                     gamingButtonModeFragment.setGamingButtonModeChangeText(changeText);
                     //Log.v("Fragment", "GamingButtonModeFragment");
+                } else if (currentFragment instanceof WirelessCommunicationModeFragment) {
+                    wirelessCommunicationModeFragment =  (WirelessCommunicationModeFragment) getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
+                    wirelessCommunicationModeFragment.setWirelessCommunicationModeChangeText(changeText);
+                    //Log.v("Fragment", "WirelessCommunicationModeFragment");
                 } else if (currentFragment instanceof DeadzoneFragment) {
                     deadzoneFragment =  (DeadzoneFragment) getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
                     deadzoneFragment.setDeadzoneChangeText(changeText);
@@ -885,10 +963,14 @@ public class MainActivity extends AppCompatActivity
                     wirelessFragment =  (WirelessFragment)getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
                     wirelessFragment.setWirelessStatusText(statusText);
                     //Log.v("Fragment", "WirelessFragment");
-                }else if (currentFragment instanceof MacroFragment) {
+                } else if (currentFragment instanceof MacroFragment) {
                     macroFragment =  (MacroFragment)getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
                     macroFragment.setMacroStatusText(statusText);
                     //Log.v("Fragment", "MacroFragment");
+                } else if (currentFragment instanceof HelpFragment) {
+                    helpFragment =  (HelpFragment)getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
+                    helpFragment.setHelpStatusText(statusText);
+                    //Log.v("Fragment", "HelpFragment");
                 } else if (currentFragment instanceof MouseSensitivityFragment) {
                     mouseSensitivityFragment =  (MouseSensitivityFragment)getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
                     mouseSensitivityFragment.setMouseSensitivityStatusText(statusText);
@@ -921,8 +1003,7 @@ public class MainActivity extends AppCompatActivity
                     macroMappingFragment =  (MacroMappingFragment) getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
                     macroMappingFragment.setMacroMappingStatusText(statusText);
                     //Log.v("Fragment", "MacroMappingFragment");
-                }
-                else if (currentFragment instanceof WirelessBluetoothConfigFragment) {
+                } else if (currentFragment instanceof WirelessBluetoothConfigFragment) {
                     wirelessBluetoothConfigFragment =  (WirelessBluetoothConfigFragment) getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
                     wirelessBluetoothConfigFragment.setWirelessBluetoothConfigStatusText(statusText);
                     //Log.v("Fragment", "WirelessBluetoothConfigFragment");
@@ -934,6 +1015,10 @@ public class MainActivity extends AppCompatActivity
                     gamingButtonModeFragment =  (GamingButtonModeFragment) getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
                     gamingButtonModeFragment.setGamingButtonModeStatusText(statusText);
                     //Log.v("Fragment", "GamingButtonModeFragment");
+                }  else if (currentFragment instanceof WirelessCommunicationModeFragment) {
+                    wirelessCommunicationModeFragment =  (WirelessCommunicationModeFragment) getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
+                    wirelessCommunicationModeFragment.setWirelessCommunicationModeStatusText(statusText);
+                    //Log.v("Fragment", "WirelessCommunicationModeFragment");
                 } else if (currentFragment instanceof DeadzoneFragment) {
                     deadzoneFragment =  (DeadzoneFragment) getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
                     deadzoneFragment.setDeadzoneStatusText(statusText);

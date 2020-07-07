@@ -1,13 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/initializationFragmentLayout"
+    android:id="@+id/helpFragmentLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context=".Fragments.InitializationFragment">
+    tools:context=".Fragments.HelpFragment">
     <LinearLayout
-        android:id="@+id/initializationFragmentTop"
+        android:id="@+id/helpFragmentTop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="0dp"
@@ -16,54 +16,39 @@
         android:textStyle="bold"
         tools:ignore="MissingConstraints">
         <TextView
-            android:id="@+id/initializationChangeTextView"
+            android:id="@+id/helpChangeTextView"
             android:layout_width="match_parent"
             android:layout_height="50dip"
             android:gravity="center"
             android:textStyle="bold"
             android:padding="16dip"
-            android:text="@string/initialization_fragment_default_change_text"
+            android:text="@string/help_fragment_default_change_text"
             android:background="@color/colorPrimaryLight" />
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/initializationFragmentMiddle1"
+        android:id="@+id/helpFragmentMiddle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_below="@id/initializationFragmentTop"
+        android:layout_below="@id/helpFragmentTop"
         android:paddingLeft="@dimen/fragment_left_padding"
         android:paddingRight="@dimen/fragment_right_padding"
         android:layout_marginBottom="0dp"
         android:orientation="horizontal">
-        <Button
-            android:id="@+id/initializationButton"
+        <TextView
+            android:id="@+id/helpButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="10dp"
             android:layout_weight="1"
+            android:text="@string/help_fragment_default_text"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
-            android:text="@string/initialization_fragment_button_text"
-            android:tag="@string/initialization_set_send_command"
             />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/initializationFragmentMiddle2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/initializationFragmentTop"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/fragment_left_padding"
-        android:paddingRight="@dimen/fragment_right_padding">
-        <ImageView
-            android:id="@+id/initializationImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/initialization_default_description"
-            android:src="@drawable/initialization_default" />
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/initializationFragmentBottom"
+        android:id="@+id/helpFragmentBottom"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
@@ -72,7 +57,7 @@
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
         <TextView
-            android:id="@+id/initializationStatusTextView"
+            android:id="@+id/helpStatusTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="16dip"

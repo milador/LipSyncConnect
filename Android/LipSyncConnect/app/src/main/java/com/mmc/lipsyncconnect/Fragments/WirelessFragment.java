@@ -44,6 +44,7 @@ public class WirelessFragment extends Fragment {
     private final static String WIRELESS_FRAGMENT_TAG = WirelessFragment.class.getSimpleName();
     private final static String WIRELESS_BLUETOOTH_CONFIG_FRAGMENT_TAG = WirelessBluetoothConfigFragment.class.getSimpleName();
     private final static String WIRELESS_CALIBRATION_FRAGMENT_TAG =CalibrationFragment.class.getSimpleName();
+    private final static String WIRELESS_COMMUNICATION_MODE_FRAGMENT_TAG =WirelessCommunicationModeFragment.class.getSimpleName();
     private final static String WIRELESS_DEBUG_FRAGMENT_TAG =DebugFragment.class.getSimpleName();
     private final static String WIRELESS_FACTORY_RESET_FRAGMENT_TAG =FactoryResetFragment.class.getSimpleName();
     private final static String WIRELESS_INITIALIZATION_FRAGMENT_TAG =InitializationFragment.class.getSimpleName();
@@ -54,14 +55,15 @@ public class WirelessFragment extends Fragment {
 
     private static final int kModule_BluetoothConfig = 0;
     private static final int kModule_Calibration = 1;
-    private static final int kModule_Debug = 2;
-    private static final int kModule_FactoryReset = 3;
-    private static final int kModule_Initialization = 4;
-    private static final int kModule_Mapping = 5;
-    private static final int kModule_PressureThreshold = 6;
-    private static final int kModule_Sensitivity = 7;
-    private static final int kModule_Version = 8;
-    private static final int kNumModules = 9;
+    private static final int kModule_CommunicationMode = 2;
+    private static final int kModule_Debug = 3;
+    private static final int kModule_FactoryReset = 4;
+    private static final int kModule_Initialization = 5;
+    private static final int kModule_Mapping = 6;
+    private static final int kModule_PressureThreshold = 7;
+    private static final int kModule_Sensitivity = 8;
+    private static final int kModule_Version = 9;
+    private static final int kNumModules = 10;
 
     private TextView wirelessChangeTextView;
     private TextView wirelessStatusTextView;
@@ -72,6 +74,7 @@ public class WirelessFragment extends Fragment {
 
     private WeakReference<WirelessBluetoothConfigFragment> mWeakWirelessBluetoothConfigFragment = null;
     private WeakReference<CalibrationFragment> mWeakCalibrationFragment = null;
+    private WeakReference<WirelessCommunicationModeFragment> mWeakWirelessCommunicationModeFragment = null;
     private WeakReference<DebugFragment> mWeakDebugFragment = null;
     private WeakReference<FactoryResetFragment> mWeakFactoryResetFragment = null;
     private WeakReference<InitializationFragment> mWeakInitializationFragment = null;
@@ -159,6 +162,12 @@ public class WirelessFragment extends Fragment {
                                     fragment = calibrationFragment;
                                     fragmentTag = WIRELESS_CALIBRATION_FRAGMENT_TAG;
                                     mWeakCalibrationFragment = new WeakReference<>(calibrationFragment);
+                                    break;
+                                case kModule_CommunicationMode:
+                                    WirelessCommunicationModeFragment wirelessCommunicationModeFragment = WirelessCommunicationModeFragment.newInstance();
+                                    fragment = wirelessCommunicationModeFragment;
+                                    fragmentTag = WIRELESS_COMMUNICATION_MODE_FRAGMENT_TAG;
+                                    mWeakWirelessCommunicationModeFragment = new WeakReference<>(wirelessCommunicationModeFragment);
                                     break;
                                 case kModule_Debug:
                                     DebugFragment debugFragment = DebugFragment.newInstance();
@@ -385,6 +394,7 @@ public class WirelessFragment extends Fragment {
         private static final int[] kModuleTitleKeys = {
                 R.string.wireless_bluetooth_config_fragment_title,
                 R.string.calibration_fragment_title,
+                R.string.wireless_communication_mode_fragment_title,
                 R.string.debug_fragment_title,
                 R.string.factory_reset_fragment_title,
                 R.string.initialization_fragment_title,
@@ -394,7 +404,7 @@ public class WirelessFragment extends Fragment {
                 R.string.version_fragment_title};
 
         // Constants
-        private static final int kCellType_ModuleCell = 9;
+        private static final int kCellType_ModuleCell = 10;
 
         private static final int kModuleCellsStartPosition = 0;
 

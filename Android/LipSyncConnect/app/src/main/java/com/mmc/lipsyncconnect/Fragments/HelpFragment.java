@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -21,64 +20,28 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.mmc.lipsyncconnect.R;
 
-/******************************************************************************
- Copyright (c) 2020. MakersMakingChange.com (info@makersmakingchange.com)
- Developed by : Milad Hajihassan (milador)
- ******************************************************************************/
-
-public class InitializationFragment extends Fragment {
+public class HelpFragment extends Fragment {
 
     private MainFragment mMainFragment;
 
-    private Button initializationButton;
-    private TextView initializationChangeTextView;
-    private TextView initializationStatusTextView;
-    private ViewGroup initializationFragmentLayout;
-    private final static String INITIALIZATION_FRAGMENT_TAG = InitializationFragment.class.getSimpleName();
+    private TextView helpTextView;
+    private TextView helpChangeTextView;
+    private TextView helpStatusTextView;
+    private ViewGroup helpFragmentLayout;
+    private final static String INITIALIZATION_FRAGMENT_TAG = HelpFragment.class.getSimpleName();
     private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
 
-    private InitializationFragment.OnInitializationFragmentListener mListener;
+    private HelpFragment.OnHelpFragmentListener mListener;
 
-    View.OnClickListener mButtonClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            final String command = (String) view.getTag();
-            switch(view.getId()){
-                case R.id.initializationButton:
-                    view.setPressed(false);
-                    //Log.v("initializationButton","onClick");
-                    new AsyncSendCheck().execute(command);
-                    break;
-            }
-        }
-    };
-/*
-    View.OnTouchListener mButtonTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent event) {
-            final String command = (String) view.getTag();
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-                view.setPressed(false);
-                new AsyncSendCheck().execute(command);
-                view.performClick();
-                return true;
-            }
-            return false;
-        }
-    };
-*/
-
-    public InitializationFragment() {
+    public HelpFragment() {
         // Required empty public constructor
     }
 
-    public static InitializationFragment newInstance() {
-        InitializationFragment fragment = new InitializationFragment();
+    public static HelpFragment newInstance() {
+        HelpFragment fragment = new HelpFragment();
         return fragment;
     }
 
@@ -91,20 +54,18 @@ public class InitializationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.initialization_fragment, container, false);
+        View view = inflater.inflate(R.layout.help_fragment, container, false);
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initializationFragmentLayout = view.findViewById(R.id.initializationFragmentLayout);
-        initializationChangeTextView = (TextView) view.findViewById(R.id.initializationChangeTextView);
-        initializationStatusTextView = (TextView) view.findViewById(R.id.initializationStatusTextView);
-        initializationButton = (Button) view.findViewById(R.id.initializationButton);
-        //initializationButton.setOnTouchListener(mButtonTouchListener);
-        initializationButton.setOnClickListener(mButtonClickListener);
-        setActionBarTitle(R.string.initialization_fragment_title);
+        helpFragmentLayout = view.findViewById(R.id.helpFragmentLayout);
+        helpChangeTextView = (TextView) view.findViewById(R.id.helpChangeTextView);
+        helpStatusTextView = (TextView) view.findViewById(R.id.helpStatusTextView);
+
+        setActionBarTitle(R.string.help_fragment_title);
     }
 
     protected void setActionBarTitle(int titleStringId) {
@@ -185,12 +146,12 @@ public class InitializationFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof InitializationFragment.OnInitializationFragmentListener) {
-            mListener = (InitializationFragment.OnInitializationFragmentListener) context;
-        } else if (getTargetFragment() instanceof InitializationFragment.OnInitializationFragmentListener) {
-            mListener = (InitializationFragment.OnInitializationFragmentListener) getTargetFragment();
+        if (context instanceof HelpFragment.OnHelpFragmentListener) {
+            mListener = (HelpFragment.OnHelpFragmentListener) context;
+        } else if (getTargetFragment() instanceof HelpFragment.OnHelpFragmentListener) {
+            mListener = (HelpFragment.OnHelpFragmentListener) getTargetFragment();
         } else {
-            throw new RuntimeException(context.toString() + " must implement OnInitializationFragmentListener");
+            throw new RuntimeException(context.toString() + " must implement OnHelpFragmentListener");
         }
     }
 
@@ -209,50 +170,40 @@ public class InitializationFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        ViewTreeObserver observer = initializationFragmentLayout.getViewTreeObserver();
+        ViewTreeObserver observer = helpFragmentLayout.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                initializationFragmentLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                helpFragmentLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
 
-        //mListener.onSendCommand(getString(R.string.initialization_send_command));
-        //onSendCheck(getString(R.string.initialization_send_command));
         if (mListener.onIsArduinoAttached()) {
-            initializationStatusTextView.setText(getString(R.string.attached_status_text));
+            helpStatusTextView.setText(getString(R.string.attached_status_text));
         } else {
-            initializationStatusTextView.setText(getString(R.string.default_status_text));
-            /*
-            FragmentManager fragmentManager = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            mMainFragment = new MainFragment();
-            fragmentTransaction.replace(R.id.contentFragmentLayout, mMainFragment,MAIN_FRAGMENT_TAG);
-            fragmentTransaction.addToBackStack(MAIN_FRAGMENT_TAG);
-            fragmentTransaction.commit();
-             */
+            helpStatusTextView.setText(getString(R.string.default_status_text));
         }
         if (mListener.onIsArduinoOpened()) {
-            new AsyncSendCheck().execute(getString(R.string.initialization_send_command));
+            new AsyncSendCheck().execute(getString(R.string.model_send_command));
         } else {
         }
     }
 
 
-    public void setInitializationChangeText(String text) {
-        initializationChangeTextView.setText(text);
+    public void setHelpChangeText(String text) {
+        helpChangeTextView.setText(text);
     }
 
-    public void setInitializationStatusText(String text) {
-        initializationStatusTextView.setText(text);
+    public void setHelpStatusText(String text) {
+        helpStatusTextView.setText(text);
     }
 
-    public interface OnInitializationFragmentListener {
+    public interface OnHelpFragmentListener {
         void onSendCommand(String command);
         boolean onIsArduinoAttached();
         boolean onIsArduinoOpened();
         boolean onIsArduinoSending();
-        void setInitializationChangeText(String text);
-        void setInitializationStatusText(String text);
+        void setHelpChangeText(String text);
+        void setHelpStatusText(String text);
     }
 }

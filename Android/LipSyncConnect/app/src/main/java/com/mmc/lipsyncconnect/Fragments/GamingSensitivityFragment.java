@@ -47,6 +47,25 @@ public class GamingSensitivityFragment extends Fragment{
     private final static String MAIN_FRAGMENT_TAG = MainFragment.class.getSimpleName();
 
     private OnGamingSensitivityFragmentListener mListener;
+
+    View.OnClickListener mButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            final String command = (String) view.getTag();
+            switch(view.getId()){
+                case R.id.gamingSensitivityIncButton:
+                    view.setPressed(false);
+                    new AsyncSendCheck().execute(command);
+                    break;
+                case R.id.gamingSensitivityDecButton:
+                    view.setPressed(false);
+                    new AsyncSendCheck().execute(command);
+                    break;
+            }
+        }
+    };
+
+    /*
     View.OnTouchListener mButtonTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent event) {
@@ -60,7 +79,7 @@ public class GamingSensitivityFragment extends Fragment{
             return false;
         }
     };
-
+    */
 
     public GamingSensitivityFragment() {
         // Required empty public constructor
@@ -92,8 +111,11 @@ public class GamingSensitivityFragment extends Fragment{
         gamingSensitivityStatusTextView = (TextView) view.findViewById(R.id.gamingSensitivityStatusTextView);
         gamingSensitivityIncButton = (Button) view.findViewById(R.id.gamingSensitivityIncButton);
         gamingSensitivityDecButton = (Button) view.findViewById(R.id.gamingSensitivityDecButton);
-        gamingSensitivityIncButton.setOnTouchListener(mButtonTouchListener);
-        gamingSensitivityDecButton.setOnTouchListener(mButtonTouchListener);
+        //gamingSensitivityIncButton.setOnTouchListener(mButtonTouchListener);
+        //gamingSensitivityDecButton.setOnTouchListener(mButtonTouchListener);
+
+        gamingSensitivityIncButton.setOnClickListener(mButtonClickListener);
+        gamingSensitivityDecButton.setOnClickListener(mButtonClickListener);
         setActionBarTitle(R.string.gaming_sensitivity_fragment_title);
     }
 
