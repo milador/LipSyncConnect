@@ -11,6 +11,11 @@ import android.widget.TextView;
 
 import com.mmc.lipsyncconnect.R;
 
+/******************************************************************************
+ Copyright (c) 2020. MakersMakingChange.com (info@makersmakingchange.com)
+ Developed by : Milad Hajihassan (milador)
+ ******************************************************************************/
+
 public class CalibrationDialog extends Dialog implements View.OnClickListener {
     Context mContext;
     TextView mTitle = null;

@@ -13,6 +13,11 @@ import androidx.annotation.Nullable;
 
 import com.mmc.lipsyncconnect.R;
 
+/******************************************************************************
+ Copyright (c) 2020. MakersMakingChange.com (info@makersmakingchange.com)
+ Developed by : Milad Hajihassan (milador)
+ ******************************************************************************/
+
 public class MappingAdapter extends ArrayAdapter<String> {
 
     String[] spinnerMainTitles;

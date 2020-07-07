@@ -23,6 +23,11 @@ import androidx.fragment.app.Fragment;
 
 import com.mmc.lipsyncconnect.R;
 
+/******************************************************************************
+ Copyright (c) 2020. MakersMakingChange.com (info@makersmakingchange.com)
+ Developed by : Milad Hajihassan (milador)
+ ******************************************************************************/
+
 public class HelpFragment extends Fragment {
 
     private MainFragment mMainFragment;

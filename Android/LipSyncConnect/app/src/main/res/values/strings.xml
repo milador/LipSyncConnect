@@ -125,7 +125,7 @@
     <string name="mapping_fragment_very_long_sip_action_text">Very Long Sip:</string>
 
     <string name="help_fragment_default_change_text">Waiting...</string>
-    <string name="help_fragment_default_text">LipSync Connect Application is developed to assist LipSync users to customize their devices based on their needs. \n\nPlease connect your LipSync to your Android device through USB OTG Cable and then open the LipSync Connect Application.\n\nThe Application will automatically detect your LipSync Model and unlock the settings button for your LipSync Model.\n\nTap oe click on your LipSync model and then navigate the available settings options.\n\nTap or click on the option and perform the adjustment action.\n\nNote: Please avoid disconnecting the USB cable or closing the Application during settings change process or loading process of settings options.</string>
+    <string name="help_fragment_default_text">LipSync Connect Application is developed to assist LipSync users to customize their devices based on their needs. \n\nPlease connect your LipSync to your Android device through USB OTG Cable and then open the LipSync Connect Application.\n\nThe Application will automatically detect your LipSync Model and unlock the settings button for your LipSync Model.\n\nTap or click on your LipSync model and then navigate the available settings options.\n\nTap or click on the option and perform the adjustment action.\n\nNote: Please avoid disconnecting the USB cable or closing the Application during settings change process or loading process of settings options.</string>
 
     <string-array name="mouse_mapping_fragment_button_main_titles">
         <item>Left Click</item>
