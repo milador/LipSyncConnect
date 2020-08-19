@@ -10,7 +10,9 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a4956749-8bdc-42fd-96c8-80b0fc8262fc" name="Default Changelist" comment="" />
+    <list default="true" id="a4956749-8bdc-42fd-96c8-80b0fc8262fc" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +50,10 @@
   <component name="PropertiesComponent">
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="device.picker.selection" value="9885b64b344d463944" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Android/LipSyncConnect" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Java/brainlink-firmware-updater-java" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="sync.plugin.last.upgrade.timestamp" value="1591133999792" />
   </component>
   <component name="RecentsManager">
@@ -175,7 +180,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
