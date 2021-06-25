@@ -13,13 +13,11 @@
     <list default="true" id="a4956749-8bdc-42fd-96c8-80b0fc8262fc" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_2_API_26" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -47,13 +45,20 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1bjZEnafW9iUj2fimkhuKWamMOu" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="device.picker.selection" value="9885b64b344d463944" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Java/brainlink-firmware-updater-java" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Android/LipSyncConnect" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
     <property name="sync.plugin.last.upgrade.timestamp" value="1591133999792" />
   </component>
   <component name="RecentsManager">
@@ -67,18 +72,6 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\milad\Development\AndroidProjects\LipSyncConnect\app" />
     </key>
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
   </component>
   <component name="RunManager" selected="Android App.app">
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
@@ -139,7 +132,7 @@
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LipSyncConnect" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="LipSyncConnect" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -156,11 +149,6 @@
       <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
       <method v="2" />
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Gradle.LipSyncConnect" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -187,5 +175,43 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="509" y="105" key="#app" timestamp="1601676763041">
+      <screen x="0" y="0" width="1536" height="920" />
+    </state>
+    <state x="509" y="105" key="#app/0.0.1536.920@0.0.1536.920" timestamp="1601676763041" />
+    <state x="550" y="216" key="FileChooserDialogImpl" timestamp="1601676791335">
+      <screen x="0" y="0" width="1536" height="920" />
+    </state>
+    <state x="550" y="216" key="FileChooserDialogImpl/0.0.1536.920@0.0.1536.920" timestamp="1601676791335" />
+    <state width="1365" height="227" key="GridCell.Tab.0.bottom" timestamp="1601676798968">
+      <screen x="0" y="0" width="1536" height="920" />
+    </state>
+    <state width="1365" height="227" key="GridCell.Tab.0.bottom/0.0.1536.920@0.0.1536.920" timestamp="1601676798968" />
+    <state width="1365" height="227" key="GridCell.Tab.0.center" timestamp="1601676798968">
+      <screen x="0" y="0" width="1536" height="920" />
+    </state>
+    <state width="1365" height="227" key="GridCell.Tab.0.center/0.0.1536.920@0.0.1536.920" timestamp="1601676798968" />
+    <state width="1365" height="227" key="GridCell.Tab.0.left" timestamp="1601676798968">
+      <screen x="0" y="0" width="1536" height="920" />
+    </state>
+    <state width="1365" height="227" key="GridCell.Tab.0.left/0.0.1536.920@0.0.1536.920" timestamp="1601676798968" />
+    <state width="1365" height="227" key="GridCell.Tab.0.right" timestamp="1601676798968">
+      <screen x="0" y="0" width="1536" height="920" />
+    </state>
+    <state width="1365" height="227" key="GridCell.Tab.0.right/0.0.1536.920@0.0.1536.920" timestamp="1601676798968" />
+    <state x="278" y="103" key="SettingsEditor" timestamp="1601676645868">
+      <screen x="0" y="0" width="1536" height="920" />
+    </state>
+    <state x="278" y="103" key="SettingsEditor/0.0.1536.920@0.0.1536.920" timestamp="1601676645868" />
+    <state x="168" y="120" width="1200" height="680" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1601676503846">
+      <screen x="0" y="0" width="1536" height="920" />
+    </state>
+    <state x="168" y="120" width="1200" height="680" key="com.android.tools.idea.avdmanager.AvdListDialog/0.0.1536.920@0.0.1536.920" timestamp="1601676503846" />
+    <state x="466" y="285" key="com.intellij.ide.util.TipDialog" timestamp="1601676689722">
+      <screen x="0" y="0" width="1536" height="920" />
+    </state>
+    <state x="466" y="285" key="com.intellij.ide.util.TipDialog/0.0.1536.920@0.0.1536.920" timestamp="1601676689722" />
   </component>
 </project>

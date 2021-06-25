@@ -20,7 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by Omar on 21/05/2017.
+ * Created by Omar on 21/05/2017.  com.mmc.lipsyncconnect.Arduino.USB_PERMISSION
+ * this.vendorIds.add(9025);
  */
 
 public class Arduino implements UsbSerialInterface.UsbReadCallback {
@@ -116,8 +117,6 @@ public class Arduino implements UsbSerialInterface.UsbReadCallback {
             serialPort.write(bytes);
         }
     }
-
-
 
     public void setDelimiter(byte delimiter){
         this.delimiter = delimiter;
@@ -241,10 +240,10 @@ public class Arduino implements UsbSerialInterface.UsbReadCallback {
                         listener.onArduinoMessage(toByteArray(bytesReceived));
                     }
                     bytesReceived.clear();
-                    offset += index + 1;
+                    offset = index + 1;
                 }
 
-                if(offset < bytes.length - 1){
+                if(offset < bytes.length){
                     byte[] tmp = Arrays.copyOfRange(bytes, offset, bytes.length);
                     bytesReceived.addAll(toByteList(tmp));
                 }

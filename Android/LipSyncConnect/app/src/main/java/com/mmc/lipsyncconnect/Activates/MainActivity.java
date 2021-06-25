@@ -240,7 +240,6 @@ public class MainActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
         arduino.setArduinoListener(this);
-
     }
 
     @Override
@@ -273,255 +272,358 @@ public class MainActivity extends AppCompatActivity
         arduinoIsAttached=false;
     }
 
+    private boolean onValidResponseFormat(String responseString) {
+        int responseIndex = stringCharCounter(responseString, ':',0);
+        if (responseIndex==0){
+            return false;
+        } else if (responseIndex>=1 && responseIndex<=3) {
+            String[] responseList = responseString.split(":");
+            int statusParts = stringCharCounter(responseList[0], ',',0);
+            if(statusParts==1){
+                String[] statusList = responseList[0].split(",");
+                if(statusList[0].contains(getString(R.string.general_res_success_status)) ||
+                        statusList[0].contains(getString(R.string.general_res_manual_status)) ||
+                        statusList[0].contains(getString(R.string.general_res_fail_status)) ||
+                        statusList[0].contains(getString(R.string.general_res_log_status))
+                ){
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 
     @Override
     public void onArduinoMessage(byte[] bytes) {
-        String commandString = new String(bytes);
-        String successString = getString(R.string.settings_res_command);
-        String manualString = getString(R.string.manual_res_command);
-        commandString = commandString.replaceAll("\\s","");
+        String responseString = new String(bytes);
+        String statusSuccessString = getString(R.string.general_res_success_status);
+        String statusSuccessCode = getString(R.string.general_res_success_code_zero);
+        String statusManualString = getString(R.string.general_res_manual_status);
+        String statusFailString = getString(R.string.general_res_fail_status);
+        String statusLogString = getString(R.string.general_res_log_status);
+
+        responseString = responseString.replaceAll("\\s","");
         //statusTextView.setText(receivedString);
-        int commandParts = stringCharCounter(commandString, ':',0);
-        if(commandString.contains(getString(R.string.settings_res_success_command)) && (commandParts ==1)){
-            try {
-                arduino.send(sendCommand.getBytes("UTF-8"));
-                sendCommand="";
-                onUpdateChangeText("Entering Settings");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        } else if ((commandString.contains(getString(R.string.settings_res_fail_command)) || commandString.contains(getString(R.string.exit_res_success_command))) && (commandParts ==1)) {
-            onUpdateChangeText("Exit Settings");
-            sendCommand="";
-            arduinoIsSending=false;
-        } else if (commandParts ==2) {
-            String[] commandList = commandString.split(":");
-            String[] actionList = commandList[2].split(",");
-            if (commandList[0].equals(getString(R.string.log_res_command))) {
-                if(commandList[1].equals(getString(R.string.log_initialization_res_command))){
-                    onUpdateDataText("xHNt:"+actionList[0]+",xLNt:"+actionList[1]+",yHNt:"+actionList[2]+",yLNt:"+actionList[3]);
+        int responseIndex = stringCharCounter(responseString, ':',0);
+        if(onValidResponseFormat(responseString) && (responseIndex ==1)){
+            String[] responseArrayString = responseString.split(":");
+            String[] statusArrayString = responseArrayString[0].split(",");
+            if(statusArrayString[0].contains(statusSuccessString) &&
+                    responseArrayString[1].contains(getString(R.string.settings_res_command))){
+                try {
+                    arduino.send(sendCommand.getBytes("UTF-8"));
                     sendCommand="";
-                } else if (commandList[1].equals(getString(R.string.log_calibration_res_command))){
-                    onUpdateDataText("xHMax:"+actionList[0]+",xLMax:"+actionList[1]+",yHMax:"+actionList[2]+",yLMax:"+actionList[3]);
-                    sendCommand="";
-                } else if (commandList[1].equals(getString(R.string.log_raw_res_command))){
-                    onUpdateDataText("xH:"+actionList[0]+",xL:"+actionList[1]+",yH:"+actionList[2]+",yL:"+actionList[3]);
-                    sendCommand="";
+                    onUpdateChangeText("Entering Settings");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
                 }
             }
-            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.model_res_command))) {
-                if (commandList[2].contains(getString(R.string.model_mouse_res_command))) {
+            else if (statusArrayString[0].contains(statusFailString) &&
+                    responseArrayString[1].contains(getString(R.string.settings_res_command))){
+                onUpdateChangeText("Exit Settings");
+                sendCommand = "";
+                arduinoIsSending = false;
+            }
+            else if (statusArrayString[0].contains(statusSuccessString) &&
+                    responseArrayString[1].contains(getString(R.string.exit_res_command))){
+                onUpdateChangeText("Exit Settings");
+                sendCommand = "";
+                arduinoIsSending = false;
+            }
+            else if (statusArrayString[0].contains(statusLogString)){
+                String[] actionArrayString = responseArrayString[1].split(",");
+                if(statusArrayString[1].equals(getString(R.string.general_res_log_code_initialization))){
+                    onUpdateDataText("xHNt:"+actionArrayString[0]+",xLNt:"+actionArrayString[1]+",yHNt:"+actionArrayString[2]+",yLNt:"+actionArrayString[3]);
+                    sendCommand="";
+                } else if (statusArrayString[1].equals(getString(R.string.general_res_log_code_calibration))){
+                    onUpdateDataText("xHMax:"+actionArrayString[0]+",xLMax:"+actionArrayString[1]+",yHMax:"+actionArrayString[2]+",yLMax:"+actionArrayString[3]);
+                    sendCommand="";
+                } else if (statusArrayString[1].equals(getString(R.string.general_res_log_code_raw))){
+                    onUpdateDataText("xH:"+actionArrayString[0]+",xL:"+actionArrayString[1]+",yH:"+actionArrayString[2]+",yL:"+actionArrayString[3]);
+                    sendCommand="";
+                }
+                arduinoIsSending = false;
+            }
+        } else if (onValidResponseFormat(responseString) && (responseIndex ==2)){
+            String[] responseArrayString = responseString.split(":");
+            String[] statusArrayString = responseArrayString[2].split(",");
+            if (statusArrayString[0].equals(statusSuccessString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.model_res_command))) {
+                if (responseArrayString[2].contains(getString(R.string.model_mouse_res_command))) {
                     lipsyncModel=1;
                     onUpdateChangeText(getString(R.string.model_mouse_res_text));
                     sendCommand="";
-                } else if (commandList[2].contains(getString(R.string.model_gaming_res_command))) {
+                } else if (responseArrayString[2].contains(getString(R.string.model_gaming_res_command))) {
                     lipsyncModel=2;
                     onUpdateChangeText(getString(R.string.model_gaming_res_text));
                     sendCommand="";
-                } else if (commandList[2].contains(getString(R.string.model_wireless_res_command))) {
+                } else if (responseArrayString[2].contains(getString(R.string.model_wireless_res_command))) {
                     lipsyncModel=3;
                     onUpdateChangeText(getString(R.string.model_wireless_res_text));
                     sendCommand="";
-                } else if (commandList[2].contains(getString(R.string.model_micro_res_command))) {
+                } else if (responseArrayString[2].contains(getString(R.string.model_micro_res_command))) {
                     lipsyncModel=4;
                     onUpdateChangeText(getString(R.string.model_macro_res_text));
                     sendCommand="";
                 }
             }
             //Version
-            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.version_res_command))) {
-                onUpdateChangeText("Version:"+commandList[2]);
+            else if (statusArrayString[0].equals(statusSuccessString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.version_res_command))) {
+                onUpdateChangeText("Version:"+responseArrayString[2]);
                 sendCommand="";
             }
             //Sensitivity
-            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.sensitivity_res_command))) {
-                onUpdateChangeText("Sensitivity:"+commandList[2]);
+            else if (statusArrayString[0].equals(statusSuccessString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.sensitivity_res_command))) {
+                onUpdateChangeText("Sensitivity:"+responseArrayString[2]);
                 sendCommand="";
             }
-            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.sensitivity_set_res_command))) {
-                onUpdateChangeText("Sensitivity:"+commandList[2]);
+            else if (statusArrayString[0].equals(statusSuccessString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.sensitivity_set_res_command))) {
+                onUpdateChangeText("Sensitivity:"+responseArrayString[2]);
                 sendCommand="";
             }
-            else if (commandList[0].equals(manualString) && commandList[1].equals(getString(R.string.sensitivity_set_res_command))) {
+            else if (statusArrayString[0].equals(statusManualString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.sensitivity_set_res_command))) {
                 currentFragment = getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
                 if (currentFragment instanceof MouseSensitivityFragment ||
                         currentFragment instanceof GamingSensitivityFragment ||
                         currentFragment instanceof WirelessSensitivityFragment ||
                         currentFragment instanceof MacroSensitivityFragment) {
-                    onUpdateChangeText("Sensitivity:" + commandList[2]);
+                    onUpdateChangeText("Sensitivity:" + responseArrayString[2]);
                     sendCommand = "";
                 }
             }
             //Deadzone
-            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.deadzone_res_command))) {
-                onUpdateChangeText("Deadzone:"+commandList[2]);
-                onUpdateSeekBar(Integer.parseInt(commandList[2]));
+            else if (statusArrayString[0].equals(statusSuccessString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.deadzone_res_command))) {
+                onUpdateChangeText("Deadzone:"+responseArrayString[2]);
+                onUpdateSeekBar(Integer.parseInt(responseArrayString[2]));
                 sendCommand="";
             }
-            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.deadzone_set_res_command))) {
-                onUpdateChangeText("Deadzone:"+commandList[2]);
+            else if (statusArrayString[0].equals(statusSuccessString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.deadzone_set_res_command))) {
+                onUpdateChangeText("Deadzone:"+responseArrayString[2]);
                 sendCommand="";
             }
             //Button Mapping
-            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.mapping_res_command))) {
-                onUpdateChangeText("Button Mapping:"+commandList[2]);
-                onUpdateSpinner(commandList[2]);
+            else if (statusArrayString[0].equals(statusSuccessString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.mapping_res_command))) {
+                onUpdateChangeText("Button Mapping:"+responseArrayString[2]);
+                onUpdateSpinner(responseArrayString[2]);
                 sendCommand="";
             }
-            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.mapping_set_res_command))) {
-                onUpdateChangeText("Button Mapping:"+commandList[2]);
+            else if (statusArrayString[0].equals(statusSuccessString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.mapping_set_res_command))) {
+                onUpdateChangeText("Button Mapping:"+responseArrayString[2]);
                 sendCommand="";
             }
             //Communication Mode
-            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.communication_mode_res_command))) {
-                if (commandList[2].contains(getString(R.string.communication_mode_usb_res_command))) {
+            else if (statusArrayString[0].equals(statusSuccessString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.communication_mode_res_command))) {
+                if (responseArrayString[2].contains(getString(R.string.communication_mode_usb_res_command))) {
                     onUpdateChangeText(getString(R.string.communication_mode_usb_set_res_text));
-                } else if (commandList[2].contains(getString(R.string.communication_mode_bt_res_command))) {
+                } else if (responseArrayString[2].contains(getString(R.string.communication_mode_bt_res_command))) {
                     onUpdateChangeText(getString(R.string.communication_mode_bt_set_res_text));
                 }
                 sendCommand="";
             }
-            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.communication_mode_set_res_command))) {
-                if (commandList[2].contains(getString(R.string.communication_mode_usb_res_command))) {
+            else if (statusArrayString[0].equals(statusSuccessString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.communication_mode_set_res_command))) {
+                if (responseArrayString[2].contains(getString(R.string.communication_mode_usb_res_command))) {
                     onUpdateChangeText(getString(R.string.communication_mode_usb_set_res_text));
-                } else if (commandList[2].contains(getString(R.string.communication_mode_bt_res_command))) {
+                } else if (responseArrayString[2].contains(getString(R.string.communication_mode_bt_res_command))) {
                     onUpdateChangeText(getString(R.string.communication_mode_bt_set_res_text));
                 }
                 sendCommand="";
             }
             //Bluetooth Config
-            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.bluetooth_config_res_command))) {
-                if (commandList[2].contains(getString(R.string.bluetooth_config_mouse_res_command))) {
+            else if (statusArrayString[0].equals(statusSuccessString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.bluetooth_config_res_command))) {
+                if (responseArrayString[2].contains(getString(R.string.bluetooth_config_mouse_res_command))) {
                     onUpdateChangeText(getString(R.string.bluetooth_config_mouse_set_res_text));
-                } else if (commandList[2].contains(getString(R.string.bluetooth_config_keyboard_res_command))) {
+                } else if (responseArrayString[2].contains(getString(R.string.bluetooth_config_keyboard_res_command))) {
                     onUpdateChangeText(getString(R.string.bluetooth_config_keyboard_set_res_text));
-                } else if (commandList[2].contains(getString(R.string.bluetooth_config_joystick_res_command))) {
+                } else if (responseArrayString[2].contains(getString(R.string.bluetooth_config_joystick_res_command))) {
                     onUpdateChangeText(getString(R.string.bluetooth_config_joystick_set_res_text));
-                } else if (commandList[2].contains(getString(R.string.bluetooth_config_comp_res_command))) {
+                } else if (responseArrayString[2].contains(getString(R.string.bluetooth_config_comp_res_command))) {
                     onUpdateChangeText(getString(R.string.bluetooth_config_comp_set_res_text));
                 }
                 sendCommand="";
             }
-            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.bluetooth_config_set_res_command))) {
-                if (commandList[2].contains(getString(R.string.bluetooth_config_mouse_res_command))) {
+            else if (statusArrayString[0].equals(statusSuccessString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.bluetooth_config_set_res_command))) {
+                if (responseArrayString[2].contains(getString(R.string.bluetooth_config_mouse_res_command))) {
                     onUpdateChangeText(getString(R.string.bluetooth_config_mouse_set_res_text));
-                } else if (commandList[2].contains(getString(R.string.bluetooth_config_keyboard_res_command))) {
+                } else if (responseArrayString[2].contains(getString(R.string.bluetooth_config_keyboard_res_command))) {
                     onUpdateChangeText(getString(R.string.bluetooth_config_keyboard_set_res_text));
-                } else if (commandList[2].contains(getString(R.string.bluetooth_config_joystick_res_command))) {
+                } else if (responseArrayString[2].contains(getString(R.string.bluetooth_config_joystick_res_command))) {
                     onUpdateChangeText(getString(R.string.bluetooth_config_joystick_set_res_text));
-                } else if (commandList[2].contains(getString(R.string.bluetooth_config_comp_res_command))) {
+                } else if (responseArrayString[2].contains(getString(R.string.bluetooth_config_comp_res_command))) {
                     onUpdateChangeText(getString(R.string.bluetooth_config_comp_set_res_text));
                 }
                 sendCommand="";
             }
             //Button Mode
-            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.button_mode_res_command))) {
-                onUpdateChangeText("Button Mode:"+commandList[2]);
+            else if (statusArrayString[0].equals(statusSuccessString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.button_mode_res_command))) {
+                onUpdateChangeText("Button Mode:"+responseArrayString[2]);
                 sendCommand="";
             }
-            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.button_mode_set_res_command))) {
-                onUpdateChangeText("Button Mode:"+commandList[2]);
+            else if (statusArrayString[0].equals(statusSuccessString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.button_mode_set_res_command))) {
+                onUpdateChangeText("Button Mode:"+responseArrayString[2]);
                 sendCommand="";
             }
-            else if (commandList[0].equals(manualString) && commandList[1].equals(getString(R.string.button_mode_set_res_command))) {
+            else if (statusArrayString[0].equals(statusManualString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.button_mode_set_res_command))) {
                 currentFragment = getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
                 if (currentFragment instanceof GamingButtonModeFragment) {
-                    onUpdateChangeText("Button Mode:"+commandList[2]);
+                    onUpdateChangeText("Button Mode:"+responseArrayString[2]);
                     sendCommand="";
                 }
             }
             //Debug
-            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.debug_res_command))) {
-                if (commandList[2].contains(getString(R.string.debug_off_res_command))) {
+            else if (statusArrayString[0].equals(statusSuccessString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.debug_res_command))) {
+                if (responseArrayString[2].contains(getString(R.string.debug_off_res_command))) {
                     onUpdateChangeText("Debug mode:"+getString(R.string.debug_off_set_res_text));
-                } else if (commandList[2].contains(getString(R.string.debug_on_res_command))) {
+                } else if (responseArrayString[2].contains(getString(R.string.debug_on_res_command))) {
                     onUpdateChangeText("Debug mode:"+getString(R.string.debug_on_set_res_text));
                 }
                 sendCommand="";
             }
-            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.debug_set_res_command))) {
-                if (commandList[2].contains(getString(R.string.debug_off_res_command))) {
+            else if (statusArrayString[0].equals(statusSuccessString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.debug_set_res_command))) {
+                if (responseArrayString[2].contains(getString(R.string.debug_off_res_command))) {
                     onUpdateChangeText("Debug mode:"+getString(R.string.debug_off_set_res_text));
-                } else if (commandList[2].contains(getString(R.string.debug_on_res_command))) {
+                } else if (responseArrayString[2].contains(getString(R.string.debug_on_res_command))) {
                     onUpdateChangeText("Debug mode:"+getString(R.string.debug_on_set_res_text));
                 }
                 sendCommand="";
             }
             //Factory Reset
-            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.factory_reset_set_res_command))) {
-                if (commandList[2].contains(getString(R.string.factory_reset_success_res_command))) {
+            else if (statusArrayString[0].equals(statusSuccessString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.factory_reset_set_res_command))) {
+                if (responseArrayString[2].contains(getString(R.string.factory_reset_success_res_command))) {
                     onUpdateChangeText(getString(R.string.factory_reset_success_res_text));
                 } else{
                 }
                 sendCommand="";
             }
             //Initialization
-            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.initialization_res_command))) {
-                onUpdateChangeText("xH:"+actionList[0]+",xL:"+actionList[1]+",yH:"+actionList[2]+",yL:"+actionList[3]);
+            else if (statusArrayString[0].equals(statusSuccessString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.initialization_res_command))) {
+                String[] actionArrayString = responseArrayString[2].split(",");
+                onUpdateChangeText("xH:"+actionArrayString[0]+",xL:"+actionArrayString[1]+",yH:"+actionArrayString[2]+",yL:"+actionArrayString[3]);
                 sendCommand="";
             }
-            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.initialization_set_res_command))) {
-                onUpdateChangeText("xH:"+actionList[0]+",xL:"+actionList[1]+",yH:"+actionList[2]+",yL:"+actionList[3]);
+            else if (statusArrayString[0].equals(statusSuccessString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.initialization_set_res_command))) {
+                String[] actionArrayString = responseArrayString[2].split(",");
+                onUpdateChangeText("xH:"+actionArrayString[0]+",xL:"+actionArrayString[1]+",yH:"+actionArrayString[2]+",yL:"+actionArrayString[3]);
                 sendCommand="";
             }
-            else if (commandList[0].equals(manualString) && commandList[1].equals(getString(R.string.initialization_set_res_command))) {
+            else if (statusArrayString[0].equals(statusManualString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.initialization_set_res_command))) {
                 currentFragment = getSupportFragmentManager().findFragmentById(R.id.contentFragmentLayout);
                 if (currentFragment instanceof InitializationFragment) {
-                    onUpdateChangeText("xH:"+actionList[0]+",xL:"+actionList[1]+",yH:"+actionList[2]+",yL:"+actionList[3]);
+                    String[] actionArrayString = responseArrayString[2].split(",");
+                    onUpdateChangeText("xH:"+actionArrayString[0]+",xL:"+actionArrayString[1]+",yH:"+actionArrayString[2]+",yL:"+actionArrayString[3]);
                     sendCommand="";
                 }
             }
             //Calibration
-            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.calibration_res_command))) {
-                onUpdateChangeText("xH:"+actionList[0]+",xL:"+actionList[1]+",yH:"+actionList[2]+",yL:"+actionList[3]);
+            else if (statusArrayString[0].equals(statusSuccessString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.calibration_res_command))) {
+                String[] actionArrayString = responseArrayString[1].split(",");
+                onUpdateChangeText("xH:"+actionArrayString[0]+",xL:"+actionArrayString[1]+",yH:"+actionArrayString[2]+",yL:"+actionArrayString[3]);
                 sendCommand="";
             }
             //Calibration
-            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.calibration_set_res_command))) {
-                if (commandList[2].contains(getString(R.string.calibration_zero_set_res_command))) {
+            else if (statusArrayString[0].equals(statusSuccessString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.calibration_set_res_command))) {
+                if (responseArrayString[2].contains(getString(R.string.calibration_zero_set_res_command))) {
                     onUpdateChangeText(getString(R.string.calibration_zero_set_res_message));
                     onUpdateChangeImage(getString(R.string.calibration_zero_set_res_command));
                     sendCommand="";
-                } else if (commandList[2].contains(getString(R.string.calibration_one_set_res_command))) {
+                } else if (responseArrayString[2].contains(getString(R.string.calibration_one_set_res_command))) {
                     onUpdateChangeText(getString(R.string.calibration_one_set_res_message));
                     onUpdateChangeImage(getString(R.string.calibration_one_set_res_command));
                     sendCommand="";
-                } else if (commandList[2].contains(getString(R.string.calibration_two_set_res_command))) {
+                } else if (responseArrayString[2].contains(getString(R.string.calibration_two_set_res_command))) {
                     onUpdateChangeText(getString(R.string.calibration_two_set_res_message));
                     onUpdateChangeImage(getString(R.string.calibration_two_set_res_command));
                     sendCommand="";
-                } else if (commandList[2].contains(getString(R.string.calibration_three_set_res_command))) {
+                } else if (responseArrayString[2].contains(getString(R.string.calibration_three_set_res_command))) {
                     onUpdateChangeText(getString(R.string.calibration_three_set_res_message));
                     onUpdateChangeImage(getString(R.string.calibration_three_set_res_command));
                     sendCommand="";
-                } else if (commandList[2].contains(getString(R.string.calibration_four_set_res_command))) {
+                } else if (responseArrayString[2].contains(getString(R.string.calibration_four_set_res_command))) {
                     onUpdateChangeText(getString(R.string.calibration_four_set_res_message));
                     onUpdateChangeImage(getString(R.string.calibration_four_set_res_command));
                     sendCommand="";
                 }
             }
             arduinoIsSending=false;
-        }  else if (commandParts ==3) {
-            String[] commandList = commandString.split(":");
-            String[] actionList = commandList[3].split(",");
+        }  else if (responseIndex ==3) {
+            String[] responseArrayString = responseString.split(":");
+            String[] statusArrayString = responseArrayString[0].split(",");
             //Calibration
-            if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.calibration_set_res_command))) {
-                if (commandList[2].contains(getString(R.string.calibration_five_set_res_command))) {
-                    onUpdateChangeText("xH:"+actionList[0]+",xL:"+actionList[1]+",yH:"+actionList[2]+",yL:"+actionList[3]);
+            if (statusArrayString[0].equals(statusSuccessString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.calibration_set_res_command))) {
+                if (responseArrayString[2].contains(getString(R.string.calibration_five_set_res_command))) {
+                    String[] actionArrayString = responseArrayString[3].split(",");
+                    onUpdateChangeText("xH:"+actionArrayString[0]+",xL:"+actionArrayString[1]+",yH:"+actionArrayString[2]+",yL:"+actionArrayString[3]);
                     onUpdateChangeImage(getString(R.string.calibration_five_set_res_command));
                     sendCommand="";
                 }
             }
             //Pressure Threshold
-            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.pressure_threshold_res_command))) {
-                onUpdateChangeText("Threshold:"+commandList[2]+"% "+ "Nominal:"+commandList[3]+"V");
-                onUpdateSeekBar(Integer.parseInt(commandList[2]));
-                onUpdatePressureThresholdValueText(Integer.parseInt(commandList[2]), Double.parseDouble(commandList[3]));
+            else if (statusArrayString[0].equals(statusSuccessString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.pressure_threshold_res_command))) {
+                onUpdateChangeText("Threshold:"+responseArrayString[2]+"% "+ "Nominal:"+(Double.parseDouble(responseArrayString[3])/100.0)+"V");
+                onUpdateSeekBar(Integer.parseInt(responseArrayString[2]));
+                onUpdatePressureThresholdValueText(Integer.parseInt(responseArrayString[2]), Double.parseDouble(responseArrayString[3])/100.0);
                 sendCommand="";
             }
-            else if (commandList[0].equals(successString) && commandList[1].equals(getString(R.string.pressure_threshold_set_res_command))) {
-                onUpdateChangeText("Threshold:"+commandList[2]+"% "+ "Nominal:"+commandList[3]+"V");
-                onUpdatePressureThresholdValueText(Integer.parseInt(commandList[2]), Double.parseDouble(commandList[3]));
+            else if (statusArrayString[0].equals(statusSuccessString) &&
+                    statusArrayString[1].equals(statusSuccessCode) &&
+                    responseArrayString[1].equals(getString(R.string.pressure_threshold_set_res_command))) {
+                onUpdateChangeText("Threshold:"+responseArrayString[2]+"% "+ "Nominal:"+(Double.parseDouble(responseArrayString[3])/100.0)+"V");
+                onUpdatePressureThresholdValueText(Integer.parseInt(responseArrayString[2]), Double.parseDouble(responseArrayString[3])/100.0);
                 sendCommand="";
             }
             arduinoIsSending=false;
