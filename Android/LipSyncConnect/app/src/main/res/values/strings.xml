@@ -326,17 +326,33 @@
 
 
     <!-- Commands -->
+    <string name="settings_success_res_command">SUCCESS:SETTINGS</string>
+    <string name="settings_fail_res_command">FAIL:SETTINGS</string>
+    <string name="exit_success_res_command">SUCCESS:EXIT</string>
+
+    <!-- General Response Status -->
+    <string name="general_success_res_status">SUCCESS</string>
+    <string name="general_manual_res_status">MANUAL</string>
+    <string name="general_fail_res_status">FAIL</string>
+
+    <string name="general_success_res_code_zero">0</string>
+    <string name="general_fail_res_code_zero">0</string>
+    <string name="general_fail_res_code_one">1</string>
+    <string name="general_fail_res_code_two">2</string>
+
+    <string name="general_log_res_status">LOG</string>
+    <string name="general_log_res_code_initialization">1</string>
+    <string name="general_log_res_code_calibration">2</string>
+    <string name="general_log_res_code_raw">3</string>
 
     <!-- Settings Mode -->
     <string name="settings_send_command">SETTINGS</string>
-    <string name="settings_res_command">SUCCESS</string>
-    <string name="settings_res_success_command">SUCCESS:SETTINGS</string>
-    <string name="settings_res_fail_command">FAIL:SETTINGS</string>
-    <string name="manual_res_command">MANUAL</string>
+    <string name="settings_res_command">SETTINGS</string>
 
+
+    <!-- Exit Settings Mode -->
     <string name="exit_send_command">EXIT</string>
     <string name="exit_res_command">EXIT</string>
-    <string name="exit_res_success_command">SUCCESS:EXIT</string>
 
     <!-- Get model number if sent "MN,0:0" -->
     <string name="model_send_command">MN,0:0</string>
@@ -392,10 +408,6 @@
     <!-- Set debug value to on if received "DM,1:1" -->
     <string name="debug_on_set_send_command">DM,1:1</string>
     <string name="debug_on_set_res_command">DM,1:1</string>
-    <string name="log_res_command">LOG</string>
-    <string name="log_initialization_res_command">1</string>
-    <string name="log_calibration_res_command">2</string>
-    <string name="log_raw_res_command">3</string>
 
     <string name="debug_off_set_res_text">Off</string>
     <string name="debug_on_set_res_text">On</string>

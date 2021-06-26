@@ -60,11 +60,11 @@ import java.io.UnsupportedEncodingException;
 
 /******************************************************************************
  Copyright (c) 2020. MakersMakingChange.com (info@makersmakingchange.com)
-Developed by : Milad Hajihassan (milador)
+ Developed by : Milad Hajihassan (milador)
  ******************************************************************************/
 
 public class MainActivity extends AppCompatActivity
-    implements
+        implements
         ArduinoListener,
         MainFragment.OnMainFragmentListener,
         MouseFragment.OnMouseFragmentListener,
@@ -154,19 +154,19 @@ public class MainActivity extends AppCompatActivity
         settingsCommand = getString(R.string.settings_send_command);
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
-                if (savedInstanceState == null) {
-                mMainFragment = MainFragment.newInstance();
-                // mMainFragment = pressureThresholdFragment.newInstance();
-                fragmentManager.beginTransaction()
-                .add(R.id.contentFragmentLayout, mMainFragment, MAIN_FRAGMENT_TAG)
-                .addToBackStack(MAIN_FRAGMENT_TAG)
-                .commit();
-                }
+        if (savedInstanceState == null) {
+            mMainFragment = MainFragment.newInstance();
+            // mMainFragment = pressureThresholdFragment.newInstance();
+            fragmentManager.beginTransaction()
+                    .add(R.id.contentFragmentLayout, mMainFragment, MAIN_FRAGMENT_TAG)
+                    .addToBackStack(MAIN_FRAGMENT_TAG)
+                    .commit();
+        }
 
-                // Back navigation listener
-                if (fragmentManager.getBackStackEntryCount() > 0) {        // Check if coming back
-                    fragmentManager.popBackStack();
-                }
+        // Back navigation listener
+        if (fragmentManager.getBackStackEntryCount() > 0) {        // Check if coming back
+            fragmentManager.popBackStack();
+        }
     }
 
 
@@ -277,12 +277,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onArduinoMessage(byte[] bytes) {
         String commandString = new String(bytes);
-        String successString = getString(R.string.settings_res_command);
-        String manualString = getString(R.string.manual_res_command);
+        String successString = getString(R.string.general_success_res_status);
+        String manualString = getString(R.string.general_manual_res_status);
         commandString = commandString.replaceAll("\\s","");
         //statusTextView.setText(receivedString);
         int commandParts = stringCharCounter(commandString, ':',0);
-        if(commandString.contains(getString(R.string.settings_res_success_command)) && (commandParts ==1)){
+        if(commandString.contains(getString(R.string.settings_success_res_command)) && (commandParts ==1)){
             try {
                 arduino.send(sendCommand.getBytes("UTF-8"));
                 sendCommand="";
@@ -290,21 +290,21 @@ public class MainActivity extends AppCompatActivity
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-        } else if ((commandString.contains(getString(R.string.settings_res_fail_command)) || commandString.contains(getString(R.string.exit_res_success_command))) && (commandParts ==1)) {
+        } else if ((commandString.contains(getString(R.string.settings_fail_res_command)) || commandString.contains(getString(R.string.exit_success_res_command))) && (commandParts ==1)) {
             onUpdateChangeText("Exit Settings");
             sendCommand="";
             arduinoIsSending=false;
         } else if (commandParts ==2) {
             String[] commandList = commandString.split(":");
             String[] actionList = commandList[2].split(",");
-            if (commandList[0].equals(getString(R.string.log_res_command))) {
-                if(commandList[1].equals(getString(R.string.log_initialization_res_command))){
+            if (commandList[0].equals(getString(R.string.general_log_res_status))) {
+                if(commandList[1].equals(getString(R.string.general_log_res_code_initialization))){
                     onUpdateDataText("xHNt:"+actionList[0]+",xLNt:"+actionList[1]+",yHNt:"+actionList[2]+",yLNt:"+actionList[3]);
                     sendCommand="";
-                } else if (commandList[1].equals(getString(R.string.log_calibration_res_command))){
+                } else if (commandList[1].equals(getString(R.string.general_log_res_code_calibration))){
                     onUpdateDataText("xHMax:"+actionList[0]+",xLMax:"+actionList[1]+",yHMax:"+actionList[2]+",yLMax:"+actionList[3]);
                     sendCommand="";
-                } else if (commandList[1].equals(getString(R.string.log_raw_res_command))){
+                } else if (commandList[1].equals(getString(R.string.general_log_res_code_raw))){
                     onUpdateDataText("xH:"+actionList[0]+",xL:"+actionList[1]+",yH:"+actionList[2]+",yL:"+actionList[3]);
                     sendCommand="";
                 }

@@ -40,7 +40,7 @@ public class Arduino implements UsbSerialInterface.UsbReadCallback {
     private byte delimiter;
 
     private static final String ACTION_USB_DEVICE_PERMISSION = "com.mmc.lipsyncconnect.Arduino.USB_PERMISSION";
-    private static final int DEFAULT_BAUD_RATE = 9600;
+    private static final int DEFAULT_BAUD_RATE = 115200;
     private static final byte DEFAULT_DELIMITER = '\n';
 
     public Arduino(Context context, int baudRate) {
@@ -116,8 +116,6 @@ public class Arduino implements UsbSerialInterface.UsbReadCallback {
             serialPort.write(bytes);
         }
     }
-
-
 
     public void setDelimiter(byte delimiter){
         this.delimiter = delimiter;
@@ -241,10 +239,10 @@ public class Arduino implements UsbSerialInterface.UsbReadCallback {
                         listener.onArduinoMessage(toByteArray(bytesReceived));
                     }
                     bytesReceived.clear();
-                    offset += index + 1;
+                    offset = index + 1;
                 }
 
-                if(offset < bytes.length - 1){
+                if(offset < bytes.length){
                     byte[] tmp = Arrays.copyOfRange(bytes, offset, bytes.length);
                     bytesReceived.addAll(toByteList(tmp));
                 }
