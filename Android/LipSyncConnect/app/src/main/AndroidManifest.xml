@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:versionCode="3"
-    android:versionName="1.2"
     package="com.mmc.lipsyncconnect">
     <uses-feature android:name="android.hardware.usb.host" />
     <application
@@ -12,8 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activates.MainActivity"
-            tools:ignore="Instantiatable">
+        <activity android:name=".Activates.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
